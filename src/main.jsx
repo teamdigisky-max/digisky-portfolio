@@ -145,7 +145,40 @@ function AdminPanel({ data, setData, onClose }) {
     });
   };
 
-  const save = () => { saveData(draft); setData(draft); onClose(); };
+  const save = async () => {
+  try {
+    // Save projects to Supabase
+    const projectsToSave = draft.projects.map((p) => ({
+      id: Number(p.id),
+      name: p.name || "",
+      industry: p.industry || "",
+      platform: p.platform || "",
+      description: p.description || "",
+      url: p.url || "",
+      image: p.image || ""
+    }));
+
+    const { error: projectsError } = await supabase
+      .from("projects")
+      .upsert(projectsToSave, { onConflict: "id" });
+
+    if (projectsError) {
+      console.error(projectsError);
+      alert("Projects save nahi hue: " + projectsError.message);
+      return;
+    }
+
+    // Update local UI
+    setData(draft);
+
+    alert("Projects saved successfully!");
+    onClose();
+
+  } catch (error) {
+    console.error(error);
+    alert("Something went wrong while saving.");
+  }
+};
   const reset = () => { localStorage.removeItem("digisky_data"); setData(DEFAULT_DATA); setDraft(JSON.parse(JSON.stringify(DEFAULT_DATA))); };
 
   const input = (label, path, type="text") => (
@@ -185,7 +218,36 @@ function AdminPanel({ data, setData, onClose }) {
             <button className="add-project" onClick={()=>setDraft(prev=>({...prev,projects:[...prev.projects,{id:Date.now(),name:"New Project",industry:"E-commerce",platform:"Shopify",description:"Add your project description here.",image:"",url:""}]}))}>+ Add project</button>
           </div>
           {draft.projects.map((p,i)=><div className="admin-project" key={p.id}>
-            <div className="admin-project-title"><b>{String(i+1).padStart(2,"0")}</b><strong>{p.name}</strong><button className="delete-project" onClick={()=>setDraft(prev=>({...prev,projects:prev.projects.filter((_,idx)=>idx!==i)}))}>Delete</button></div>
+            <div className="admin-project-title"><b>{String(i+1).padStart(2,"0")}</b><strong>{p.name}</strong><button
+  className="delete-project"
+  onClick={async () => {
+    const projectId = Number(p.id);
+
+    if (!confirm(`Delete ${p.name}?`)) return;
+
+    const { error } = await supabase
+      .from("projects")
+      .delete()
+      .eq("id", projectId);
+
+    if (error) {
+      alert("Delete failed: " + error.message);
+      return;
+    }
+
+    setDraft(prev => ({
+      ...prev,
+      projects: prev.projects.filter((_, idx) => idx !== i)
+    }));
+
+    setData(prev => ({
+      ...prev,
+      projects: prev.projects.filter((_, idx) => idx !== i)
+    }));
+  }}
+>
+  Delete
+</button></div>
             <input placeholder="Project name" value={p.name} onChange={e=>update(["projects",i,"name"],e.target.value)}/>
             <input placeholder="Industry" value={p.industry} onChange={e=>update(["projects",i,"industry"],e.target.value)}/>
             <input placeholder="Platform" value={p.platform} onChange={e=>update(["projects",i,"platform"],e.target.value)}/>
