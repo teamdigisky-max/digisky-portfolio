@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
+import { supabase } from "./lib/supabase";
 
 const DEFAULT_DATA = {
   brand: { name: "DigiSky", tagline: "Step Up Digitally", email: "team.digisky@gmail.com", whatsapp: "" },
@@ -213,6 +214,48 @@ function AdminPanel({ data, setData, onClose }) {
 
 function App() {
   const [data, setData] = useState(loadData);
+  useEffect(() => {
+  async function loadProjectsFromSupabase() {
+    const { data: dbProjects, error } = await supabase
+      .from("projects")
+      .select("*")
+      .order("id", { ascending: true });
+
+    if (error) {
+      console.error("Supabase projects error:", error);
+      return;
+    }
+
+    if (dbProjects && dbProjects.length > 0) {
+      setData(prev => {
+        const dbProjectsFormatted = dbProjects.map(p => ({
+          id: p.id,
+          name: p.name || "",
+          industry: p.industry || "",
+          platform: p.platform || "",
+          description: p.description || "",
+          url: p.url || "",
+          image: p.image || ""
+        }));
+
+        const dbNames = new Set(
+          dbProjectsFormatted.map(p => p.name.trim().toLowerCase())
+        );
+
+        const remainingDefaults = prev.projects.filter(
+          p => !dbNames.has(p.name.trim().toLowerCase())
+        );
+
+        return {
+          ...prev,
+          projects: [...dbProjectsFormatted, ...remainingDefaults]
+        };
+      });
+    }
+  }
+
+  loadProjectsFromSupabase();
+}, []);
   const isAdminRoute = window.location.pathname.replace(/\/$/,"") === "/admin" || new URLSearchParams(window.location.search).has("admin");
   const [adminOpen, setAdminOpen] = useState(isAdminRoute);
   useEffect(()=>{ document.documentElement.style.scrollBehavior="smooth"; },[]);
