@@ -126,6 +126,10 @@ nav button:hover{background:var(--tint)}
 .feature-list div{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14.5px}
 .feature-list b{display:none}
 .feature-list i{font-style:normal;color:var(--green);width:18px;flex:0 0 auto;font-weight:700}
+.admin-feature-row{display:flex;align-items:flex-end;gap:8px}
+.admin-feature-row .admin-field{flex:1}
+.delete-feature{border:0;background:#FBEAEA;color:#B4231C;border-radius:8px;padding:10px 9px;font-size:11px;cursor:pointer;margin-bottom:14px}
+.delete-feature:hover{background:#F6D6D5}
 
 /* ---------- Services ---------- */
 .services-section{padding:0 0 130px}
