@@ -226,6 +226,12 @@ function AdminPanel({ data, setData, onClose }) {
           {input("Main title \u2014 line 2",["hero","titleB"])}
           {input("Main title \u2014 line 3",["hero","titleC"])}
           {input("Hero description",["hero","description"],"textarea")}
+          <div className="admin-subtitle">Stats strip</div>
+          {draft.stats.map((stat, i)=><div className="admin-project" key={i}>
+            <div className="admin-project-title"><strong>Stat {i+1}</strong></div>
+            <label className="admin-field"><span>Value</span><input value={stat[0]} onChange={e=>update(["stats",i,0],e.target.value)}/></label>
+            <label className="admin-field"><span>Label</span><input value={stat[1]} onChange={e=>update(["stats",i,1],e.target.value)}/></label>
+          </div>)}
           {input("About heading \u2014 line 1",["about","titleA"])}
           {input("About heading \u2014 line 2",["about","titleB"])}
           {input("About text",["about","text"],"textarea")}
