@@ -297,7 +297,31 @@ function App() {
   const isAdminRoute = window.location.pathname.replace(/\/$/,"") === "/admin" || new URLSearchParams(window.location.search).has("admin");
   const [unlocked, setUnlocked] = useState(() => sessionStorage.getItem("digisky_admin_ok") === "1");
   const [adminOpen, setAdminOpen] = useState(isAdminRoute);
-  useEffect(()=>{ document.documentElement.style.scrollBehavior="smooth"; },[]);
+  useEffect(()=>{
+    document.documentElement.style.scrollBehavior="smooth";
+    const revealItems = document.querySelectorAll(".hero-copy, .hero-showcase, .stats-strip, .section-top, .project-card, .featured-copy, .featured-art, .services-heading, .service-row, .pricing-grid, .about-grid, .final-cta, .footer-top");
+    revealItems.forEach((item, index) => {
+      item.classList.add("reveal");
+      item.style.setProperty("--reveal-delay", `${Math.min(index * 45, 360)}ms`);
+    });
+    revealItems.forEach(item => {
+      if (item.classList.contains("hero-copy") || item.classList.contains("hero-showcase")) item.classList.add("is-visible");
+    });
+    if (!("IntersectionObserver" in window)) {
+      revealItems.forEach(item => item.classList.add("is-visible"));
+      return () => { revealItems.forEach(item => item.style.removeProperty("--reveal-delay")); };
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px" });
+    revealItems.forEach(item => observer.observe(item));
+    return () => observer.disconnect();
+  },[]);
 
   const projects = useMemo(()=>data.projects, [data.projects]);
 
