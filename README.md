@@ -1,14 +1,17 @@
-# DigiSky Portfolio
+# DigiSky Portfolio — Redesigned
 
-Updated portfolio with all 34 supplied project URLs.
+A fresh, clean redesign of the DigiSky agency portfolio. All 34 projects and their live links are unchanged.
 
-## What was fixed
-- All 34 portfolio projects now have their supplied website URL.
-- Clicking a project opens the real website in a new tab.
-- Portfolio thumbnails are generated from the project URL using Thum.io, with a local fallback thumbnail if the screenshot service is unavailable.
-- Existing `localStorage` data is migrated so the supplied URLs cannot be overwritten by the older blank project links.
-- Custom projects can still be added and edited from `/admin`.
-- Public pages do not show the admin panel; open `/admin` only when you need to edit content.
+## What changed in this redesign
+- New visual identity: Fraunces (headline serif) + Inter (body), a calmer paper background, and the brand green used only as an accent — not everywhere.
+- Hero now shows real screenshots from 3 of your own projects instead of a fake illustrated mockup, plus a scrolling strip of all 34 client names as social proof.
+- Cleaner project grid, simplified pricing card, a "What we do" section (no fake numbering, since services aren't a sequence), and a redesigned footer with your Instagram link.
+- `/admin` is now behind a password screen.
+
+## Admin panel
+Open `yourdomain.com/admin`.
+- **Password:** `digisky2026` — change this any time by asking your developer to update the `ADMIN_PASSWORD` value in `src/main.jsx`.
+- Changes you make in `/admin` save to **that browser only** (there's no server — this keeps hosting free). To make an edit go live for everyone, click **Export** in the admin panel, which downloads a small `digisky-data.json` file — send that file back to update the live site permanently.
 
 ## Run locally
 ```bash
@@ -16,8 +19,12 @@ npm install
 npm run dev
 ```
 
-## Admin
-Open `/admin` after starting the app. Changes are saved in the browser's localStorage.
+## Deploy
+This project is already set up for Vercel (see `vercel.json`, which routes `/admin` correctly). If you already have this connected to Vercel, just replace the old project files with these and redeploy the same way you did before — no new hosting or account needed.
+
+If you're not sure how, the easiest path:
+1. Run `npm run build` (or use the pre-built `dist` folder already included).
+2. Upload the contents of `dist/` to your existing host, or drag-and-drop the `dist` folder into Vercel's dashboard.
 
 ## Thumbnail note
-The live thumbnails use Thum.io's URL screenshot endpoint. Its public service currently provides a free allowance, so thumbnails work without adding a screenshot API key. For a high-traffic production portfolio, download/store the screenshots locally later to avoid depending on a third-party screenshot service.
+Live thumbnails use Thum.io's free screenshot service. If a screenshot fails to load, a local fallback image is used instead.
