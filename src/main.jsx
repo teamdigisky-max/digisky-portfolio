@@ -188,7 +188,7 @@ function IntroSplash() {
     return () => window.clearTimeout(timer);
   }, []);
   if (!visible) return null;
-  return <div className="intro-splash" role="status" aria-label="DigiSky Shopify specialists"><div className="splash-lockup"><div className="splash-brand-line"><span className="splash-mark">S</span><strong>DigiSky</strong><span className="splash-x">×</span><strong className="splash-shopify">Shopify</strong></div><span className="splash-typing">Shopify specialists<span className="typing-caret" aria-hidden="true"/></span></div></div>;
+  return <div className="intro-splash" role="status" aria-label="DigiSky Shopify Partner"><div className="splash-lockup"><strong className="splash-digisky">DigiSky</strong><span className="splash-x">×</span><img className="splash-partner-logo" src="/shopify-partner.webp" alt="Shopify Partner"/><span className="splash-typing">DigiSky Shopify specialists<span className="typing-caret" aria-hidden="true"/></span></div></div>;
 }
 
 function TrustStrip({ data }) {
