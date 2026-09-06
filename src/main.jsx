@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
+import { supabase } from "./lib/supabase";
 
 const ADMIN_PASSWORD = "digisky2026";
 
@@ -51,8 +52,24 @@ function loadData() {
   }
 }
 
-function saveData(data) {
+async function saveData(data) {
   localStorage.setItem("digisky_data", JSON.stringify(data));
+  const { error } = await supabase.from("site_content").upsert({
+    id: "homepage",
+    content: data,
+    updated_at: new Date().toISOString(),
+  });
+  if (error) throw error;
+}
+
+async function fetchRemoteData() {
+  const { data, error } = await supabase
+    .from("site_content")
+    .select("content")
+    .eq("id", "homepage")
+    .maybeSingle();
+  if (error) throw error;
+  return data?.content || null;
 }
 
 function waLink(number, message) {
@@ -231,8 +248,25 @@ function AdminPanel({ data, setData, onClose }) {
     });
   };
 
-  const save = () => { saveData(draft); setData(draft); onClose(); };
-  const reset = () => { localStorage.removeItem("digisky_data"); setData(DEFAULT_DATA); setDraft(JSON.parse(JSON.stringify(DEFAULT_DATA))); };
+  const save = async () => {
+    try {
+      await saveData(draft);
+      setData(draft);
+      onClose();
+    } catch (error) {
+      window.alert(`Could not save to the live database: ${error.message}`);
+    }
+  };
+  const reset = async () => {
+    try {
+      await saveData(DEFAULT_DATA);
+      localStorage.removeItem("digisky_data");
+      setData(DEFAULT_DATA);
+      setDraft(JSON.parse(JSON.stringify(DEFAULT_DATA)));
+    } catch (error) {
+      window.alert(`Could not reset the live database: ${error.message}`);
+    }
+  };
   const exportData = () => {
     const blob = new Blob([JSON.stringify(draft, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -255,7 +289,7 @@ function AdminPanel({ data, setData, onClose }) {
         {["home","pricing","projects","services","contact"].map(t=><button className={tab===t?"active":""} key={t} onClick={()=>setTab(t)}>{t}</button>)}
       </div>
       <div className="admin-scroll">
-        <div className="admin-banner">Changes save to this browser only. To make them go live for everyone, click <b>Export</b> below and send the file back for a permanent update.</div>
+        <div className="admin-banner">Changes are saved to the shared Supabase database and appear on the live website after refresh.</div>
         {tab==="home" && <>
           {input("Main title \u2014 line 1",["hero","titleA"])}
           {input("Main title \u2014 line 2",["hero","titleB"])}
@@ -339,6 +373,15 @@ function App() {
   const isAdminRoute = window.location.pathname.replace(/\/$/,"") === "/admin" || new URLSearchParams(window.location.search).has("admin");
   const [unlocked, setUnlocked] = useState(() => sessionStorage.getItem("digisky_admin_ok") === "1");
   const [adminOpen, setAdminOpen] = useState(isAdminRoute);
+  useEffect(() => {
+    let active = true;
+    fetchRemoteData()
+      .then(remote => {
+        if (active && remote) setData(prev => ({ ...prev, ...remote }));
+      })
+      .catch(error => console.warn("Remote content unavailable; using local content.", error.message));
+    return () => { active = false; };
+  }, []);
   useEffect(()=>{
     document.documentElement.style.scrollBehavior="smooth";
     const revealItems = document.querySelectorAll(".hero-copy, .hero-showcase, .stats-strip, .section-top, .project-card, .featured-copy, .featured-art, .services-heading, .service-row, .pricing-grid, .about-grid, .final-cta, .footer-top");

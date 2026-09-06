@@ -11,7 +11,14 @@ A fresh, clean redesign of the DigiSky agency portfolio. All 34 projects and the
 ## Admin panel
 Open `yourdomain.com/admin`.
 - **Password:** `digisky2026` — change this any time by asking your developer to update the `ADMIN_PASSWORD` value in `src/main.jsx`.
-- Changes you make in `/admin` save to **that browser only** (there's no server — this keeps hosting free). To make an edit go live for everyone, click **Export** in the admin panel, which downloads a small `digisky-data.json` file — send that file back to update the live site permanently.
+- Changes made in `/admin` are saved to the shared Supabase `site_content` row and are loaded by the public website on refresh.
+
+### One-time Supabase setup
+1. Open the Supabase project connected in `.env`.
+2. Open **SQL Editor** and run the contents of `supabase-schema.sql`.
+3. Commit and deploy the app with the commands below.
+
+The app keeps a local browser fallback if the database is temporarily unavailable. The current password gate is client-side only; use Supabase Auth and server-side policies before treating this as a security boundary for sensitive content.
 
 ## Run locally
 ```bash
