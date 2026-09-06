@@ -177,7 +177,7 @@ function ProjectCard({ project, index }) {
   const thumbnail = project.image || remoteThumb || fallback;
   const card = <article className="project-card">
     <div className="project-media">
-      <img src={thumbnail} alt={`${project.name} project thumbnail`} loading={index < 6 ? "eager" : "lazy"} onError={(e)=>{ if(e.currentTarget.dataset.fallback) return; e.currentTarget.dataset.fallback="1"; e.currentTarget.src=fallback; }} />
+      <img src={thumbnail} alt={`${project.name} project thumbnail`} loading={index < 12 ? "eager" : "lazy"} fetchPriority={index < 6 ? "high" : "auto"} decoding="async" onError={(e)=>{ if(e.currentTarget.dataset.fallback) return; e.currentTarget.dataset.fallback="1"; e.currentTarget.src=fallback; }} />
       <div className="project-overlay"><span>{hasUrl ? "View live website" : "Website link not added"}</span><Arrow/></div>
     </div>
     <div className="project-meta"><div><h3>{project.name}</h3><p>{project.industry}</p></div><div className="project-tags"><i/>{project.platform}</div></div>
@@ -384,7 +384,7 @@ function App() {
   }, []);
   useEffect(()=>{
     document.documentElement.style.scrollBehavior="smooth";
-    const revealItems = document.querySelectorAll(".hero-copy, .hero-showcase, .stats-strip, .section-top, .project-card, .featured-copy, .featured-art, .services-heading, .service-row, .pricing-grid, .about-grid, .final-cta, .footer-top");
+    const revealItems = document.querySelectorAll(".hero-copy, .hero-showcase, .stats-strip, .section-top, .featured-copy, .featured-art, .services-heading, .pricing-grid, .about-grid, .final-cta, .footer-top");
     revealItems.forEach((item, index) => {
       item.classList.add("reveal");
       item.style.setProperty("--reveal-delay", `${Math.min(index * 45, 360)}ms`);
