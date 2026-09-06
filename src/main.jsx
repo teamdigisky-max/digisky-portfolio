@@ -169,6 +169,7 @@ function Header({ data }) {
           <button onClick={()=>navigate("about")}>About</button>
           <button onClick={()=>navigate("testimonials")}>Testimonials</button>
           <button onClick={()=>navigate("journal")}>Journal</button>
+          <a className="mobile-nav-cta" href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a project <Arrow/></a>
         </nav>
         <div className="header-actions">
           {data.brand.instagram && <a className="icon-link" href={data.brand.instagram} target="_blank" rel="noreferrer" aria-label="DigiSky on Instagram"><InstagramIcon/></a>}
@@ -198,6 +199,18 @@ function Testimonials({ data }) {
 
 function Journal({ data }) {
   return <section id="journal" className="journal section"><div className="section-top"><div><span className="tag-chip">From the studio</span><h2>Ideas worth sharing.</h2></div><span className="project-count">Latest thinking</span></div><div className="journal-grid">{data.blog.map((post, index)=><article className={`journal-card ${index === 0 ? "journal-featured" : ""}`} key={`${post.title}-${index}`}><div className="journal-art"><span>{post.category}</span><b>↗</b><i>{String(index + 1).padStart(2,"0")}</i></div><div className="journal-copy"><small>{post.date}</small><h3>{post.title}</h3><p>{post.excerpt}</p><a href="#contact" className="journal-link">Read the note <Arrow/></a></div></article>)}</div></section>;
+}
+
+function ShopifyExpertise({ projects }) {
+  const [active, setActive] = useState(0);
+  const points = [
+    ["Custom Shopify store design", "Premium storefronts designed around the brand, not a template."],
+    ["Theme customization", "Custom sections and experiences beyond basic theme settings."],
+    ["Product & collection architecture", "Clear shopping journeys that make products easier to discover."],
+    ["Conversion-focused UX", "Strategic navigation and product flows built around customer intent."],
+  ];
+  const preview = projects.find(project => project.platform === "Shopify") || projects[0];
+  return <section id="shopify-expertise" className="shopify-expertise section"><div className="shopify-heading"><div><span className="tag-chip">Shopify expertise</span><h2>Built for brands<br/>that want to sell more.</h2></div><p>We don't just make Shopify stores look beautiful. We design ecommerce experiences focused on trust, clarity and conversion.</p></div><div className="shopify-stage"><div className="shopify-list">{points.map((point,index)=><button className={active === index ? "active" : ""} key={point[0]} onClick={()=>setActive(index)}><span>0{index + 1}</span><strong>{point[0]}</strong><i>↗</i><small>{point[1]}</small></button>)}</div><div className="shopify-preview"><div className="preview-top"><span>digisky / Shopify build</span><b>● ● ●</b></div><div className="preview-screen"><img src={preview?.image} alt="Shopify project preview" loading="lazy"/><div><span>Selected Shopify build</span><strong>{preview?.name || "DigiSky Store"}</strong></div></div><div className="preview-footer"><span>Conversion-first design</span><span>01 — 04</span></div></div></div></section>;
 }
 
 function HeroShowcase({ projects }) {
@@ -466,7 +479,7 @@ function App() {
   }, []);
   useEffect(()=>{
     document.documentElement.style.scrollBehavior="smooth";
-    const revealItems = document.querySelectorAll(".hero-copy, .hero-showcase, .stats-strip, .section-top, .featured-copy, .featured-art, .services-heading, .pricing-grid, .about-grid, .final-cta, .footer-top");
+    const revealItems = document.querySelectorAll(".hero-copy, .hero-showcase, .stats-strip, .section-top, .featured-copy, .featured-art, .services-heading, .pricing-grid, .about-grid, .final-cta, .footer-top, .shopify-heading, .shopify-stage, .shopify-list button");
     revealItems.forEach((item, index) => {
       item.classList.add("reveal");
       item.style.setProperty("--reveal-delay", `${Math.min(index * 45, 360)}ms`);
@@ -553,6 +566,8 @@ function App() {
           <div className="services-intro"><div><span className="tag-chip">Capabilities</span><h2 className="services-heading">What we do.</h2></div><p>Digital foundations for brands that want to look sharper, move faster and sell with more confidence.</p></div>
           <div className="services-list">{data.services.map((s,i)=><div className={`service-row ${i === 0 ? "service-featured" : ""}`} key={i}><span className="service-number">{String(i + 1).padStart(2,"0")}</span><div className="service-copy"><h3>{s[0]}</h3><p>{s[1]}</p></div><b>&#8599;</b></div>)}</div>
         </section>
+
+        <ShopifyExpertise projects={projects}/>
 
         <section className="why-section section"><div className="section-top"><div><span className="tag-chip">Why DigiSky</span><h2>Built with intent.</h2></div></div><div className="why-grid">{data.features.map(feature=><article key={feature[0]}><span>{feature[0]}</span><h3>{feature[1]}</h3><p>{feature[2]}</p></article>)}</div></section>
 
