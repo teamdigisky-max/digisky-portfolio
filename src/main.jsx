@@ -87,6 +87,58 @@ function InstagramIcon() {
   </svg>;
 }
 
+function AmbientCanvas() {
+  const canvasRef = React.useRef(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const context = canvas.getContext("2d");
+    const pointer = { x: 0, y: 0, active: false };
+    let frameId;
+    let width = 0;
+    let height = 0;
+    const particles = Array.from({ length: 34 }, (_, index) => ({
+      x: Math.random(), y: Math.random(),
+      size: 1 + Math.random() * 2.5,
+      speed: 0.00008 + Math.random() * 0.00016,
+      phase: index * 0.7,
+    }));
+    const resize = () => {
+      const bounds = canvas.parentElement.getBoundingClientRect();
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      width = bounds.width; height = bounds.height;
+      canvas.width = width * ratio; canvas.height = height * ratio;
+      canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    };
+    const move = event => {
+      const bounds = canvas.getBoundingClientRect();
+      pointer.x = event.clientX - bounds.left; pointer.y = event.clientY - bounds.top; pointer.active = true;
+    };
+    const draw = time => {
+      context.clearRect(0, 0, width, height);
+      const glow = context.createRadialGradient(width * .68, height * .42, 0, width * .68, height * .42, width * .55);
+      glow.addColorStop(0, "rgba(34,139,34,.14)"); glow.addColorStop(1, "rgba(34,139,34,0)");
+      context.fillStyle = glow; context.fillRect(0, 0, width, height);
+      particles.forEach(particle => {
+        const x = particle.x * width + Math.sin(time * particle.speed + particle.phase) * 26;
+        const y = ((particle.y + time * particle.speed * .18) % 1) * height;
+        const dx = pointer.active ? pointer.x - x : 0;
+        const dy = pointer.active ? pointer.y - y : 0;
+        const distance = Math.max(80, Math.hypot(dx, dy));
+        const nudge = pointer.active ? Math.max(0, 1 - distance / 260) : 0;
+        context.beginPath(); context.arc(x - dx * nudge * .05, y - dy * nudge * .05, particle.size, 0, Math.PI * 2);
+        context.fillStyle = `rgba(34,139,34,${.12 + nudge * .2})`; context.fill();
+      });
+      frameId = requestAnimationFrame(draw);
+    };
+    resize(); window.addEventListener("resize", resize); canvas.addEventListener("pointermove", move); canvas.addEventListener("pointerleave", () => { pointer.active = false; });
+    frameId = requestAnimationFrame(draw);
+    return () => { cancelAnimationFrame(frameId); window.removeEventListener("resize", resize); canvas.removeEventListener("pointermove", move); };
+  }, []);
+  return <canvas className="ambient-canvas" ref={canvasRef} aria-hidden="true"/>;
+}
+
 function Header({ data }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const go = id => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -136,12 +188,21 @@ function Journal({ data }) {
 }
 
 function HeroShowcase({ projects }) {
+  const showcaseRef = React.useRef(null);
+  const move = event => {
+    const bounds = showcaseRef.current.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width - .5) * 2;
+    const y = ((event.clientY - bounds.top) / bounds.height - .5) * 2;
+    showcaseRef.current.style.setProperty("--parallax-x", `${x * 10}px`);
+    showcaseRef.current.style.setProperty("--parallax-y", `${y * 10}px`);
+  };
+  const reset = () => { showcaseRef.current.style.setProperty("--parallax-x", "0px"); showcaseRef.current.style.setProperty("--parallax-y", "0px"); };
   const pick = (name, fallback) => projects.find(p => p.name === name) || fallback;
   const a = pick("Popout Fashion", projects[4] || projects[0]);
   const b = pick("Maestra Jewellery", projects[11] || projects[1]);
   const c = pick("Tiara Skin", projects[20] || projects[2]);
   return (
-    <div className="hero-showcase" aria-hidden="true">
+    <div className="hero-showcase" ref={showcaseRef} onPointerMove={move} onPointerLeave={reset} aria-hidden="true">
       {c && <div className="hs-card hs-c"><img src={c.image} alt="" loading="eager"/><span className="hs-tag">{c.name}</span></div>}
       {a && <div className="hs-card hs-a"><img src={a.image} alt="" loading="eager"/><span className="hs-tag">{a.name}</span></div>}
       {b && <div className="hs-card hs-b"><img src={b.image} alt="" loading="eager"/><span className="hs-tag">{b.name}</span></div>}
@@ -425,14 +486,16 @@ function App() {
       <main>
         <section className="hero section">
           <div className="hero-copy">
+            <span className="hero-kicker">✦ Shopify &amp; e-commerce specialists</span>
             <h1>{data.hero.titleA} {data.hero.titleB}<br/>{data.hero.titleC}</h1>
             <p>{data.hero.description}</p>
             <div className="hero-actions">
               <a className="pill-button" href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a project</a>
               <button className="text-link" onClick={()=>document.getElementById("work")?.scrollIntoView({behavior:"smooth"})}>View our work</button>
             </div>
+            <div className="hero-trust"><span>✓ Shopify specialists</span><span>✓ Custom store development</span><span>✓ Conversion-focused design</span></div>
           </div>
-          <HeroShowcase projects={projects}/>
+          <div className="hero-visual"><AmbientCanvas/><HeroShowcase projects={projects}/></div>
         </section>
 
         <TrustStrip data={data}/>
