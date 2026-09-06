@@ -184,11 +184,11 @@ function Header({ data }) {
 function IntroSplash() {
   const [visible, setVisible] = useState(true);
   useEffect(() => {
-    const timer = window.setTimeout(() => setVisible(false), 1850);
+    const timer = window.setTimeout(() => setVisible(false), 2200);
     return () => window.clearTimeout(timer);
   }, []);
   if (!visible) return null;
-  return <div className="intro-splash" role="status" aria-label="DigiSky Shopify Partner"><div className="splash-lockup"><strong className="splash-digisky">DigiSky</strong><span className="splash-x">×</span><img className="splash-partner-logo" src="/shopify-partner.webp" alt="Shopify Partner"/><span className="splash-typing">DigiSky Shopify specialists<span className="typing-caret" aria-hidden="true"/></span></div></div>;
+  return <div className="intro-splash" role="status" aria-label="DigiSky Shopify specialists"><div className="splash-lockup"><div className="splash-brand-line"><strong className="splash-digisky">DigiSky</strong><span className="splash-x">×</span><span className="splash-icon"><img src="/shopify-icon.png" alt="Shopify"/></span></div><span className="splash-typing">DigiSky Shopify specialists<span className="typing-caret" aria-hidden="true"/></span></div></div>;
 }
 
 function TrustStrip({ data }) {
