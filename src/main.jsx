@@ -172,7 +172,7 @@ function TrustStrip({ data }) {
 }
 
 function AboutSection({ data }) {
-  return <section id="about" className="about section"><div className="about-grid"><div><span className="tag-chip">About DigiSky</span><h2>{data.about.titleA}<br/>{data.about.titleB}</h2></div><div><p>{data.about.text}</p><ul className="about-points">{data.about.points.map(point=><li key={point}><span>+</span>{point}</li>)}</ul></div></div></section>;
+  return <section id="about" className="about section"><div className="about-grid"><div><span className="tag-chip">About DigiSky</span><h2>{data.about.titleA}<br/>{data.about.titleB}</h2><div className="about-stamp"><strong>DS</strong><span>Digital studio<br/>for ambitious brands</span></div></div><div><p>{data.about.text}</p><ul className="about-points">{data.about.points.map(point=><li key={point}><span>+</span>{point}</li>)}</ul><div className="about-metrics"><div><strong>34+</strong><span>launches</span></div><div><strong>100%</strong><span>custom thinking</span></div></div></div></div></section>;
 }
 
 function ProcessSection({ data }) {
@@ -180,11 +180,11 @@ function ProcessSection({ data }) {
 }
 
 function Testimonials({ data }) {
-  return <section id="testimonials" className="testimonials section"><div className="section-top"><div><span className="tag-chip">Client notes</span><h2>Good work travels.</h2></div></div><div className="testimonial-grid">{data.testimonials.map((item, index)=><article className="testimonial" key={`${item.name}-${index}`}><div className="rating">{"★".repeat(Number(item.rating || 5))}</div><blockquote>“{item.quote}”</blockquote><footer><strong>{item.name}</strong><span>{item.company}</span></footer></article>)}</div></section>;
+  return <section id="testimonials" className="testimonials section"><div className="section-top"><div><span className="tag-chip">Client notes</span><h2>Good work travels.</h2></div><span className="testimonial-count">{String(data.testimonials.length).padStart(2,"0")} / client stories</span></div><div className="testimonial-grid">{data.testimonials.map((item, index)=><article className="testimonial" key={`${item.name}-${index}`}><span className="quote-mark">“</span><div className="rating">{"★".repeat(Number(item.rating || 5))}</div><blockquote>{item.quote}</blockquote><footer><strong>{item.name}</strong><span>{item.company}</span><em>Project partner</em></footer></article>)}</div></section>;
 }
 
 function Journal({ data }) {
-  return <section id="journal" className="journal section"><div className="section-top"><div><span className="tag-chip">From the studio</span><h2>Ideas worth sharing.</h2></div><span className="project-count">Latest thinking</span></div><div className="journal-grid">{data.blog.map((post, index)=><article className="journal-card" key={`${post.title}-${index}`}><div className="journal-art"><span>{post.category}</span><b>↗</b></div><small>{post.date}</small><h3>{post.title}</h3><p>{post.excerpt}</p></article>)}</div></section>;
+  return <section id="journal" className="journal section"><div className="section-top"><div><span className="tag-chip">From the studio</span><h2>Ideas worth sharing.</h2></div><span className="project-count">Latest thinking</span></div><div className="journal-grid">{data.blog.map((post, index)=><article className={`journal-card ${index === 0 ? "journal-featured" : ""}`} key={`${post.title}-${index}`}><div className="journal-art"><span>{post.category}</span><b>↗</b><i>{String(index + 1).padStart(2,"0")}</i></div><div className="journal-copy"><small>{post.date}</small><h3>{post.title}</h3><p>{post.excerpt}</p><a href="#contact" className="journal-link">Read the note <Arrow/></a></div></article>)}</div></section>;
 }
 
 function HeroShowcase({ projects }) {
@@ -525,9 +525,9 @@ function App() {
           </div>
         </section>
 
-        <section className="services-section section">
-          <span className="tag-chip">Capabilities</span><h2 className="services-heading">What we do.</h2>
-          <div className="services-list">{data.services.map((s,i)=><div className="service-row" key={i}><span>{i}</span><h3>{s[0]}</h3><p>{s[1]}</p><b>&#8599;</b></div>)}</div>
+        <section id="services" className="services-section section">
+          <div className="services-intro"><div><span className="tag-chip">Capabilities</span><h2 className="services-heading">What we do.</h2></div><p>Digital foundations for brands that want to look sharper, move faster and sell with more confidence.</p></div>
+          <div className="services-list">{data.services.map((s,i)=><div className={`service-row ${i === 0 ? "service-featured" : ""}`} key={i}><span className="service-number">{String(i + 1).padStart(2,"0")}</span><div className="service-copy"><h3>{s[0]}</h3><p>{s[1]}</p></div><b>&#8599;</b></div>)}</div>
         </section>
 
         <section className="why-section section"><div className="section-top"><div><span className="tag-chip">Why DigiSky</span><h2>Built with intent.</h2></div></div><div className="why-grid">{data.features.map(feature=><article key={feature[0]}><span>{feature[0]}</span><h3>{feature[1]}</h3><p>{feature[2]}</p></article>)}</div></section>
