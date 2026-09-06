@@ -77,6 +77,18 @@ function waLink(number, message) {
   return clean ? `https://wa.me/${clean}?text=${encodeURIComponent(message)}` : `https://wa.me/?text=${encodeURIComponent(message)}`;
 }
 
+const PROJECT_FILTERS = ["All", "E-commerce", "Fashion", "Beauty", "Healthcare", "Food"];
+function projectCategory(project) {
+  if (project.category) return project.category;
+  const text = `${project.industry || ""} ${project.name || ""}`.toLowerCase();
+  if (/fashion|textile|jewellery|jewelry|apparel/.test(text)) return "Fashion";
+  if (/beauty|wellness|skin|elixir/.test(text)) return "Beauty";
+  if (/health|doctor|clinic|medical/.test(text)) return "Healthcare";
+  if (/food|chef|cart|delight|drink|grocery/.test(text)) return "Food";
+  if (/shopify|e-commerce|ecommerce/.test(`${text} ${project.platform || ""}`.toLowerCase())) return "E-commerce";
+  return "Website";
+}
+
 function Arrow() { return <span aria-hidden="true">\u2197</span>; }
 
 function InstagramIcon() {
@@ -241,7 +253,7 @@ function ProjectCard({ project, index }) {
       <img src={thumbnail} alt={`${project.name} project thumbnail`} loading={index < 12 ? "eager" : "lazy"} fetchPriority={index < 6 ? "high" : "auto"} decoding="async" onError={(e)=>{ if(e.currentTarget.dataset.fallback) return; e.currentTarget.dataset.fallback="1"; e.currentTarget.src=fallback; }} />
       <div className="project-overlay"><span>{hasUrl ? "View live website" : "Website link not added"}</span><Arrow/></div>
     </div>
-    <div className="project-meta"><div><h3>{project.name}</h3><p>{project.industry}</p></div><div className="project-tags"><i/>{project.platform}</div></div>
+    <div className="project-meta"><div><h3>{project.name}</h3><p>{project.industry}</p></div><div className="project-tags"><i/>{project.platform || projectCategory(project)}</div></div>
   </article>;
   return hasUrl ? <a className="project-link" href={project.url.trim()} target="_blank" rel="noopener noreferrer" aria-label={`Open ${project.name} website`}>{card}</a> : card;
 }
@@ -394,11 +406,12 @@ function AdminPanel({ data, setData, onClose }) {
         {tab==="projects" && <div className="admin-projects">
           <div className="projects-admin-top">
             <p className="admin-help">All portfolio projects are shown on the website. Website links open in a new tab. Thumbnails are generated automatically from each website; you can still replace a thumbnail with your own image URL.</p>
-            <button className="add-project" onClick={()=>setDraft(prev=>({...prev,projects:[...prev.projects,{id:Date.now(),name:"New Project",industry:"E-commerce",platform:"Shopify",description:"Add your project description here.",image:"",url:""}]}))}>+ Add project</button>
+            <button className="add-project" onClick={()=>setDraft(prev=>({...prev,projects:[...prev.projects,{id:Date.now(),name:"New Project",category:"E-commerce",industry:"E-commerce",platform:"Shopify",description:"Add your project description here.",image:"",url:""}]}))}>+ Add project</button>
           </div>
           {draft.projects.map((p,i)=><div className="admin-project" key={p.id}>
             <div className="admin-project-title"><b>{String(i+1).padStart(2,"0")}</b><strong>{p.name}</strong><button className="delete-project" onClick={()=>setDraft(prev=>({...prev,projects:prev.projects.filter((_,idx)=>idx!==i)}))}>Delete</button></div>
             <input placeholder="Project name" value={p.name} onChange={e=>update(["projects",i,"name"],e.target.value)}/>
+            <input placeholder="Category (E-commerce, Fashion, Beauty...)" value={p.category || ""} onChange={e=>update(["projects",i,"category"],e.target.value)}/>
             <input placeholder="Industry" value={p.industry} onChange={e=>update(["projects",i,"industry"],e.target.value)}/>
             <input placeholder="Platform" value={p.platform} onChange={e=>update(["projects",i,"platform"],e.target.value)}/>
             <input placeholder="Website URL (https://...)" value={p.url || ""} onChange={e=>update(["projects",i,"url"],e.target.value)}/>
@@ -434,6 +447,7 @@ function App() {
   const isAdminRoute = window.location.pathname.replace(/\/$/,"") === "/admin" || new URLSearchParams(window.location.search).has("admin");
   const [unlocked, setUnlocked] = useState(() => sessionStorage.getItem("digisky_admin_ok") === "1");
   const [adminOpen, setAdminOpen] = useState(isAdminRoute);
+  const [activeFilter, setActiveFilter] = useState("All");
   useEffect(() => {
     let active = true;
     fetchRemoteData()
@@ -470,6 +484,7 @@ function App() {
   },[]);
 
   const projects = useMemo(()=>data.projects, [data.projects]);
+  const filteredProjects = useMemo(() => activeFilter === "All" ? projects : projects.filter(project => projectCategory(project) === activeFilter), [activeFilter, projects]);
 
   const closeAdmin = () => {
     if (window.location.pathname.replace(/\/$/,"")==="/admin") { window.location.href="/"; }
@@ -508,12 +523,13 @@ function App() {
         <section id="work" className="section work-section">
           <div className="section-top">
             <h2>Stores we've<br/>shipped.</h2>
-            <span className="project-count">{projects.length} projects</span>
+            <span className="project-count">{filteredProjects.length} of {projects.length} projects</span>
           </div>
-          <div className="projects-grid">{projects.map((p,i)=><ProjectCard project={p} index={i} key={p.id}/>)}</div>
+          <div className="project-filters" role="group" aria-label="Filter projects by category">{PROJECT_FILTERS.map(filter=><button key={filter} className={activeFilter === filter ? "active" : ""} onClick={()=>setActiveFilter(filter)}>{filter}</button>)}</div>
+          <div className="projects-grid">{filteredProjects.map((p,i)=><ProjectCard project={p} index={i} key={`${p.id || "project"}-${p.name}-${i}`}/>)}</div>
         </section>
 
-        <section id="services" className="featured section">
+        <section id="featured" className="featured section">
           <div className="featured-copy">
             <h2>{data.featured.title}</h2>
             <p>{data.featured.description}</p>
