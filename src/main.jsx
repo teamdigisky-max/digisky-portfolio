@@ -181,6 +181,16 @@ function Header({ data }) {
   );
 }
 
+function IntroSplash() {
+  const [visible, setVisible] = useState(true);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setVisible(false), 1050);
+    return () => window.clearTimeout(timer);
+  }, []);
+  if (!visible) return null;
+  return <div className="intro-splash" role="status" aria-label="DigiSky Shopify specialists"><div className="splash-lockup"><span className="splash-mark">S</span><strong>DigiSky</strong><span className="splash-x">×</span><strong>Shopify</strong><small>specialists</small></div></div>;
+}
+
 function TrustStrip({ data }) {
   return <section className="trust-strip"><div className="section trust-inner"><span>{data.trust.eyebrow}</span><div>{data.trust.names.map(name=><strong key={name}>{name}</strong>)}</div></div></section>;
 }
@@ -514,6 +524,7 @@ function App() {
 
   return (
     <div id="top">
+      <IntroSplash />
       <Header data={data}/>
       {adminOpen && isAdminRoute && (unlocked
         ? <AdminPanel data={data} setData={setData} onClose={closeAdmin}/>
