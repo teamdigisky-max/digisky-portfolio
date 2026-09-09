@@ -542,7 +542,7 @@ function App() {
             </div>
             <div className="hero-trust"><span>✓ Shopify specialists</span><span>✓ Custom store development</span><span>✓ Conversion-focused design</span></div>
           </div>
-          <div className="hero-visual"><AmbientCanvas/><HeroShowcase projects={projects}/></div>
+          <div className="hero-visual"><HeroShowcase projects={projects}/></div>
         </section>
 
         <TrustStrip data={data}/>
