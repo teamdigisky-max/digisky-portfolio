@@ -160,6 +160,7 @@ function Header({ data }) {
     <header className="site-header">
       <div className="site-header-in">
         <a className="brand" href="#top" onClick={(e)=>{e.preventDefault(); go("top")}}>
+          <span className="term-dots" aria-hidden="true"><i/><i/><i/></span>
           <img src="/logo.png" alt="DigiSky logo" />
           <span>{data.brand.name}</span>
         </a>
@@ -598,6 +599,7 @@ function App() {
       </main>
 
       <footer>
+        <div className="footer-termbar"><span className="term-dots" aria-hidden="true"><i/><i/><i/></span><span>footer.js</span></div>
         <div className="footer-top">
           <div className="footer-brand">
             <a className="brand" href="#top"><img src="/logo.png" alt="DigiSky logo"/><span>{data.brand.name}</span></a>
