@@ -100,6 +100,31 @@ function InstagramIcon() {
   </svg>;
 }
 
+function CodeBackground() {
+  const snippets = [
+    { text: "</>", x: "7%", y: "16%", size: "22px", delay: "0s" },
+    { text: "{ }", x: "88%", y: "12%", size: "20px", delay: "2s" },
+    { text: "01", x: "12%", y: "68%", size: "14px", delay: "4s" },
+    { text: "=>", x: "92%", y: "56%", size: "18px", delay: "1s" },
+    { text: "const", x: "4%", y: "43%", size: "12px", delay: "3s" },
+    { text: "npm", x: "82%", y: "78%", size: "12px", delay: "5s" },
+    { text: "git push", x: "16%", y: "88%", size: "11px", delay: "2.5s" },
+    { text: "<div>", x: "74%", y: "34%", size: "11px", delay: "1.5s" },
+    { text: "Shopify", x: "86%", y: "90%", size: "11px", delay: "4.5s" },
+    { text: "0101", x: "25%", y: "12%", size: "10px", delay: "3.5s" }
+  ];
+
+  return (
+    <div className="code-background" aria-hidden="true">
+      {snippets.map((item, index) => (
+        <span key={index} className="code-float" style={{ left: item.x, top: item.y, fontSize: item.size, animationDelay: item.delay }}>
+          {item.text}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function AmbientCanvas() {
   const canvasRef = React.useRef(null);
   useEffect(() => {
@@ -525,6 +550,7 @@ function App() {
 
   return (
     <div id="top">
+      <CodeBackground />
       <IntroSplash />
       <Header data={data}/>
       {adminOpen && isAdminRoute && (unlocked

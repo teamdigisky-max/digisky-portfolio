@@ -22,8 +22,63 @@
 html{scroll-behavior:smooth}
 html,body,#root{margin:0;min-height:100%;background:var(--paper);color:var(--ink)}
 body{font-family:"Inter",Arial,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.38;background-image:linear-gradient(rgba(11,31,22,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(11,31,22,.035) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent 72%)}
-body:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.05;background-image:var(--code-pattern);background-size:340px 340px}
+
+/* =========================================================
+   DIGISKY — DEVELOPER CODE BACKGROUND
+   Light Green + White / Premium Coding Vibe
+   ========================================================= */
+
+body {
+  position: relative;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(34, 139, 34, 0.055), transparent 28%),
+    radial-gradient(circle at 88% 18%, rgba(34, 139, 34, 0.045), transparent 30%),
+    var(--paper);
+}
+
+/* Fine developer grid */
+body:before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(23, 107, 26, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 107, 26, 0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(0,0,0,0.45) 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95), rgba(0,0,0,0.45) 55%, transparent 100%);
+}
+
+/* Coding symbols layer */
+body:after {
+  content:
+    "</>     { }     const     01     =>\A"
+    "npm     React     Shopify     CSS     HTML\A"
+    "function()     // DigiSky     <div>     0101\A"
+    "return     API     UI/UX     build()     deploy()\A"
+    "</>     { ... }     git     push     commit";
+  white-space: pre;
+  position: fixed;
+  inset: -5% -5%;
+  z-index: -2;
+  pointer-events: none;
+  font-family: "SFMono-Regular", "Cascadia Code", "Roboto Mono", Consolas, monospace;
+  font-size: clamp(12px, 1vw, 16px);
+  line-height: 7;
+  letter-spacing: 0.08em;
+  color: rgba(34, 139, 34, 0.075);
+  transform: rotate(-4deg) scale(1.08);
+  opacity: 1;
+  animation: code-drift 30s ease-in-out infinite alternate;
+}
+
+/* Slow movement = premium, not distracting */
+@keyframes code-drift {
+  from { transform: rotate(-4deg) translate3d(-10px, -8px, 0) scale(1.08); }
+  to { transform: rotate(-4deg) translate3d(10px, 12px, 0) scale(1.08); }
+}
 a{text-decoration:none;color:inherit}
 button{font:inherit;cursor:pointer}
 img{max-width:100%;display:block}
@@ -78,7 +133,21 @@ nav button:hover:before{transform:scaleX(1)}
     radial-gradient(circle at 30% 30%,rgba(200,155,60,.16),transparent 55%),
     radial-gradient(circle at 68% 62%,rgba(34,139,34,.16),transparent 60%);
   filter:blur(30px);pointer-events:none;animation:breathe 9s ease-in-out infinite;mix-blend-mode:multiply}
-.hero:after{content:"";position:absolute;inset:-40px -10% auto auto;width:46%;height:340px;background-image:var(--grain);opacity:.05;pointer-events:none;mix-blend-mode:multiply}
+.hero:after {
+  content: "";
+  position: absolute;
+  right: -5%;
+  top: 5%;
+  width: 55%;
+  height: 500px;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, transparent, rgba(34, 139, 34, 0.045)),
+    repeating-linear-gradient(0deg, transparent 0px, transparent 38px, rgba(34, 139, 34, 0.035) 39px);
+  mask-image: radial-gradient(ellipse at center, black 0%, rgba(0,0,0,.6) 45%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 0%, rgba(0,0,0,.6) 45%, transparent 75%);
+}
 .hero h1{font-weight:470;font-size:clamp(46px,5.6vw,80px);line-height:.98;letter-spacing:-.03em;margin:36px 0 26px;max-width:640px}
 .hero h1:after{content:"";display:inline-block;width:12px;height:12px;margin:0 0 12px 10px;border-radius:50%;background:var(--green);box-shadow:0 0 0 8px rgba(10,174,104,.1);animation:pulse 2.8s ease-in-out infinite}
 .hero-copy>p{font-size:18px;line-height:1.6;color:var(--muted);max-width:520px;margin:0 0 34px}
@@ -366,4 +435,26 @@ footer{width:min(var(--maxw),calc(100% - 56px));margin:40px auto 0;padding:0 0 4
 @media(prefers-reduced-motion:reduce){
   *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
   .reveal{opacity:1;transform:none}
+}
+
+/* =========================================================
+   FLOATING CODE SYMBOLS
+   ========================================================= */
+.code-background{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.code-float{position:absolute;font-family:"SFMono-Regular","Cascadia Code","Roboto Mono",Consolas,monospace;font-weight:500;letter-spacing:.04em;color:rgba(34,139,34,.11);user-select:none;animation:code-float-move 8s ease-in-out infinite alternate}
+.code-float:nth-child(2n){color:rgba(23,107,26,.075)}
+.code-float:nth-child(3n){color:rgba(200,155,60,.07)}
+@keyframes code-float-move{
+  0%{transform:translate3d(0,0,0);opacity:.45}
+  50%{opacity:.85}
+  100%{transform:translate3d(12px,-18px,0);opacity:.55}
+}
+@media(max-width:768px){
+  body:after{font-size:11px;line-height:8;opacity:.65}
+  .code-background{opacity:.55}
+  .code-float{font-size:10px!important}
+  .code-float:nth-child(n+6){display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  body:after,.code-float{animation:none!important}
 }
