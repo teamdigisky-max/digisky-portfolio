@@ -100,6 +100,18 @@ function InstagramIcon() {
   </svg>;
 }
 
+function LinkedInIcon() {
+  return <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M6.4 8.1H3.2V20h3.2V8.1ZM4.8 3A1.9 1.9 0 1 0 4.8 6.8 1.9 1.9 0 0 0 4.8 3ZM20.8 13.2c0-3.6-1.9-5.3-4.5-5.3-2.1 0-3 .9-3.5 1.6V8.1H9.6V20h3.2v-5.9c0-1.6.3-3.2 2.3-3.2 2 0 2 1.9 2 3.3V20h3.2l.5-6.8Z"/>
+  </svg>;
+}
+
+function GitHubIcon() {
+  return <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M12 2.5a9.6 9.6 0 0 0-3 18.72c.48.09.65-.2.65-.46v-1.7c-2.65.58-3.21-1.13-3.21-1.13-.43-1.1-1.06-1.4-1.06-1.4-.87-.6.07-.59.07-.59.96.07 1.47.99 1.47.99.86 1.47 2.26 1.05 2.81.8.09-.62.34-1.05.61-1.29-2.12-.24-4.35-1.06-4.35-4.72 0-1.04.37-1.9.98-2.57-.1-.24-.42-1.22.09-2.54 0 0 .8-.26 2.63.98A9.2 9.2 0 0 1 12 7.27c.8 0 1.61.11 2.36.32 1.83-1.24 2.63-.98 2.63-.98.51 1.32.19 2.3.09 2.54.61.67.98 1.53.98 2.57 0 3.67-2.24 4.47-4.37 4.71.35.3.65.87.65 1.76v2.61c0 .26.17.56.66.46A9.6 9.6 0 0 0 12 2.5Z"/>
+  </svg>;
+}
+
 function CodeBackground() {
   const snippets = [
     { text: "</>", x: "7%", y: "16%", size: "22px", delay: "0s" },
@@ -515,7 +527,7 @@ function App() {
   }, []);
   useEffect(()=>{
     document.documentElement.style.scrollBehavior="smooth";
-    const revealItems = document.querySelectorAll(".hero-copy, .hero-showcase, .stats-strip, .section-top, .featured-copy, .featured-art, .services-heading, .pricing-grid, .about-grid, .final-cta, .footer-top, .shopify-heading, .shopify-stage, .shopify-list button");
+    const revealItems = document.querySelectorAll(".hero-copy, .hero-showcase, .stats-strip, .section-top, .featured-copy, .featured-art, .services-heading, .pricing-grid, .about-grid, .final-cta, .footer-panel, .footer-nav, .footer-divider, .footer-message, .footer-socials, .shopify-heading, .shopify-stage, .shopify-list button");
     revealItems.forEach((item, index) => {
       item.classList.add("reveal");
       item.style.setProperty("--reveal-delay", `${Math.min(index * 45, 360)}ms`);
@@ -624,21 +636,37 @@ function App() {
         </section>
       </main>
 
-      <footer>
-        <div className="footer-termbar"><span className="term-dots" aria-hidden="true"><i/><i/><i/></span><span>footer.js</span></div>
-        <div className="footer-top">
-          <div className="footer-brand">
-            <a className="brand" href="#top"><img src="/logo.png" alt="DigiSky logo"/><span>{data.brand.name}</span></a>
-            <p>Digital experiences that drive growth — Shopify, WordPress and custom websites.</p>
-            <div className="footer-social">
-              {data.brand.instagram && <a className="icon-link" href={data.brand.instagram} target="_blank" rel="noreferrer" aria-label="DigiSky on Instagram"><InstagramIcon/></a>}
+      <footer className="footer-shell">
+        <div className="footer-panel">
+          <div className="footer-nav">
+            <div className="footer-brand">
+              <a className="footer-wordmark" href="#top"><img src="/logo.png" alt="DigiSky logo"/><span>{data.brand.name}</span></a>
+              <span className="footer-tagline">{data.brand.tagline}</span>
+            </div>
+            <div className="footer-nav-group"><small>MAIN</small><a href="#top">Home</a><a href="#about">About</a><a href="#services">Services</a><a href="#work">Portfolio</a><a href={`mailto:${data.brand.email}`}>Contact</a></div>
+            <div className="footer-nav-group"><small>SERVICES</small><a href="#shopify-expertise">Shopify Development</a><a href="#work">E-commerce Websites</a><a href="#services">WordPress &amp; WooCommerce</a><a href="#services">Website Redesign</a><a href="#work">Landing Pages</a></div>
+            <div className="footer-nav-group"><small>GROWTH</small><a href="#services">Digital Marketing</a><a href={`mailto:${data.brand.email}?subject=Meta%20Ads%20project`}>Meta Ads</a><a href={`mailto:${data.brand.email}?subject=Google%20Ads%20project`}>Google Ads</a><a href="#work">UGC &amp; Ad Creatives</a><a href="#about">Digital Strategy</a></div>
+            <div className="footer-nav-group"><small>COMPANY</small><a href="#about">About DigiSky</a><a href="#work">Our Work</a><a href={waLink(data.brand.whatsapp,"Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a Project</a><a href={`mailto:${data.brand.email}`}>Contact Us</a></div>
+          </div>
+          <div className="footer-divider" />
+          <div className="footer-message">
+            <div className="footer-message-copy">
+              <span className="footer-eyebrow">DIGITAL PARTNERS FOR MODERN BRANDS</span>
+              <h2>Step Up Your<br className="footer-break"/> Digital Presence</h2>
+              <p>From Shopify stores and e-commerce websites to high-converting websites and digital growth, DigiSky helps brands build a stronger presence online.</p>
+              <a className="footer-cta" href={waLink(data.brand.whatsapp,"Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a Project <Arrow/></a>
+            </div>
+            <div className="footer-socials">
+              <small>SOCIALS</small>
+              <div>
+                {data.brand.instagram && <a href={data.brand.instagram} target="_blank" rel="noreferrer" aria-label="DigiSky on Instagram"><InstagramIcon/><span>Instagram</span></a>}
+                {data.brand.linkedin && <a href={data.brand.linkedin} target="_blank" rel="noreferrer" aria-label="DigiSky on LinkedIn"><LinkedInIcon/><span>LinkedIn</span></a>}
+                {data.brand.github && <a href={data.brand.github} target="_blank" rel="noreferrer" aria-label="DigiSky on GitHub"><GitHubIcon/><span>GitHub</span></a>}
+              </div>
             </div>
           </div>
-          <div><small>NAVIGATION</small><a href="#work">Work</a><a href="#pricing">Pricing</a><a href="#about">About</a></div>
-          <div><small>SERVICES</small><span>Shopify Development</span><span>WordPress Development</span><span>Custom Websites</span></div>
-          <div><small>CONTACT</small><a href={waLink(data.brand.whatsapp,"Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">WhatsApp</a><a href={`mailto:${data.brand.email}`}>{data.brand.email}</a></div>
+          <div className="footer-bottom"><span>&copy; 2026 DigiSky. All rights reserved.</span><span>Built by DigiSky</span></div>
         </div>
-        <div className="footer-bottom"><span>&copy; {new Date().getFullYear()} DigiSky. All rights reserved.</span><span>Step up digitally.</span></div>
       </footer>
     </div>
   );
