@@ -18,6 +18,8 @@ Open `yourdomain.com/admin`.
 2. Open **SQL Editor** and run the contents of `supabase-schema.sql`.
 3. Commit and deploy the app with the commands below.
 
+The admin Projects tab supports direct image uploads. The schema creates the public `project-thumbnails` Storage bucket; uploaded images are limited to 5 MB and their public URL is saved with the project.
+
 The app keeps a local browser fallback if the database is temporarily unavailable. The current password gate is client-side only; use Supabase Auth and server-side policies before treating this as a security boundary for sensitive content.
 
 ## Run locally
@@ -34,4 +36,4 @@ If you're not sure how, the easiest path:
 2. Upload the contents of `dist/` to your existing host, or drag-and-drop the `dist` folder into Vercel's dashboard.
 
 ## Thumbnail note
-Live thumbnails use Thum.io's free screenshot service. If a screenshot fails to load, a local fallback image is used instead.
+Live thumbnails use Thum.io's free screenshot service unless a custom image is uploaded in the admin panel. If a screenshot fails to load, a local fallback image is used instead.

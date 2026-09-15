@@ -64,6 +64,23 @@ async function saveData(data) {
   if (error) throw error;
 }
 
+const THUMBNAIL_BUCKET = "project-thumbnails";
+
+async function uploadThumbnail(file, projectId) {
+  if (!file.type.startsWith("image/")) throw new Error("Please choose an image file.");
+  if (file.size > 5 * 1024 * 1024) throw new Error("Thumbnail images must be 5 MB or smaller.");
+  const filename = file.name.toLowerCase().replace(/[^a-z0-9.-]+/g, "-");
+  const path = `projects/${projectId}-${Date.now()}-${filename}`;
+  const { error } = await supabase.storage.from(THUMBNAIL_BUCKET).upload(path, file, {
+    cacheControl: "31536000",
+    contentType: file.type,
+    upsert: false,
+  });
+  if (error) throw error;
+  const { data } = supabase.storage.from(THUMBNAIL_BUCKET).getPublicUrl(path);
+  return data.publicUrl;
+}
+
 async function fetchRemoteData() {
   const { data, error } = await supabase
     .from("site_content")
@@ -372,6 +389,7 @@ function AdminGate({ onUnlock }) {
 function AdminPanel({ data, setData, onClose }) {
   const [draft, setDraft] = useState(JSON.parse(JSON.stringify(data)));
   const [tab, setTab] = useState("home");
+  const [uploadingIndex, setUploadingIndex] = useState(null);
 
   const update = (path, value) => {
     setDraft(prev => {
@@ -390,6 +408,17 @@ function AdminPanel({ data, setData, onClose }) {
       onClose();
     } catch (error) {
       window.alert(`Could not save to the live database: ${error.message}`);
+    }
+  };
+  const handleThumbnailUpload = async (index, file) => {
+    setUploadingIndex(index);
+    try {
+      const image = await uploadThumbnail(file, draft.projects[index].id || `project-${index}`);
+      update(["projects", index, "image"], image);
+    } catch (error) {
+      window.alert(`Could not upload thumbnail: ${error.message}`);
+    } finally {
+      setUploadingIndex(null);
     }
   };
   const reset = async () => {
@@ -467,7 +496,7 @@ function AdminPanel({ data, setData, onClose }) {
         </>}
         {tab==="projects" && <div className="admin-projects">
           <div className="projects-admin-top">
-            <p className="admin-help">All portfolio projects are shown on the website. Website links open in a new tab. Thumbnails are generated automatically from each website; you can still replace a thumbnail with your own image URL.</p>
+            <p className="admin-help">All portfolio projects are shown on the website. Website links open in a new tab. Thumbnails are generated automatically from each website; upload a custom image when needed.</p>
             <button className="add-project" onClick={()=>setDraft(prev=>({...prev,projects:[...prev.projects,{id:Date.now(),name:"New Project",category:"Shopify Stores",industry:"E-commerce",platform:"Shopify",description:"Add your project description here.",image:"",url:""}]}))}>+ Add project</button>
           </div>
           {draft.projects.map((p,i)=><div className="admin-project" key={p.id}>
@@ -477,7 +506,13 @@ function AdminPanel({ data, setData, onClose }) {
             <input placeholder="Industry" value={p.industry} onChange={e=>update(["projects",i,"industry"],e.target.value)}/>
             <input placeholder="Platform" value={p.platform} onChange={e=>update(["projects",i,"platform"],e.target.value)}/>
             <input placeholder="Website URL (https://...)" value={p.url || ""} onChange={e=>update(["projects",i,"url"],e.target.value)}/>
-            <input placeholder="Custom thumbnail URL (optional)" value={p.image} onChange={e=>update(["projects",i,"image"],e.target.value)}/>
+            <div className="thumbnail-upload">
+              <label className="thumbnail-upload-button">
+                {uploadingIndex === i ? "Uploading..." : "Upload thumbnail"}
+                <input type="file" accept="image/*" disabled={uploadingIndex !== null} onChange={e=>{const file=e.target.files?.[0]; if(file) handleThumbnailUpload(i,file); e.target.value="";}} />
+              </label>
+              {p.image && <a className="thumbnail-preview" href={p.image} target="_blank" rel="noreferrer"><img src={p.image} alt="Current thumbnail" /> <span>View current image</span></a>}
+            </div>
             <textarea placeholder="Description" value={p.description} onChange={e=>update(["projects",i,"description"],e.target.value)}/>
           </div>)}
         </div>}
