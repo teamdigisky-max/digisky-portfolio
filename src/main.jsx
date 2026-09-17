@@ -340,10 +340,10 @@ function ProjectCard({ project, index }) {
   const generatedThumb = usableImage && String(usableImage).includes("data:image/svg+xml") ? usableImage : makeThumb(project, index);
   const thumbnail = usableImage || generatedThumb || fallback;
   const projectCategoryName = projectCategory(project);
+  const image = <img src={thumbnail} alt={`${project.name} project thumbnail`} loading={index < 12 ? "eager" : "lazy"} fetchPriority={index < 6 ? "high" : "auto"} decoding="async" onError={(e)=>{ if(e.currentTarget.dataset.fallback) return; e.currentTarget.dataset.fallback="1"; e.currentTarget.src=fallback; }} />;
   const card = <article className="project-card">
     <div className="project-media">
-      <img src={thumbnail} alt={`${project.name} project thumbnail`} loading={index < 12 ? "eager" : "lazy"} fetchPriority={index < 6 ? "high" : "auto"} decoding="async" onError={(e)=>{ if(e.currentTarget.dataset.fallback) return; e.currentTarget.dataset.fallback="1"; e.currentTarget.src=fallback; }} />
-      <div className="project-overlay"><span>{hasUrl ? "View live website" : "Website link not added"}</span><Arrow/></div>
+      {hasUrl ? <a className="project-media-link" href={project.url.trim()} target="_blank" rel="noopener noreferrer" aria-label={`View live preview of ${project.name}`}>{image}<span className="project-overlay"><span>View live preview</span></span></a> : <>{image}<div className="project-overlay"><span>Website link not added</span></div></>}
     </div>
     <div className="project-meta">
       <div className="project-copy">
@@ -354,12 +354,12 @@ function ProjectCard({ project, index }) {
         <h3>{project.name}</h3>
         <p>{project.description || project.industry || "Digital experience designed for growth."}</p>
       </div>
-      <a className="project-cta" href={hasUrl ? project.url.trim() : undefined} target={hasUrl ? "_blank" : undefined} rel={hasUrl ? "noopener noreferrer" : undefined} aria-label={`Open ${project.name} website`}>
-        View Project <Arrow/>
+      <a className="project-cta" href={hasUrl ? project.url.trim() : undefined} target={hasUrl ? "_blank" : undefined} rel={hasUrl ? "noopener noreferrer" : undefined} aria-label={`View live preview of ${project.name}`}>
+        {hasUrl ? "View live preview" : "Preview unavailable"} <Arrow/>
       </a>
     </div>
   </article>;
-  return hasUrl ? <a className="project-link" href={project.url.trim()} target="_blank" rel="noopener noreferrer" aria-label={`Open ${project.name} website`}>{card}</a> : card;
+  return card;
 }
 
 function Pricing({ data }) {
