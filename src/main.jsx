@@ -7,8 +7,8 @@ const ADMIN_PASSWORD = "digisky2026";
 
 const DEFAULT_DATA = {
   brand: { name: "DigiSky", tagline: "Step Up Digitally", email: "team.digisky@gmail.com", whatsapp: "", instagram: "https://www.instagram.com/digisky.world/" },
-  hero: { kicker: "Shopify & WordPress studio", titleA: "Websites", titleB: "built to", titleC: "sell.", description: "DigiSky designs and builds high-converting Shopify, WordPress and custom stores for ambitious Indian and global brands — 34 launched and counting." },
-  stats: [["34+", "Stores launched"], ["Shopify", "& WordPress"], ["7,500", "Starting price (INR)"], ["India + Global", "Clients served"]],
+  hero: { kicker: "DIGITAL MARKETING & WEB DEVELOPMENT AGENCY", titleA: "Digital Solutions", titleB: "That Drive", titleC: "Growth", description: "We design modern websites, create high-converting e-commerce experiences, and help brands grow with strategy, creativity, and measurable execution." },
+  stats: [["31+", "Projects Delivered"], ["20+", "Happy Clients"], ["4.9/5", "Client Satisfaction"], ["2x", "Average Growth"]],
   pricing: { title: "Shopify Website", price: "\u20B97,500", description: "A polished Shopify storefront designed, configured and made ready to launch — without needing a premium theme.", features: ["Custom homepage design", "Mobile responsive layout", "Product & collection setup", "Navigation, pages & basic policies", "Payment / shipping setup assistance", "Basic SEO structure", "Launch-ready testing"] },
   projects: [{"id": 1, "name": "Aaysa", "industry": "E-commerce", "platform": "Shopify", "description": "E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://aaysa.store", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://aaysa.store"}, {"id": 2, "name": "Bonglooms", "industry": "Textiles & Fashion", "platform": "Shopify", "description": "Textiles & Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://bonglooms.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://bonglooms.com"}, {"id": 3, "name": "Tattva Elixir", "industry": "Beauty & Wellness", "platform": "Shopify", "description": "Beauty & Wellness website designed for a polished, conversion-focused digital experience.", "url": "https://www.tattvaelixir.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.tattvaelixir.com"}, {"id": 4, "name": "Miraza", "industry": "Fashion E-commerce", "platform": "Shopify", "description": "Fashion E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://miraza.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://miraza.in"}, {"id": 5, "name": "Popout Fashion", "industry": "Fashion Brand", "platform": "Shopify", "description": "Fashion Brand website designed for a polished, conversion-focused digital experience.", "url": "https://popoutfashion.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://popoutfashion.com"}, {"id": 6, "name": "Presquo", "industry": "Premium Brand", "platform": "Shopify", "description": "Premium Brand website designed for a polished, conversion-focused digital experience.", "url": "https://presquo.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://presquo.com"}, {"id": 7, "name": "Dr Aroras", "industry": "Healthcare", "platform": "Website Development", "description": "Healthcare website designed for a polished, conversion-focused digital experience.", "url": "https://www.draroras.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.draroras.com"}, {"id": 8, "name": "Tota Cart", "industry": "E-commerce", "platform": "E-commerce", "description": "E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://totacart.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://totacart.in"}, {"id": 9, "name": "Nitarya", "industry": "Fashion", "platform": "Shopify", "description": "Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://nitarya.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://nitarya.com"}, {"id": 10, "name": "Take A Chef", "industry": "Hospitality", "platform": "Website", "description": "Hospitality website designed for a polished, conversion-focused digital experience.", "url": "https://www.takeachef.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.takeachef.com"}, {"id": 11, "name": "Paivi", "industry": "Fashion", "platform": "Shopify", "description": "Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://www.paivi.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.paivi.in"}, {"id": 12, "name": "Maestra Jewellery", "industry": "Luxury Jewellery", "platform": "E-commerce", "description": "Luxury Jewellery website designed for a polished, conversion-focused digital experience.", "url": "https://maestrajewellery.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://maestrajewellery.com"}, {"id": 13, "name": "Equitia", "industry": "Lifestyle", "platform": "Shopify", "description": "Lifestyle website designed for a polished, conversion-focused digital experience.", "url": "https://www.equitia.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.equitia.in"}, {"id": 14, "name": "The House of Eraya", "industry": "Fashion", "platform": "Shopify", "description": "Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://www.thehouseoferaya.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.thehouseoferaya.in"}, {"id": 15, "name": "The Green Ritual", "industry": "Wellness", "platform": "Shopify", "description": "Wellness website designed for a polished, conversion-focused digital experience.", "url": "https://thegreenritual.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://thegreenritual.com"}, {"id": 16, "name": "Krinks", "industry": "Fashion", "platform": "Shopify", "description": "Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://krinks.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://krinks.in"}, {"id": 17, "name": "Acharima Delights", "industry": "Food & Delights", "platform": "E-commerce", "description": "Food & Delights website designed for a polished, conversion-focused digital experience.", "url": "https://acharimaadelights.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://acharimaadelights.com"}, {"id": 18, "name": "RP Paris", "industry": "Luxury Fashion", "platform": "Shopify", "description": "Luxury Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://www.rpparis.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.rpparis.com"}, {"id": 19, "name": "Munchlet", "industry": "Food & Beverage", "platform": "E-commerce", "description": "Food & Beverage website designed for a polished, conversion-focused digital experience.", "url": "https://www.munchlet.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.munchlet.com"}, {"id": 20, "name": "Inkwalkers", "industry": "Art & Creative", "platform": "Website", "description": "Art & Creative website designed for a polished, conversion-focused digital experience.", "url": "https://inkwalkers.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://inkwalkers.com"}, {"id": 21, "name": "Tiara Skin", "industry": "Skincare", "platform": "Shopify", "description": "Skincare website designed for a polished, conversion-focused digital experience.", "url": "https://tiara.skin", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://tiara.skin"}, {"id": 22, "name": "The Premium Basket", "industry": "Premium E-commerce", "platform": "Shopify", "description": "Premium E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://thepremiumbasket.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://thepremiumbasket.com"}, {"id": 23, "name": "Haus of Jawhar", "industry": "Luxury Fashion", "platform": "Shopify", "description": "Luxury Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://hausofjawhar.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://hausofjawhar.com"}, {"id": 24, "name": "Pancha Bhootani", "industry": "Wellness", "platform": "Shopify", "description": "Wellness website designed for a polished, conversion-focused digital experience.", "url": "https://panchabhootani.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://panchabhootani.com"}, {"id": 25, "name": "Bevy Good", "industry": "Lifestyle", "platform": "Shopify", "description": "Lifestyle website designed for a polished, conversion-focused digital experience.", "url": "https://www.bevygood.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.bevygood.com"}, {"id": 26, "name": "Innocent Fresh", "industry": "Food & Beverage", "platform": "E-commerce", "description": "Food & Beverage website designed for a polished, conversion-focused digital experience.", "url": "https://www.innocentfresh.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.innocentfresh.com"}, {"id": 27, "name": "Rare Blanc", "industry": "Premium Brand", "platform": "Shopify", "description": "Premium Brand website designed for a polished, conversion-focused digital experience.", "url": "https://www.rareblanc.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.rareblanc.com"}, {"id": 28, "name": "Uzvieco Store", "industry": "Lifestyle", "platform": "Shopify", "description": "Lifestyle website designed for a polished, conversion-focused digital experience.", "url": "https://uzviecostore.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://uzviecostore.com"}, {"id": 29, "name": "Alpino Super One", "industry": "Sports & Wellness", "platform": "Shopify", "description": "Sports & Wellness website designed for a polished, conversion-focused digital experience.", "url": "https://alpinosuperone.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://alpinosuperone.com"}, {"id": 30, "name": "The Skin Depth", "industry": "Skincare", "platform": "Shopify", "description": "Skincare website designed for a polished, conversion-focused digital experience.", "url": "https://www.theskindepth.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.theskindepth.com"}, {"id": 31, "name": "Guapha", "industry": "E-commerce", "platform": "E-commerce", "description": "E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://www.guapha.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.guapha.com"}, {"id": 32, "name": "Swasth Setu", "industry": "Healthcare", "platform": "Website", "description": "Healthcare website designed for a polished, conversion-focused digital experience.", "url": "https://swasthsetu.co.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://swasthsetu.co.in"}, {"id": 33, "name": "Drinkyasu", "industry": "Beverage", "platform": "Shopify", "description": "Beverage website designed for a polished, conversion-focused digital experience.", "url": "https://drinkyasu.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://drinkyasu.com"}, {"id": 34, "name": "Planto Store", "industry": "Plant Store", "platform": "Shopify", "description": "Plant Store website designed for a polished, conversion-focused digital experience.", "url": "https://www.plantostore.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.plantostore.com"}],
   categories: ["All", "Shopify Stores", "Fashion", "Beauty", "Healthcare", "Food"],
@@ -219,11 +219,11 @@ function Header({ data }) {
           <span>{data.brand.name}</span>
         </a>
         <nav className={menuOpen ? "open" : ""}>
-          <button onClick={()=>navigate("work")}>Work</button>
+          <button onClick={()=>navigate("top")}>Home</button>
           <button onClick={()=>navigate("services")}>Services</button>
+          <button onClick={()=>navigate("work")}>Work</button>
           <button onClick={()=>navigate("about")}>About</button>
-          <button onClick={()=>navigate("testimonials")}>Testimonials</button>
-          <button onClick={()=>navigate("journal")}>Journal</button>
+          <button onClick={()=>navigate("contact")}>Contact</button>
           <a className="mobile-nav-cta" href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a project <Arrow/></a>
         </nav>
         <div className="header-actions">
@@ -604,17 +604,17 @@ function App() {
         ? <AdminPanel data={data} setData={setData} onClose={closeAdmin}/>
         : <AdminGate onUnlock={()=>setUnlocked(true)}/>
       )}
-      <main>
+      <main id="top">
         <section className="hero section">
           <div className="hero-copy">
-            <span className="hero-kicker">✦ Shopify &amp; e-commerce specialists</span>
-            <h1>{data.hero.titleA} {data.hero.titleB}<br/>{data.hero.titleC}</h1>
+            <span className="hero-kicker">✦ {data.hero.kicker}</span>
+            <h1>{data.hero.titleA}<br/>{data.hero.titleB}<br/>{data.hero.titleC}</h1>
             <p>{data.hero.description}</p>
             <div className="hero-actions">
               <a className="pill-button" href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a project</a>
               <button className="text-link" onClick={()=>document.getElementById("work")?.scrollIntoView({behavior:"smooth"})}>View our work</button>
             </div>
-            <div className="hero-trust"><span>✓ Shopify specialists</span><span>✓ Custom store development</span><span>✓ Conversion-focused design</span></div>
+            <div className="hero-trust"><span>✓ Website development</span><span>✓ Shopify &amp; e-commerce</span><span>✓ Conversion-focused marketing</span></div>
           </div>
           <div className="hero-visual"><HeroShowcase projects={projects}/></div>
         </section>
@@ -628,8 +628,11 @@ function App() {
 
         <section id="work" className="section work-section">
           <div className="section-top">
-            <h2>Stores we've<br/>shipped.</h2>
-            <span className="project-count">{filteredProjects.length} of {projects.length} projects</span>
+            <div>
+              <span className="tag-chip">Featured work</span>
+              <h2>Our Latest Projects</h2>
+            </div>
+            <a className="text-link" href="#contact">View all projects</a>
           </div>
           <div className="project-filters" role="group" aria-label="Filter projects by category">{data.categories.map(filter=><button key={filter} className={effectiveFilter === filter ? "active" : ""} onClick={()=>setActiveFilter(filter)}>{filter}</button>)}</div>
           <div className="projects-grid">{filteredProjects.map((p,i)=><ProjectCard project={p} index={i} key={`${p.id || "project"}-${p.name}-${i}`}/>)}</div>
@@ -639,7 +642,7 @@ function App() {
           <div className="featured-copy">
             <h2>{data.featured.title}</h2>
             <p>{data.featured.description}</p>
-            <a className="text-link" href="#work">Explore the work</a>
+            <a className="text-link" href="#work">View all projects</a>
           </div>
           <div className="featured-art">
             <p className="fa-quote">{data.featured.quoteBefore} <span>{data.featured.quoteHighlight}</span> {data.featured.quoteAfter}</p>
@@ -648,7 +651,7 @@ function App() {
         </section>
 
         <section id="services" className="services-section section">
-          <div className="services-intro"><div><span className="tag-chip">Capabilities</span><h2 className="services-heading">What we do.</h2></div><p>Digital foundations for brands that want to look sharper, move faster and sell with more confidence.</p></div>
+          <div className="services-intro"><div><span className="tag-chip">Our services</span><h2 className="services-heading">Everything you need to grow online</h2></div><p>From stunning websites to results-driven marketing, we build digital experiences that help your brand convert and scale.</p></div>
           <div className="services-list">{data.services.map((s,i)=><div className={`service-row ${i === 0 ? "service-featured" : ""}`} key={i}><span className="service-number">{String(i + 1).padStart(2,"0")}</span><div className="service-copy"><h3>{s[0]}</h3><p>{s[1]}</p></div><b>&#8599;</b></div>)}</div>
         </section>
 
@@ -663,11 +666,11 @@ function App() {
         <Testimonials data={data}/>
         <Journal data={data}/>
 
-        <section className="final-cta section">
-          <span className="tag-chip">Start a conversation</span>
-          <h2>{data.cta.title}<br/>{data.cta.text}</h2>
+        <section id="contact" className="final-cta section">
+          <span className="tag-chip">Let’s build together</span>
+          <h2>Ready to grow your brand online?</h2>
+          <p>Let’s create a powerful digital presence for your business.</p>
           <a className="pill-button light" href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">{data.cta.button}</a>
-          <p>{data.brand.email}</p>
         </section>
       </main>
 
