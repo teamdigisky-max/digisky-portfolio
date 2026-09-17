@@ -336,8 +336,9 @@ function makeThumb(project, index) {
 function ProjectCard({ project, index }) {
   const hasUrl = typeof project.url === "string" && /^https?:\/\//i.test(project.url.trim());
   const fallback = `/thumbnails/${(index % 34) + 1}.svg`;
-  const generatedThumb = project.image && String(project.image).includes("data:image/svg+xml") ? project.image : makeThumb(project, index);
-  const thumbnail = project.image || generatedThumb || fallback;
+  const usableImage = project.image && !/thum\.io/i.test(String(project.image)) ? project.image : "";
+  const generatedThumb = usableImage && String(usableImage).includes("data:image/svg+xml") ? usableImage : makeThumb(project, index);
+  const thumbnail = usableImage || generatedThumb || fallback;
   const projectCategoryName = projectCategory(project);
   const card = <article className="project-card">
     <div className="project-media">
@@ -606,7 +607,18 @@ function App() {
     let active = true;
     fetchRemoteData()
       .then(remote => {
-        if (active && remote) setData(prev => ({ ...prev, ...remote, categories: (Array.isArray(remote.categories) && remote.categories.length ? remote.categories : prev.categories).filter(category => category !== "E-commerce") }));
+        if (active && remote) {
+          const remoteProjects = Array.isArray(remote.projects) ? remote.projects.map((project, index) => ({
+            ...project,
+            image: project.image && !/thum\.io/i.test(String(project.image)) ? project.image : makeThumb(project, index),
+          })) : undefined;
+          setData(prev => ({
+            ...prev,
+            ...remote,
+            ...(remoteProjects ? { projects: remoteProjects } : {}),
+            categories: (Array.isArray(remote.categories) && remote.categories.length ? remote.categories : prev.categories).filter(category => category !== "E-commerce"),
+          }));
+        }
       })
       .catch(error => console.warn("Remote content unavailable; using local content.", error.message));
     return () => { active = false; };
@@ -676,7 +688,7 @@ function App() {
               <span className="tag-chip">Featured work</span>
               <h2>Our Latest Projects</h2>
             </div>
-            <a className="text-link" href="#contact">View all projects</a>
+            <a className="text-link" href="#work">View all projects</a>
           </div>
           <div className="project-filters" role="group" aria-label="Filter projects by category">{data.categories.map(filter=><button key={filter} className={effectiveFilter === filter ? "active" : ""} onClick={()=>setActiveFilter(filter)}>{filter}</button>)}</div>
           <div className="projects-grid">{filteredProjects.map((p,i)=><ProjectCard project={p} index={i} key={`${p.id || "project"}-${p.name}-${i}`}/>)}</div>
