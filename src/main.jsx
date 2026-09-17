@@ -41,12 +41,17 @@ function loadData() {
     };
     const savedProjects = Array.isArray(saved.projects) ? saved.projects : [];
     const byName = new Map(savedProjects.map(p => [String(p.name || "").trim().toLowerCase(), p]));
-    const mappedDefaults = DEFAULT_DATA.projects.map((p) => {
+    const mappedDefaults = DEFAULT_DATA.projects.map((p, index) => {
       const old = byName.get(p.name.toLowerCase());
-      return { ...p, ...(old || {}), url: p.url, image: p.image, id: old?.id ?? p.id };
+      const safeProject = { ...p, ...(old || {}), url: p.url, image: p.image, id: old?.id ?? p.id };
+      const cleanedImage = safeProject.image && String(safeProject.image).includes("thum.io") ? makeThumb(safeProject, index) : safeProject.image || makeThumb(safeProject, index);
+      return { ...safeProject, image: cleanedImage };
     });
     const defaultNames = new Set(DEFAULT_DATA.projects.map(p => p.name.toLowerCase()));
-    const custom = savedProjects.filter(p => !defaultNames.has(String(p.name || "").trim().toLowerCase()));
+    const custom = savedProjects.filter(p => !defaultNames.has(String(p.name || "").trim().toLowerCase())).map((p, index) => ({
+      ...p,
+      image: p.image && String(p.image).includes("thum.io") ? makeThumb(p, index + DEFAULT_DATA.projects.length) : p.image || makeThumb(p, index + DEFAULT_DATA.projects.length),
+    }));
     merged.projects = [...mappedDefaults, ...custom];
     return merged;
   } catch {
@@ -325,8 +330,8 @@ function makeThumb(project, index) {
 function ProjectCard({ project, index }) {
   const hasUrl = typeof project.url === "string" && /^https?:\/\//i.test(project.url.trim());
   const fallback = `/thumbnails/${(index % 34) + 1}.svg`;
-  const remoteThumb = hasUrl ? `https://image.thum.io/get/width/1200/crop/760/noanimate/${project.url.trim()}` : "";
-  const thumbnail = project.image || remoteThumb || fallback;
+  const generatedThumb = project.image && String(project.image).includes("data:image/svg+xml") ? project.image : makeThumb(project, index);
+  const thumbnail = project.image || generatedThumb || fallback;
   const card = <article className="project-card">
     <div className="project-media">
       <img src={thumbnail} alt={`${project.name} project thumbnail`} loading={index < 12 ? "eager" : "lazy"} fetchPriority={index < 6 ? "high" : "auto"} decoding="async" onError={(e)=>{ if(e.currentTarget.dataset.fallback) return; e.currentTarget.dataset.fallback="1"; e.currentTarget.src=fallback; }} />
