@@ -484,7 +484,7 @@ function AdminPanel({ data, setData, onClose }) {
 
   return (
     <aside className="admin-panel">
-      <div className="admin-head"><div><small>DIGISKY</small><h2>Content Studio</h2></div><button onClick={onClose}>&times;</button></div>
+      <div className="admin-head"><div><small>DIGISKY / ADMIN</small><h2>Content Studio</h2><p>Edit the pages, portfolio and contact details that power your website.</p></div><div className="admin-head-tools"><span><i/> Live workspace</span><button onClick={onClose} aria-label="Close content studio">&times;</button></div></div>
       <div className="admin-tabs">
         {["home","pricing","projects","services","categories","contact"].map(t=><button className={tab===t?"active":""} key={t} onClick={()=>setTab(t)}>{t}</button>)}
       </div>
