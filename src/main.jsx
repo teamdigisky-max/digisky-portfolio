@@ -303,11 +303,19 @@ function HeroShowcase({ projects, heroImages = [] }) {
   const imageA = heroImages[0] || a?.image;
   const imageB = heroImages[1] || b?.image;
   const imageC = heroImages[2] || c?.image;
+  const heroImage = (source, project, index) => {
+    const fallback = makeThumb(project || { name: `Hero image ${index + 1}` }, index);
+    return <img src={source || fallback} alt="" loading="eager" onError={event => {
+      if (event.currentTarget.dataset.fallback) return;
+      event.currentTarget.dataset.fallback = "1";
+      event.currentTarget.src = fallback;
+    }} />;
+  };
   return (
     <div className="hero-showcase" ref={showcaseRef} onPointerMove={move} onPointerLeave={reset} aria-hidden="true">
-      {imageC && <div className="hs-card hs-c"><img src={imageC} alt="" loading="eager"/><span className="hs-tag">{c?.name || "Hero image 3"}</span></div>}
-      {imageA && <div className="hs-card hs-a"><img src={imageA} alt="" loading="eager"/><span className="hs-tag">{a?.name || "Hero image 1"}</span></div>}
-      {imageB && <div className="hs-card hs-b"><img src={imageB} alt="" loading="eager"/><span className="hs-tag">{b?.name || "Hero image 2"}</span></div>}
+      <div className="hs-card hs-c">{heroImage(imageC, c, 2)}<span className="hs-tag">{c?.name || "Hero image 3"}</span></div>
+      <div className="hs-card hs-a">{heroImage(imageA, a, 0)}<span className="hs-tag">{a?.name || "Hero image 1"}</span></div>
+      <div className="hs-card hs-b">{heroImage(imageB, b, 1)}<span className="hs-tag">{b?.name || "Hero image 2"}</span></div>
       <div className="hs-badge"><strong>34+</strong>stores designed<br/>&amp; shipped</div>
     </div>
   );
@@ -335,12 +343,11 @@ function makeThumb(project, index) {
 
 function ProjectCard({ project, index }) {
   const hasUrl = typeof project.url === "string" && /^https?:\/\//i.test(project.url.trim());
-  const fallback = `/thumbnails/${(index % 34) + 1}.svg`;
   const usableImage = project.image && !/thum\.io/i.test(String(project.image)) ? project.image : "";
-  const generatedThumb = usableImage && String(usableImage).includes("data:image/svg+xml") ? usableImage : makeThumb(project, index);
-  const thumbnail = usableImage || generatedThumb || fallback;
+  const generatedThumb = makeThumb(project, index);
+  const thumbnail = usableImage || generatedThumb;
   const projectCategoryName = projectCategory(project);
-  const image = <img src={thumbnail} alt={`${project.name} project thumbnail`} loading={index < 12 ? "eager" : "lazy"} fetchPriority={index < 6 ? "high" : "auto"} decoding="async" onError={(e)=>{ if(e.currentTarget.dataset.fallback) return; e.currentTarget.dataset.fallback="1"; e.currentTarget.src=fallback; }} />;
+  const image = <img src={thumbnail} alt={`${project.name} project thumbnail`} loading={index < 12 ? "eager" : "lazy"} fetchPriority={index < 6 ? "high" : "auto"} decoding="async" onError={(e)=>{ if(e.currentTarget.dataset.fallback) return; e.currentTarget.dataset.fallback="1"; e.currentTarget.src=generatedThumb; }} />;
   const card = <article className="project-card">
     <div className="project-media">
       {hasUrl ? <a className="project-media-link" href={project.url.trim()} target="_blank" rel="noopener noreferrer" aria-label={`View live preview of ${project.name}`}>{image}<span className="project-overlay"><span>View live preview</span></span></a> : <>{image}<div className="project-overlay"><span>Website link not added</span></div></>}
