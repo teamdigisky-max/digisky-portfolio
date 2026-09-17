@@ -305,7 +305,8 @@ function HeroShowcase({ projects, heroImages = [] }) {
   const imageC = heroImages[2] || c?.image;
   const heroImage = (source, project, index) => {
     const fallback = makeThumb(project || { name: `Hero image ${index + 1}` }, index);
-    return <img src={source || fallback} alt="" loading="eager" onError={event => {
+    const usableSource = source && !/thum\.io/i.test(String(source)) ? source : "";
+    return <img src={usableSource || fallback} alt="" loading="eager" onError={event => {
       if (event.currentTarget.dataset.fallback) return;
       event.currentTarget.dataset.fallback = "1";
       event.currentTarget.src = fallback;
@@ -515,7 +516,7 @@ function AdminPanel({ data, setData, onClose }) {
                 </label>
                 {image && <button type="button" className="delete-feature" onClick={()=>update(["hero","images",index],"")}>Remove</button>}
               </div>
-              {image && <a className="thumbnail-preview" href={image} target="_blank" rel="noreferrer"><img src={image} alt={`Current hero image ${index + 1}`} /> <span>View image</span></a>}
+                <a className="thumbnail-preview" href={image || makeThumb({ name: `Hero image ${index + 1}` }, index)} target="_blank" rel="noreferrer"><img src={image || makeThumb({ name: `Hero image ${index + 1}` }, index)} alt={`${image ? "Custom" : "Automatic"} hero image ${index + 1}`} /> <span>{image ? "View custom image" : "Automatic preview"}</span></a>
             </div>)}
           </div>
           <div className="admin-subtitle">Stats strip</div>
@@ -570,7 +571,7 @@ function AdminPanel({ data, setData, onClose }) {
                 {uploadingIndex === i ? "Uploading..." : "Upload thumbnail"}
                 <input type="file" accept="image/*" disabled={uploadingIndex !== null} onChange={e=>{const file=e.target.files?.[0]; if(file) handleThumbnailUpload(i,file); e.target.value="";}} />
               </label>
-              {p.image && <a className="thumbnail-preview" href={p.image} target="_blank" rel="noreferrer"><img src={p.image} alt="Current thumbnail" /> <span>View current image</span></a>}
+              <a className="thumbnail-preview" href={p.image && !/thum\.io/i.test(String(p.image)) ? p.image : makeThumb(p, i)} target="_blank" rel="noreferrer"><img src={p.image && !/thum\.io/i.test(String(p.image)) ? p.image : makeThumb(p, i)} alt="Automatic or custom thumbnail" /> <span>{p.image && !/thum\.io/i.test(String(p.image)) ? "View custom image" : "Automatic preview"}</span></a>
             </div>
             <textarea placeholder="Description" value={p.description} onChange={e=>update(["projects",i,"description"],e.target.value)}/>
           </div>)}
