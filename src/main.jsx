@@ -342,13 +342,22 @@ function makeThumb(project, index) {
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
 
+function microlinkThumb(url) {
+  return `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url`;
+}
+
 function ProjectCard({ project, index }) {
   const hasUrl = typeof project.url === "string" && /^https?:\/\//i.test(project.url.trim());
-  const usableImage = project.image || "";
+  const thumIoUrl = project.image || "";
+  const microlinkUrl = hasUrl ? microlinkThumb(project.url.trim()) : "";
   const generatedThumb = makeThumb(project, index);
-  const thumbnail = usableImage || generatedThumb;
+  const thumbnail = microlinkUrl || thumIoUrl || generatedThumb;
   const projectCategoryName = projectCategory(project);
-  const image = <img src={thumbnail} alt={`${project.name} project thumbnail`} loading={index < 12 ? "eager" : "lazy"} fetchPriority={index < 6 ? "high" : "auto"} decoding="async" onError={(e)=>{ if(e.currentTarget.dataset.fallback) return; e.currentTarget.dataset.fallback="1"; e.currentTarget.src=generatedThumb; }} />;
+  const image = <img src={thumbnail} alt={`${project.name} project thumbnail`} loading={index < 12 ? "eager" : "lazy"} fetchPriority={index < 6 ? "high" : "auto"} decoding="async" onError={(e)=>{
+    const stage = e.currentTarget.dataset.fallback || "0";
+    if (stage === "0" && thumIoUrl) { e.currentTarget.dataset.fallback = "1"; e.currentTarget.src = thumIoUrl; return; }
+    if (stage !== "2") { e.currentTarget.dataset.fallback = "2"; e.currentTarget.src = generatedThumb; }
+  }} />;
   const card = <article className="project-card">
     <div className="project-media">
       {hasUrl ? <a className="project-media-link" href={project.url.trim()} target="_blank" rel="noopener noreferrer" aria-label={`View live preview of ${project.name}`}>{image}<span className="project-overlay"><span>View live preview</span></span></a> : <>{image}<div className="project-overlay"><span>Website link not added</span></div></>}
