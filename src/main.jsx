@@ -116,6 +116,19 @@ function projectCategory(project) {
 
 function Arrow() { return null; }
 
+function LockIcon() {
+  return <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect x="5" y="10.5" width="14" height="10" rx="2.4" stroke="currentColor" strokeWidth="2"/>
+    <path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+  </svg>;
+}
+
+function CtaArrow() {
+  return <svg className="cta-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M5 19 19 5M19 5H9M19 5V15" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>;
+}
+
 function InstagramIcon() {
   return <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.8"/>
@@ -353,26 +366,35 @@ function ProjectCard({ project, index }) {
   const generatedThumb = makeThumb(project, index);
   const thumbnail = microlinkUrl || thumIoUrl || generatedThumb;
   const projectCategoryName = projectCategory(project);
+  const domain = hasUrl ? project.url.trim().replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/$/, "") : "preview unavailable";
   const image = <img src={thumbnail} alt={`${project.name} project thumbnail`} loading={index < 12 ? "eager" : "lazy"} fetchPriority={index < 6 ? "high" : "auto"} decoding="async" onError={(e)=>{
     const stage = e.currentTarget.dataset.fallback || "0";
     if (stage === "0" && thumIoUrl) { e.currentTarget.dataset.fallback = "1"; e.currentTarget.src = thumIoUrl; return; }
     if (stage !== "2") { e.currentTarget.dataset.fallback = "2"; e.currentTarget.src = generatedThumb; }
   }} />;
+  const frame = <div className="project-browser-frame">
+    <div className="browser-bar">
+      <div className="browser-dots"><i/><i/><i/></div>
+      <div className="browser-url"><LockIcon/><span>{domain}</span></div>
+    </div>
+    <div className="browser-viewport">{image}</div>
+  </div>;
   const card = <article className="project-card">
+    <span className="project-index">{String(index + 1).padStart(2, "0")}</span>
     <div className="project-media">
-      {hasUrl ? <a className="project-media-link" href={project.url.trim()} target="_blank" rel="noopener noreferrer" aria-label={`View live preview of ${project.name}`}>{image}<span className="project-overlay"><span>View live preview</span></span></a> : <>{image}<div className="project-overlay"><span>Website link not added</span></div></>}
+      {hasUrl ? <a className="project-media-link" href={project.url.trim()} target="_blank" rel="noopener noreferrer" aria-label={`View live preview of ${project.name}`}>{frame}<span className="project-overlay"><span>View live preview</span><CtaArrow/></span></a> : <>{frame}<div className="project-overlay"><span>Website link not added</span></div></>}
     </div>
     <div className="project-meta">
       <div className="project-copy">
         <div className="project-labels">
-          <span>{projectCategoryName}</span>
+          <span className="project-label-category"><i/>{projectCategoryName}</span>
           <span>{project.platform || "Website"}</span>
         </div>
         <h3>{project.name}</h3>
         <p>{project.description || project.industry || "Digital experience designed for growth."}</p>
       </div>
       <a className="project-cta" href={hasUrl ? project.url.trim() : undefined} target={hasUrl ? "_blank" : undefined} rel={hasUrl ? "noopener noreferrer" : undefined} aria-label={`View live preview of ${project.name}`}>
-        {hasUrl ? "View live preview" : "Preview unavailable"} <Arrow/>
+        <span>{hasUrl ? "View live preview" : "Preview unavailable"}</span> <CtaArrow/>
       </a>
     </div>
   </article>;
