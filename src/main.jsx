@@ -44,7 +44,7 @@ function loadData() {
     const byName = new Map(savedProjects.map(p => [String(p.name || "").trim().toLowerCase(), p]));
     const mappedDefaults = DEFAULT_DATA.projects.map((p, index) => {
       const old = byName.get(p.name.toLowerCase());
-      const safeProject = { ...p, ...(old || {}), url: p.url, image: p.image, id: old?.id ?? p.id };
+      const safeProject = { ...p, ...(old || {}), id: old?.id ?? p.id };
       const cleanedImage = safeProject.image || makeThumb(safeProject, index);
       return { ...safeProject, image: cleanedImage };
     });
@@ -855,4 +855,4 @@ function App() {
   );
 }
 
-createRoot(document.getElementById("root")).render(<App />)
+createRoot(document.getElementById("root")).render(<App />);
