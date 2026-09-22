@@ -129,6 +129,13 @@ function CtaArrow() {
   </svg>;
 }
 
+function CheckIcon() {
+  return <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" fill="currentColor" opacity=".12"/>
+    <path d="m7.5 12.5 3 3 6-6.5" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>;
+}
+
 function InstagramIcon() {
   return <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.8"/>
@@ -228,10 +235,24 @@ function AmbientCanvas() {
 
 function Header({ data }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [scrollPct, setScrollPct] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 12);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollPct(max > 0 ? Math.min(100, (window.scrollY / max) * 100) : 0);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
+  }, []);
   const go = id => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   const navigate = id => { go(id); setMenuOpen(false); };
   return (
-    <header className="site-header">
+    <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
+      <div className="scroll-progress-track"><div className="scroll-progress-bar" style={{ width: `${scrollPct}%` }} /></div>
       <div className="site-header-in">
         <a className="brand" href="#top" onClick={(e)=>{e.preventDefault(); go("top")}}>
           <span className="term-dots" aria-hidden="true"><i/><i/><i/></span>
@@ -244,7 +265,7 @@ function Header({ data }) {
           <button onClick={()=>navigate("work")}>Work</button>
           <button onClick={()=>navigate("about")}>About</button>
           <button onClick={()=>navigate("contact")}>Contact</button>
-          <a className="mobile-nav-cta" href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a project <Arrow/></a>
+          <a className="mobile-nav-cta" href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a project <CtaArrow/></a>
         </nav>
         <div className="header-actions">
           {data.brand.instagram && <a className="icon-link" href={data.brand.instagram} target="_blank" rel="noreferrer" aria-label="DigiSky on Instagram"><InstagramIcon/></a>}
@@ -254,6 +275,19 @@ function Header({ data }) {
       </div>
     </header>
   );
+}
+
+function BackToTop() {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 640);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return <button className={`back-to-top${visible ? " is-visible" : ""}`} aria-label="Back to top" onClick={()=>window.scrollTo({ top: 0, behavior: "smooth" })}>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+  </button>;
 }
 
 function IntroSplash() {
@@ -716,7 +750,11 @@ function App() {
               <a className="pill-button" href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a project</a>
               <button className="text-link" onClick={()=>document.getElementById("work")?.scrollIntoView({behavior:"smooth"})}>View our work</button>
             </div>
-            <div className="hero-trust"><span>✓ Website development</span><span>✓ Shopify &amp; e-commerce</span><span>✓ Conversion-focused marketing</span></div>
+            <div className="hero-trust">
+              <span><CheckIcon/>Website development</span>
+              <span><CheckIcon/>Shopify &amp; e-commerce</span>
+              <span><CheckIcon/>Conversion-focused marketing</span>
+            </div>
           </div>
           <div className="hero-visual"><HeroShowcase projects={projects} heroImages={data.hero.images || [data.hero.image || "", "", ""]} /></div>
         </section>
@@ -791,7 +829,7 @@ function App() {
               <span className="footer-eyebrow">DIGITAL PARTNERS FOR MODERN BRANDS</span>
               <h2>Step Up Your<br className="footer-break"/> Digital Presence</h2>
               <p>From Shopify stores and e-commerce websites to high-converting websites and digital growth, DigiSky helps brands build a stronger presence online.</p>
-              <a className="footer-cta" href={waLink(data.brand.whatsapp,"Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a Project <Arrow/></a>
+              <a className="footer-cta" href={waLink(data.brand.whatsapp,"Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a Project <CtaArrow/></a>
             </div>
             <div className="footer-socials">
               <small>SOCIALS</small>
@@ -805,6 +843,7 @@ function App() {
           <div className="footer-bottom"><span>&copy; 2026 DigiSky. All rights reserved.</span><span>Built by DigiSky</span></div>
         </div>
       </footer>
+      <BackToTop />
     </div>
   );
 }
