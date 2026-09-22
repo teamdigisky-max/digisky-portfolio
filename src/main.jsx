@@ -45,13 +45,13 @@ function loadData() {
     const mappedDefaults = DEFAULT_DATA.projects.map((p, index) => {
       const old = byName.get(p.name.toLowerCase());
       const safeProject = { ...p, ...(old || {}), url: p.url, image: p.image, id: old?.id ?? p.id };
-      const cleanedImage = safeProject.image && String(safeProject.image).includes("thum.io") ? makeThumb(safeProject, index) : safeProject.image || makeThumb(safeProject, index);
+      const cleanedImage = safeProject.image || makeThumb(safeProject, index);
       return { ...safeProject, image: cleanedImage };
     });
     const defaultNames = new Set(DEFAULT_DATA.projects.map(p => p.name.toLowerCase()));
     const custom = savedProjects.filter(p => !defaultNames.has(String(p.name || "").trim().toLowerCase())).map((p, index) => ({
       ...p,
-      image: p.image && String(p.image).includes("thum.io") ? makeThumb(p, index + DEFAULT_DATA.projects.length) : p.image || makeThumb(p, index + DEFAULT_DATA.projects.length),
+      image: p.image || makeThumb(p, index + DEFAULT_DATA.projects.length),
     }));
     merged.projects = [...mappedDefaults, ...custom];
     return merged;
@@ -344,7 +344,7 @@ function makeThumb(project, index) {
 
 function ProjectCard({ project, index }) {
   const hasUrl = typeof project.url === "string" && /^https?:\/\//i.test(project.url.trim());
-  const usableImage = project.image && !/thum\.io/i.test(String(project.image)) ? project.image : "";
+  const usableImage = project.image || "";
   const generatedThumb = makeThumb(project, index);
   const thumbnail = usableImage || generatedThumb;
   const projectCategoryName = projectCategory(project);
@@ -618,7 +618,7 @@ function App() {
         if (active && remote) {
           const remoteProjects = Array.isArray(remote.projects) ? remote.projects.map((project, index) => ({
             ...project,
-            image: project.image && !/thum\.io/i.test(String(project.image)) ? project.image : makeThumb(project, index),
+            image: project.image || makeThumb(project, index),
           })) : undefined;
           setData(prev => ({
             ...prev,
