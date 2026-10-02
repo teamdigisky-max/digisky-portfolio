@@ -1016,6 +1016,17 @@ function App() {
 
       <footer className="footer-shell">
         <div className="footer-panel">
+          <div className="footer-nav">
+            <div className="footer-brand">
+              <a className="footer-wordmark" href="#top"><img src="/logo.png" alt="DigiSky logo"/><span>{data.brand.name}</span></a>
+              <span className="footer-tagline">{data.brand.tagline}</span>
+            </div>
+            <div className="footer-nav-group"><small>MAIN</small><a href="#top">Home</a><a href="#about">About</a><a href="#services">Services</a><a href="#work">Portfolio</a><a href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to discuss a project.")} target="_blank" rel="noreferrer">Contact</a></div>
+            <div className="footer-nav-group"><small>SERVICES</small><a href="#shopify-expertise">Shopify Development</a><a href="#work">E-commerce Websites</a><a href="#services">WordPress &amp; WooCommerce</a><a href="#services">Website Redesign</a><a href="#work">Landing Pages</a></div>
+            <div className="footer-nav-group"><small>GROWTH</small><a href="#services">Digital Marketing</a><a href={`mailto:${data.brand.email}?subject=Meta%20Ads%20project`}>Meta Ads</a><a href={`mailto:${data.brand.email}?subject=Google%20Ads%20project`}>Google Ads</a><a href="#work">UGC &amp; Ad Creatives</a><a href="#about">Digital Strategy</a></div>
+            <div className="footer-nav-group"><small>COMPANY</small><a href="#about">About DigiSky</a><a href="#work">Our Work</a><a href={waLink(data.brand.whatsapp,"Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a Project</a><a href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to discuss a project.")} target="_blank" rel="noreferrer">Contact Us</a></div>
+          </div>
+          <div className="footer-divider" />
           <div className="footer-message">
             <div className="footer-message-copy">
               <span className="footer-eyebrow">{data.footer?.eyebrow || "DIGITAL PARTNERS FOR MODERN BRANDS"}</span>
@@ -1027,7 +1038,6 @@ function App() {
               <small>SOCIALS</small>
               <div>
                 {data.brand.instagram && <a href={data.brand.instagram} target="_blank" rel="noreferrer" aria-label="DigiSky on Instagram"><InstagramIcon/><span>Instagram</span></a>}
-                {data.brand.whatsapp && <a href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to discuss a project.")} target="_blank" rel="noreferrer" aria-label="DigiSky on WhatsApp"><span className="footer-whatsapp-icon" aria-hidden="true">⌕</span><span>WhatsApp</span></a>}
                 {data.brand.linkedin && <a href={data.brand.linkedin} target="_blank" rel="noreferrer" aria-label="DigiSky on LinkedIn"><LinkedInIcon/><span>LinkedIn</span></a>}
                 {data.brand.github && <a href={data.brand.github} target="_blank" rel="noreferrer" aria-label="DigiSky on GitHub"><GitHubIcon/><span>GitHub</span></a>}
               </div>
