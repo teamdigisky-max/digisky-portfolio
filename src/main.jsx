@@ -677,6 +677,78 @@ function AdminPanel({ data, setData, onClose }) {
   );
 }
 
+
+function MarqueeStrip({ reverse = false }) {
+  const items = ["SHOPIFY", "META ADS", "CHATGPT", "WHATSAPP", "GOOGLE ADS", "AI AUTOMATION", "AD CREATIVES", "CRO", "E-COMMERCE"];
+  return <div className={`marquee-strip ${reverse ? "marquee-reverse" : ""}`} aria-label="DigiSky services">
+    <div className="marquee-track">{[...items, ...items].map((item, index) => <span key={`${item}-${index}`}><i>✦</i>{item}</span>)}</div>
+  </div>;
+}
+
+function CountUpNumber({ value }) {
+  const raw = String(value ?? "");
+  const match = raw.match(/(\d+(?:\.\d+)?)/);
+  const target = match ? Number(match[1]) : null;
+  const prefix = target === null ? raw : raw.slice(0, match.index);
+  const suffix = target === null ? "" : raw.slice((match.index || 0) + match[0].length);
+  const [shown, setShown] = useState(0);
+  const ref = React.useRef(null);
+  useEffect(() => {
+    if (target === null) return;
+    let started = false;
+    let frame;
+    const run = () => {
+      if (started) return;
+      started = true;
+      const start = performance.now();
+      const duration = 1100;
+      const tick = (now) => {
+        const progress = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setShown(target * eased);
+        if (progress < 1) frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
+    };
+    const node = ref.current;
+    if (!node || !("IntersectionObserver" in window)) { run(); return () => cancelAnimationFrame(frame); }
+    const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { run(); observer.disconnect(); } }, { threshold: 0.45 });
+    observer.observe(node);
+    return () => { observer.disconnect(); cancelAnimationFrame(frame); };
+  }, [target]);
+  if (target === null) return <span ref={ref}>{raw}</span>;
+  const formatted = target % 1 ? shown.toFixed(1) : Math.round(shown).toLocaleString();
+  return <span ref={ref}>{prefix}{formatted}{suffix}</span>;
+}
+
+function ProofNumbers({ data }) {
+  return <section className="proof-section section">
+    <div className="proof-head"><div><span className="tag-chip">The numbers don't lie</span><h2>Big builds. Real work.</h2></div><p>Every number is a reminder that good design is not decoration. It is a business tool.</p></div>
+    <div className="proof-grid">
+      {data.stats.map((stat, index) => <article className="proof-card" key={index}>
+        <span className="proof-index">0{index + 1}</span>
+        <strong><CountUpNumber value={stat[0]} /></strong>
+        <span>{stat[1]}</span>
+        <i className="proof-line" />
+      </article>)}
+    </div>
+  </section>;
+}
+
+function HowItWorks({ data }) {
+  return <section id="how-it-works" className="how-section section">
+    <div className="how-head"><div><span className="tag-chip">Simple process</span><h2>How it works.</h2></div><p>From the first call to launch day, every step has a purpose.</p></div>
+    <div className="how-rail">
+      {data.process.map((step, index) => <article className="how-card" key={step[0]}>
+        <div className="how-card-top"><span>{step[0]}</span><b>{String(index + 1).padStart(2, "0")}</b></div>
+        <div className="how-dot" />
+        <h3>{step[1]}</h3><p>{step[2]}</p>
+        <span className="how-arrow">↗</span>
+      </article>)}
+    </div>
+  </section>;
+}
+
 function App() {
   const [data, setData] = useState(loadData);
   const isAdminRoute = window.location.pathname.replace(/\/$/,"") === "/admin" || new URLSearchParams(window.location.search).has("admin");
@@ -766,6 +838,8 @@ function App() {
           <div className="hero-visual"><HeroShowcase projects={projects} heroImages={data.hero.images || [data.hero.image || "", "", ""]} /></div>
         </section>
 
+        <MarqueeStrip />
+
         <section id="work" className="section work-section">
           <div className="section-top">
             <div>
@@ -790,9 +864,8 @@ function App() {
           </div>
         </section>
 
-        <section className="stats-strip">
-          {data.stats.map((s,i)=><div key={i}><strong>{s[0]}</strong><span>{s[1]}</span></div>)}
-        </section>
+        <ProofNumbers data={data} />
+        <MarqueeStrip reverse />
 
         <section id="services" className="services-section section">
           <div className="services-intro"><div><span className="tag-chip">Our services</span><h2 className="services-heading">Everything you need to grow online</h2></div><p>From stunning websites to results-driven marketing, we build digital experiences that help your brand convert and scale.</p></div>
@@ -806,7 +879,7 @@ function App() {
         <Pricing data={data}/>
 
         <AboutSection data={data}/>
-        <ProcessSection data={data}/>
+        <HowItWorks data={data}/>
         <Testimonials data={data}/>
         <Journal data={data}/>
 
