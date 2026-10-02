@@ -1618,3 +1618,140 @@ main{width:100%!important}
   .shopify-redesigned .shopify-stage{width:calc(100% - 36px)!important}
   .footer-panel{padding:54px 18px 20px!important}
 }
+
+/* ================= V10 FINAL POLISH ================= */
+
+/* 1) Running marquee — clean, high-contrast, single rail. */
+.marquee-strip{
+  position:relative!important;
+  width:100%!important;
+  height:56px!important;
+  min-height:56px!important;
+  margin:10px 0!important;
+  padding:0!important;
+  background:#f7f8f4!important;
+  border-top:1px solid #dfe4db!important;
+  border-bottom:1px solid #dfe4db!important;
+  overflow:hidden!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+.marquee-strip:after{display:none!important;content:none!important}
+.marquee-window{width:100%!important;height:100%!important;overflow:hidden!important;display:flex!important;align-items:center!important}
+.marquee-track{
+  width:max-content!important;
+  height:100%!important;
+  display:flex!important;
+  align-items:center!important;
+  flex:none!important;
+  animation:digiskyCleanMarquee 38s linear infinite!important;
+  will-change:transform!important;
+}
+.marquee-reverse .marquee-track{animation-name:digiskyCleanMarqueeReverse!important;animation-duration:42s!important}
+.marquee-item{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:18px!important;
+  height:100%!important;
+  padding:0 25px!important;
+  color:#171b17!important;
+  opacity:1!important;
+  font-family:"DM Sans",sans-serif!important;
+  font-size:10px!important;
+  font-weight:800!important;
+  letter-spacing:.13em!important;
+  white-space:nowrap!important;
+}
+.marquee-item b{color:#171b17!important;font-weight:800!important}
+.marquee-item i{color:#8bbd27!important;font-style:normal!important;font-size:13px!important}
+.marquee-strip:hover .marquee-track{animation-play-state:paused!important}
+@keyframes digiskyCleanMarquee{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+@keyframes digiskyCleanMarqueeReverse{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
+
+/* 2) Featured work filters — keep the controls visually anchored to the left content rail. */
+.work-showcase-section .project-filters{
+  width:min(1360px,calc(100% - 72px))!important;
+  max-width:none!important;
+  margin:0 auto 26px!important;
+  padding:0!important;
+  justify-content:flex-start!important;
+  align-items:center!important;
+  text-align:left!important;
+}
+.work-showcase-section .project-filters button{flex:0 0 auto!important}
+
+/* 3) Shopify expertise — selected options stay green/white instead of turning black. */
+.shopify-redesigned .shopify-list button{
+  color:#172016!important;
+  background:#f7faf5!important;
+  border-color:#d8dfd4!important;
+}
+.shopify-redesigned .shopify-list button strong,
+.shopify-redesigned .shopify-list button small,
+.shopify-redesigned .shopify-list button>span,
+.shopify-redesigned .shopify-list button>b{color:inherit!important}
+.shopify-redesigned .shopify-list button:hover,
+.shopify-redesigned .shopify-list button.active{
+  background:#baff35!important;
+  color:#111510!important;
+  border-color:#baff35!important;
+  transform:translateX(5px)!important;
+  box-shadow:0 14px 30px rgba(116,155,27,.16)!important;
+}
+.shopify-redesigned .shopify-list button:hover strong,
+.shopify-redesigned .shopify-list button:hover small,
+.shopify-redesigned .shopify-list button:hover>span,
+.shopify-redesigned .shopify-list button:hover>b,
+.shopify-redesigned .shopify-list button.active strong,
+.shopify-redesigned .shopify-list button.active small,
+.shopify-redesigned .shopify-list button.active>span,
+.shopify-redesigned .shopify-list button.active>b{color:#111510!important}
+
+/* 4) Simple process — centered rail + complete hover color system. */
+.how-redesigned{
+  width:100%!important;
+  margin:0!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  background:#fff!important;
+}
+.how-redesigned .how-head,
+.how-redesigned .how-timeline{
+  width:min(1360px,calc(100% - 72px))!important;
+  max-width:none!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+.how-redesigned .how-timeline{margin-top:0!important}
+.how-step-card:hover h3,
+.how-step-card:hover .how-step-label,
+.how-step-card:hover p,
+.how-step-card:hover .how-step-foot,
+.how-step-card:hover .how-step-foot span,
+.how-step-card:hover .how-step-foot b{color:#fff!important}
+.how-step-card:hover .how-step-label{color:#baff35!important}
+.how-step-card:hover p{color:#d9e0d6!important}
+.how-step-card:hover .how-step-foot{border-color:rgba(255,255,255,.18)!important}
+
+/* 5) More ways — Explore Service is a real WhatsApp CTA and keeps its visual card style. */
+.growth-service-bottom{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  text-decoration:none!important;
+  color:inherit!important;
+  cursor:pointer!important;
+}
+.growth-service-bottom span,.growth-service-bottom b{color:inherit!important}
+.growth-service-card:hover .growth-service-bottom span,
+.growth-service-card:hover .growth-service-bottom b{color:#111510!important}
+
+/* 6) Final responsive spacing. */
+@media(max-width:700px){
+  .marquee-strip{height:52px!important;min-height:52px!important;margin:6px 0!important}
+  .marquee-item{font-size:9px!important;padding:0 17px!important;gap:13px!important}
+  .work-showcase-section .project-filters,
+  .how-redesigned .how-head,
+  .how-redesigned .how-timeline{width:calc(100% - 36px)!important}
+}
