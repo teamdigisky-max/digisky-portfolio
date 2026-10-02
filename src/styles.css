@@ -1450,3 +1450,171 @@ main{width:100%!important}
 .footer-shell .footer-wordmark img{filter:none!important}
 @media(max-width:1050px){.projects-all-layout,.proof-grid,.why-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.growth-services-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.client-notes-grid{grid-template-columns:1fr 1fr!important}}
 @media(max-width:700px){.section>.work-showcase-head,.section>.proof-head,.section>.services-intro,.section>.why-intro,.section>.pricing-heading-row,.section>.about-intro,.section>.how-head,.section>.client-notes-head,.section>.growth-services-heading,.projects-all-layout,.proof-grid,.why-grid,.growth-services-grid,.client-notes-grid,.pricing-grid{width:calc(100% - 32px)!important}.projects-all-layout,.proof-grid,.why-grid,.growth-services-grid{grid-template-columns:1fr!important}.marquee-strip{height:54px!important;min-height:54px!important}.marquee-item{font-size:8px!important;padding:0 18px!important;gap:18px!important}.client-notes-grid{grid-template-columns:1fr!important}}
+
+/* =========================
+   V9 FINAL POLISH
+   ========================= */
+:root{
+  --v9-ink:#101410;
+  --v9-muted:#626c63;
+  --v9-green:#b8f23a;
+  --v9-line:#e4e8e1;
+}
+
+/* Keep every major section away from the viewport edges without creating boxed sections. */
+.hero{
+  padding-left:max(24px,calc((100vw - 1360px)/2))!important;
+  padding-right:max(24px,calc((100vw - 1360px)/2))!important;
+}
+.hero-copy,.hero-visual{min-width:0!important}
+
+/* Shopify / WordPress studio area: full-width section, centered content. */
+.hero-kicker{color:var(--v9-ink)!important;font-weight:850!important;letter-spacing:.12em!important}
+.hero-kicker:first-letter{color:#79b800!important}
+
+/* One clean editorial marquee — no badges, no stacked/overlapping rows. */
+.marquee-strip{
+  position:relative!important;
+  width:100%!important;
+  height:58px!important;
+  min-height:58px!important;
+  margin:8px 0!important;
+  padding:0!important;
+  background:#111510!important;
+  border:0!important;
+  border-top:2px solid var(--v9-green)!important;
+  border-bottom:1px solid #2b322a!important;
+  overflow:hidden!important;
+}
+.marquee-strip:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(90deg,#111510 0%,transparent 7%,transparent 93%,#111510 100%);
+  z-index:3;
+}
+.marquee-window{position:relative!important;width:100%!important;height:100%!important;overflow:hidden!important}
+.marquee-track{
+  height:100%!important;
+  width:max-content!important;
+  display:flex!important;
+  align-items:center!important;
+  animation:digiskyMarquee 42s linear infinite!important;
+}
+.marquee-item{
+  height:100%!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:18px!important;
+  padding:0 24px!important;
+  color:#f7f9f5!important;
+  font-family:"DM Sans",sans-serif!important;
+  font-size:11px!important;
+  font-weight:750!important;
+  letter-spacing:.12em!important;
+  white-space:nowrap!important;
+}
+.marquee-item i{color:var(--v9-green)!important;font-size:14px!important;font-style:normal!important}
+.marquee-strip:hover .marquee-track{animation-play-state:paused!important}
+
+/* Services: give the heading and card grid a common centered rail. */
+.services-redesigned{padding-left:0!important;padding-right:0!important}
+.services-redesigned .services-intro,
+.services-redesigned .services-list{
+  width:min(1360px,calc(100% - 72px))!important;
+  max-width:none!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+.services-redesigned .services-list{padding:0!important}
+
+/* Shopify section: remove the side-touching rounded shell. */
+.shopify-redesigned{
+  width:100%!important;
+  margin:0!important;
+  border-radius:0!important;
+  padding-left:0!important;
+  padding-right:0!important;
+}
+.shopify-redesigned .shopify-topline,
+.shopify-redesigned .shopify-heading,
+.shopify-redesigned .shopify-platform-pills,
+.shopify-redesigned .shopify-stage{
+  width:min(1360px,calc(100% - 72px))!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+.shopify-redesigned .shopify-stage{padding-bottom:0!important}
+
+/* Proof numbers: stable colors on hover and readable Shopify / custom-code labels. */
+.proof-card,
+.proof-card strong,
+.proof-card>span:not(.proof-index),
+.proof-card .proof-card-mark{color:var(--v9-ink)!important}
+.proof-card:nth-child(2){background:#eef7e3!important}
+.proof-card:nth-child(3){background:#f7f8f4!important}
+.proof-card:nth-child(4){background:#fff!important}
+.proof-card:hover{background:#111510!important;color:#fff!important}
+.proof-card:hover strong,
+.proof-card:hover>span:not(.proof-index),
+.proof-card:hover .proof-card-mark{color:#fff!important}
+.proof-card-2 strong{font-size:clamp(42px,4.3vw,64px)!important;letter-spacing:-.055em!important;white-space:nowrap!important}
+.proof-card-2>span:not(.proof-index){max-width:210px!important}
+.proof-card-3 strong{font-size:clamp(34px,3.5vw,52px)!important;letter-spacing:-.06em!important;white-space:nowrap!important}
+.proof-card-4 strong{font-size:clamp(48px,5vw,72px)!important;white-space:nowrap!important}
+.proof-card-4:after{content:"TRUSTED BY CLIENTS"!important;color:currentColor!important}
+
+/* Footer: one full-width surface only — no panel inside panel. */
+.footer-shell{
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  background:#0b0f0c!important;
+  border:0!important;
+  border-radius:0!important;
+}
+.footer-panel{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:72px max(24px,calc((100vw - 1360px)/2)) 26px!important;
+  background:#0b0f0c!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+}
+.footer-panel:before{opacity:.8!important}
+.footer-shell .footer-nav,
+.footer-shell .footer-message,
+.footer-shell .footer-bottom{max-width:1360px!important;margin-left:auto!important;margin-right:auto!important}
+.footer-shell .footer-divider{max-width:1360px!important;margin-left:auto!important;margin-right:auto!important;background:#30372f!important}
+.footer-shell .footer-nav-group a{color:#f4f7f1!important}
+.footer-shell .footer-nav-group a:hover{color:var(--v9-green)!important}
+.footer-shell .footer-nav-group small,.footer-shell .footer-socials small{color:#a5afa3!important}
+.footer-shell .footer-tagline,.footer-shell .footer-message-copy p{color:#cbd3c8!important}
+.footer-shell .footer-message-copy h2{color:#fff!important}
+.footer-shell .footer-bottom,.footer-shell .footer-bottom span{color:#aab5a8!important}
+.footer-shell .footer-wordmark span{color:#fff!important}
+
+/* General light-surface typography pass. */
+.work-showcase-section h2,.proof-section h2,.services-section h2,.why-redesigned h2,
+.about-redesigned h2,.how-redesigned h2,.testimonials-redesigned h2,.growth-services-section h2,
+.pricing-section h2{color:var(--v9-ink)!important}
+.work-showcase-section p,.proof-section p,.services-section p,.why-redesigned p,
+.about-redesigned p,.how-redesigned p,.testimonials-redesigned p,.growth-services-section p,
+.pricing-section p{color:var(--v9-muted)!important}
+
+@media(max-width:700px){
+  .hero{padding-left:18px!important;padding-right:18px!important}
+  .marquee-strip{height:52px!important;min-height:52px!important;margin:4px 0!important}
+  .marquee-item{font-size:9px!important;padding:0 17px!important;gap:14px!important}
+  .services-redesigned .services-intro,
+  .services-redesigned .services-list,
+  .shopify-redesigned .shopify-topline,
+  .shopify-redesigned .shopify-heading,
+  .shopify-redesigned .shopify-platform-pills,
+  .shopify-redesigned .shopify-stage{width:calc(100% - 36px)!important}
+  .footer-panel{padding:54px 18px 20px!important}
+}
