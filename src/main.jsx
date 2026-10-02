@@ -7,7 +7,7 @@ const ADMIN_PASSWORD = "digisky2026";
 
 const DEFAULT_DATA = {
   brand: { name: "DigiSky", tagline: "Step Up Digitally", email: "team.digisky@gmail.com", whatsapp: "", instagram: "https://www.instagram.com/digisky.world/" },
-  hero: { kicker: "SHOPIFY & WORDPRESS STUDIO", titleA: "Shopify Stores", titleB: "Built To", titleC: "Sell.", description: "We design, build and optimise high-converting Shopify stores for ambitious brands — from strategy and UX to launch and growth.", images: ["", "", ""] },
+  hero: { trustItems: ["Website development", "Shopify & e-commerce", "Conversion-focused marketing"], kicker: "SHOPIFY & WORDPRESS STUDIO", titleA: "Shopify Stores", titleB: "Built To", titleC: "Sell.", description: "We design, build and optimise high-converting Shopify stores for ambitious brands — from strategy and UX to launch and growth.", images: ["", "", ""] },
   stats: [["31+", "Projects Delivered"], ["20+", "Happy Clients"], ["4.9/5", "Client Satisfaction"], ["2x", "Average Growth"]],
   pricing: { title: "Shopify Website", price: "\u20B97,500", description: "A polished Shopify storefront designed, configured and made ready to launch — without needing a premium theme.", features: ["Custom homepage design", "Mobile responsive layout", "Product & collection setup", "Navigation, pages & basic policies", "Payment / shipping setup assistance", "Basic SEO structure", "Launch-ready testing"] },
   projects: [{"id": 1, "name": "Aaysa", "industry": "E-commerce", "platform": "Shopify", "description": "E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://aaysa.store", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://aaysa.store"}, {"id": 2, "name": "Bonglooms", "industry": "Textiles & Fashion", "platform": "Shopify", "description": "Textiles & Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://bonglooms.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://bonglooms.com"}, {"id": 3, "name": "Tattva Elixir", "industry": "Beauty & Wellness", "platform": "Shopify", "description": "Beauty & Wellness website designed for a polished, conversion-focused digital experience.", "url": "https://www.tattvaelixir.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.tattvaelixir.com"}, {"id": 4, "name": "Miraza", "industry": "Fashion E-commerce", "platform": "Shopify", "description": "Fashion E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://miraza.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://miraza.in"}, {"id": 5, "name": "Popout Fashion", "industry": "Fashion Brand", "platform": "Shopify", "description": "Fashion Brand website designed for a polished, conversion-focused digital experience.", "url": "https://popoutfashion.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://popoutfashion.com"}, {"id": 6, "name": "Presquo", "industry": "Premium Brand", "platform": "Shopify", "description": "Premium Brand website designed for a polished, conversion-focused digital experience.", "url": "https://presquo.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://presquo.com"}, {"id": 7, "name": "Dr Aroras", "industry": "Healthcare", "platform": "Website Development", "description": "Healthcare website designed for a polished, conversion-focused digital experience.", "url": "https://www.draroras.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.draroras.com"}, {"id": 8, "name": "Tota Cart", "industry": "E-commerce", "platform": "E-commerce", "description": "E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://totacart.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://totacart.in"}, {"id": 9, "name": "Nitarya", "industry": "Fashion", "platform": "Shopify", "description": "Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://nitarya.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://nitarya.com"}, {"id": 10, "name": "Take A Chef", "industry": "Hospitality", "platform": "Website", "description": "Hospitality website designed for a polished, conversion-focused digital experience.", "url": "https://www.takeachef.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.takeachef.com"}, {"id": 11, "name": "Paivi", "industry": "Fashion", "platform": "Shopify", "description": "Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://www.paivi.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.paivi.in"}, {"id": 12, "name": "Maestra Jewellery", "industry": "Luxury Jewellery", "platform": "E-commerce", "description": "Luxury Jewellery website designed for a polished, conversion-focused digital experience.", "url": "https://maestrajewellery.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://maestrajewellery.com"}, {"id": 13, "name": "Equitia", "industry": "Lifestyle", "platform": "Shopify", "description": "Lifestyle website designed for a polished, conversion-focused digital experience.", "url": "https://www.equitia.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.equitia.in"}, {"id": 14, "name": "The House of Eraya", "industry": "Fashion", "platform": "Shopify", "description": "Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://www.thehouseoferaya.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.thehouseoferaya.in"}, {"id": 15, "name": "The Green Ritual", "industry": "Wellness", "platform": "Shopify", "description": "Wellness website designed for a polished, conversion-focused digital experience.", "url": "https://thegreenritual.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://thegreenritual.com"}, {"id": 16, "name": "Krinks", "industry": "Fashion", "platform": "Shopify", "description": "Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://krinks.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://krinks.in"}, {"id": 17, "name": "Acharima Delights", "industry": "Food & Delights", "platform": "E-commerce", "description": "Food & Delights website designed for a polished, conversion-focused digital experience.", "url": "https://acharimaadelights.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://acharimaadelights.com"}, {"id": 18, "name": "RP Paris", "industry": "Luxury Fashion", "platform": "Shopify", "description": "Luxury Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://www.rpparis.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.rpparis.com"}, {"id": 19, "name": "Munchlet", "industry": "Food & Beverage", "platform": "E-commerce", "description": "Food & Beverage website designed for a polished, conversion-focused digital experience.", "url": "https://www.munchlet.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.munchlet.com"}, {"id": 20, "name": "Inkwalkers", "industry": "Art & Creative", "platform": "Website", "description": "Art & Creative website designed for a polished, conversion-focused digital experience.", "url": "https://inkwalkers.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://inkwalkers.com"}, {"id": 21, "name": "Tiara Skin", "industry": "Skincare", "platform": "Shopify", "description": "Skincare website designed for a polished, conversion-focused digital experience.", "url": "https://tiara.skin", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://tiara.skin"}, {"id": 22, "name": "The Premium Basket", "industry": "Premium E-commerce", "platform": "Shopify", "description": "Premium E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://thepremiumbasket.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://thepremiumbasket.com"}, {"id": 23, "name": "Haus of Jawhar", "industry": "Luxury Fashion", "platform": "Shopify", "description": "Luxury Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://hausofjawhar.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://hausofjawhar.com"}, {"id": 24, "name": "Pancha Bhootani", "industry": "Wellness", "platform": "Shopify", "description": "Wellness website designed for a polished, conversion-focused digital experience.", "url": "https://panchabhootani.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://panchabhootani.com"}, {"id": 25, "name": "Bevy Good", "industry": "Lifestyle", "platform": "Shopify", "description": "Lifestyle website designed for a polished, conversion-focused digital experience.", "url": "https://www.bevygood.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.bevygood.com"}, {"id": 26, "name": "Innocent Fresh", "industry": "Food & Beverage", "platform": "E-commerce", "description": "Food & Beverage website designed for a polished, conversion-focused digital experience.", "url": "https://www.innocentfresh.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.innocentfresh.com"}, {"id": 27, "name": "Rare Blanc", "industry": "Premium Brand", "platform": "Shopify", "description": "Premium Brand website designed for a polished, conversion-focused digital experience.", "url": "https://www.rareblanc.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.rareblanc.com"}, {"id": 28, "name": "Uzvieco Store", "industry": "Lifestyle", "platform": "Shopify", "description": "Lifestyle website designed for a polished, conversion-focused digital experience.", "url": "https://uzviecostore.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://uzviecostore.com"}, {"id": 29, "name": "Alpino Super One", "industry": "Sports & Wellness", "platform": "Shopify", "description": "Sports & Wellness website designed for a polished, conversion-focused digital experience.", "url": "https://alpinosuperone.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://alpinosuperone.com"}, {"id": 30, "name": "The Skin Depth", "industry": "Skincare", "platform": "Shopify", "description": "Skincare website designed for a polished, conversion-focused digital experience.", "url": "https://www.theskindepth.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.theskindepth.com"}, {"id": 31, "name": "Guapha", "industry": "E-commerce", "platform": "E-commerce", "description": "E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://www.guapha.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.guapha.com"}, {"id": 32, "name": "Swasth Setu", "industry": "Healthcare", "platform": "Website", "description": "Healthcare website designed for a polished, conversion-focused digital experience.", "url": "https://swasthsetu.co.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://swasthsetu.co.in"}, {"id": 33, "name": "Drinkyasu", "industry": "Beverage", "platform": "Shopify", "description": "Beverage website designed for a polished, conversion-focused digital experience.", "url": "https://drinkyasu.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://drinkyasu.com"}, {"id": 34, "name": "Planto Store", "industry": "Plant Store", "platform": "Shopify", "description": "Plant Store website designed for a polished, conversion-focused digital experience.", "url": "https://www.plantostore.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.plantostore.com"}],
@@ -20,7 +20,32 @@ const DEFAULT_DATA = {
   process: [["01", "Discover", "We learn the business, audience and opportunity."], ["02", "Shape", "We turn the brief into a focused digital direction."], ["03", "Design", "We create a distinctive system your brand can own."], ["04", "Build", "We develop, test and polish every interaction."], ["05", "Launch", "We go live with clarity and a plan for growth."]],
   testimonials: [{ name: "Aaysa team", company: "Aaysa", quote: "DigiSky turned a rough idea into a store that finally feels like our brand.", rating: 5 }],
   blog: [{ title: "What makes a storefront feel premium?", category: "Perspective", date: "2026-02-12", excerpt: "The details that turn a website visit into confidence, and confidence into a sale." }],
-  cta: { title: "Have a project in mind?", text: "Let's build something people remember.", button: "Start a project" }
+  cta: { title: "Have a project in mind?", text: "Let's build something people remember.", button: "Start a project" },
+  marqueeItems: ["SHOPIFY", "WEB DEVELOPMENT", "META ADS", "GOOGLE ADS", "AI AUTOMATION", "SEO + CRO", "AD CREATIVES", "CUSTOM CODE"],
+  proof: { tag: "The numbers don't lie", title: "Big builds. Bigger results.", description: "From Shopify storefronts to custom-coded experiences, the work speaks for itself — and every number is a piece of that story.", labels: ["Projects delivered", "Shopify builds", "Custom-coded", "Client satisfaction"], values: ["34+", "20+", "Custom", "100%"] },
+  growthServices: [
+    ["META ADS", "Performance campaigns built around the offer, audience and landing experience."],
+    ["GOOGLE ADS", "Search and intent-led campaigns designed to turn demand into qualified leads."],
+    ["AI AUTOMATION", "Smarter workflows that reduce repetitive work and keep customer journeys moving."],
+    ["AD CREATIVES", "Scroll-stopping static, UGC and short-form creative for modern campaigns."],
+    ["SEO + CRO", "Technical foundations and conversion improvements that help more visitors become customers."],
+    ["SOCIAL MEDIA", "A consistent content system that keeps your brand visible, useful and memorable."]
+  ],
+  shopify: {
+    titleA: "Built for brands", titleB: "that want to sell more.", description: "From a clean Shopify storefront to a fully custom-coded experience, DigiSky builds around the business — not around a template.",
+    points: [
+      ["Shopify store design", "Premium storefronts designed around the brand, customer journey and product."],
+      ["Custom Shopify development", "Sections, interactions and functionality built beyond the limits of a basic theme."],
+      ["Custom coded websites", "When Shopify is not the right fit, we build the experience from the ground up."],
+      ["Conversion-focused UX", "Navigation, product pages and checkout journeys shaped around customer intent."]
+    ]
+  },
+  why: {
+    tag: "WHY DIGISKY?", subtitle: "Flip the switch. See the difference.", digiTitle: "Your brand on DigiSky.", otherTitle: "Your brand without the usual friction.", digiEmoji: "🤩", otherEmoji: "🤯", digiStatus: "Built to move.", otherStatus: "Still figuring it out…",
+    digi: [["Strategy tied to the next click", "Every section has a job — explain, build trust or move the visitor forward."],["Design made around your brand", "A distinctive visual system built around your offer, audience and products."],["Design + development together", "One team keeps the experience consistent from first screen to final interaction."],["Built for speed and growth", "Clean structure, responsive interactions and a foundation ready for the next stage."],["Support beyond launch", "We stay close when you need improvements, fixes, new pages or growth experiments."]],
+    other: [["Strategy without a clear conversion path", "Looks polished, but the next action is often unclear."],["Template-first experiences", "The brand gets adjusted to the template instead of the other way around."],["Slow handoffs", "Too many layers between the idea, design and final build."],["One-size-fits-all packages", "The same process is applied even when the business needs something different."],["Launch and disappear", "The project ends at launch instead of improving after real users arrive."]]
+  },
+  footer: { eyebrow: "DIGITAL PARTNERS FOR MODERN BRANDS", titleA: "Step Up Your", titleB: "Digital Presence", text: "From Shopify stores and e-commerce websites to high-converting websites and digital growth, DigiSky helps brands build a stronger presence online." }
 };
 
 function loadData() {
@@ -37,6 +62,12 @@ function loadData() {
       about: { ...DEFAULT_DATA.about, ...(saved.about || {}) },
       trust: { ...DEFAULT_DATA.trust, ...(saved.trust || {}) },
       cta: { ...DEFAULT_DATA.cta, ...(saved.cta || {}) },
+      proof: { ...DEFAULT_DATA.proof, ...(saved.proof || {}) },
+      shopify: { ...DEFAULT_DATA.shopify, ...(saved.shopify || {}) },
+      why: { ...DEFAULT_DATA.why, ...(saved.why || {}) },
+      footer: { ...DEFAULT_DATA.footer, ...(saved.footer || {}) },
+      marqueeItems: Array.isArray(saved.marqueeItems) && saved.marqueeItems.length ? saved.marqueeItems : DEFAULT_DATA.marqueeItems,
+      growthServices: Array.isArray(saved.growthServices) && saved.growthServices.length ? saved.growthServices : DEFAULT_DATA.growthServices,
       categories: (Array.isArray(saved.categories) && saved.categories.length ? saved.categories : DEFAULT_DATA.categories).filter(category => category !== "E-commerce"),
     };
     merged.hero.images = Array.isArray(saved.hero?.images) ? saved.hero.images.slice(0, 3).concat(["", "", ""]).slice(0, 3) : [saved.hero?.image || "", "", ""];
@@ -351,19 +382,14 @@ function Testimonials({ data }) {
   </section>;
 }
 function Journal({ data }) {
-  const growthServices = [
-    ["META ADS", "Performance campaigns built around the offer, audience and landing experience."],
-    ["GOOGLE ADS", "Search and intent-led campaigns designed to turn demand into qualified leads."],
-    ["AI AUTOMATION", "Smarter workflows that reduce repetitive work and keep customer journeys moving."],
-    ["AD CREATIVES", "Scroll-stopping static, UGC and short-form creative for modern campaigns."],
-    ["SEO + CRO", "Technical foundations and conversion improvements that help more visitors become customers."],
-    ["SOCIAL MEDIA", "A consistent content system that keeps your brand visible, useful and memorable."],
-  ];
-  return <section id="journal" className="journal section growth-services-section"><div className="growth-services-heading"><div><span className="tag-chip">More ways we help</span><h2>More ways to turn <em>attention into growth.</em></h2></div><p>Pick the growth layer your brand needs next. Every service is designed to work with your website, store and customer journey.</p></div><div className="growth-services-grid">{growthServices.map((service,index)=><article className={`growth-service-card growth-service-${index + 1}`} key={service[0]}><div className="growth-service-top"><span>0{index+1}</span><i>↗</i></div><div className="growth-service-icon">{index === 0 ? "◎" : index === 1 ? "⌁" : index === 2 ? "✦" : index === 3 ? "◈" : index === 4 ? "↗" : "◌"}</div><small>{service[0]}</small><h3>{service[1]}</h3><a className="growth-service-bottom" href={waLink(data.brand.whatsapp, `Hi DigiSky, I am interested in ${service[1]}. Please share the details.`)} target="_blank" rel="noreferrer" aria-label={`Explore ${service[1]} on WhatsApp`}><span>EXPLORE SERVICE</span><b>→</b></a></article>)}</div></section>;
+  const growthServices = Array.isArray(data.growthServices) && data.growthServices.length ? data.growthServices : [];
+  const icons = ["◎","⌁","✦","◈","↗","◌","✺","＋"];
+  return <section id="journal" className="journal section growth-services-section"><div className="growth-services-heading"><div><span className="tag-chip">More ways we help</span><h2>More ways to turn <em>attention into growth.</em></h2></div><p>Pick the growth layer your brand needs next. Every service is designed to work with your website, store and customer journey.</p></div><div className="growth-services-grid">{growthServices.map((service,index)=><article className={`growth-service-card growth-service-${(index % 8)+1}`} key={`${service[0]}-${index}`}><div className="growth-service-top"><span>{String(index+1).padStart(2,"0")}</span><i>↗</i></div><div className="growth-service-icon">{icons[index % icons.length]}</div><small>{service[0]}</small><h3>{service[1]}</h3><a className="growth-service-bottom" href={waLink(data.brand.whatsapp, `Hi DigiSky, I am interested in ${service[0]}. Please share the details.`)} target="_blank" rel="noreferrer"><span>EXPLORE SERVICE</span><b>→</b></a></article>)}</div></section>;
 }
-function ShopifyExpertise({ projects }) {
+function ShopifyExpertise({ projects, data }) {
   const [active, setActive] = useState(0);
-  const points = [
+  const shopifyData = data.shopify || {};
+  const points = Array.isArray(shopifyData.points) && shopifyData.points.length ? shopifyData.points : [
     ["Shopify store design", "Premium storefronts designed around the brand, customer journey and product."],
     ["Custom Shopify development", "Sections, interactions and functionality built beyond the limits of a basic theme."],
     ["Custom coded websites", "When Shopify is not the right fit, we build the experience from the ground up."],
@@ -378,7 +404,7 @@ function ShopifyExpertise({ projects }) {
   const preview = previewProjects[active] || projects[0];
   return <section id="shopify-expertise" className="shopify-expertise section shopify-redesigned">
     <div className="shopify-topline"><span className="tag-chip">Shopify expertise</span><span>SHOPIFY + CUSTOM CODE</span></div>
-    <div className="shopify-heading"><div><h2>Built for brands<br/><em>that want to sell more.</em></h2></div><p>From a clean Shopify storefront to a fully custom-coded experience, DigiSky builds around the business — not around a template.</p></div>
+    <div className="shopify-heading"><div><h2>{shopifyData.titleA || "Built for brands"}<br/><em>{shopifyData.titleB || "that want to sell more."}</em></h2></div><p>{shopifyData.description || "From a clean Shopify storefront to a fully custom-coded experience, DigiSky builds around the business — not around a template."}</p></div>
     <div className="shopify-platform-pills"><span className="active">SHOPIFY</span><span>CUSTOM CODED</span><span>ECOMMERCE</span></div>
     <div className="shopify-stage">
       <div className="shopify-list">{points.map((point,index)=><button className={active === index ? "active" : ""} key={point[0]} onClick={()=>setActive(index)}><span>0{index + 1}</span><div><strong>{point[0]}</strong><small>{point[1]}</small></div><b>↗</b></button>)}</div>
@@ -556,191 +582,132 @@ function AdminPanel({ data, setData, onClose }) {
     next.hero.images = Array.isArray(next.hero.images) ? next.hero.images.slice(0, 3).concat(["", "", ""]).slice(0, 3) : [next.hero.image || "", "", ""];
     return next;
   });
-  const [tab, setTab] = useState("home");
+  const [tab, setTab] = useState("overview");
   const [uploadingIndex, setUploadingIndex] = useState(null);
+  const [jsonValue, setJsonValue] = useState(() => JSON.stringify(data, null, 2));
+  const [jsonError, setJsonError] = useState("");
 
-  const update = (path, value) => {
-    setDraft(prev => {
-      const next = JSON.parse(JSON.stringify(prev));
-      let obj = next;
-      path.slice(0,-1).forEach(k => obj = obj[k]);
-      obj[path[path.length-1]] = value;
-      return next;
-    });
-  };
-
+  const update = (path, value) => setDraft(prev => {
+    const next = JSON.parse(JSON.stringify(prev));
+    let obj = next;
+    path.slice(0, -1).forEach(k => obj = obj[k]);
+    obj[path[path.length - 1]] = value;
+    return next;
+  });
+  const removeAt = (path, index) => setDraft(prev => {
+    const next = JSON.parse(JSON.stringify(prev));
+    let arr = next;
+    path.forEach(k => arr = arr[k]);
+    arr.splice(index, 1);
+    return next;
+  });
+  const addTo = (path, value) => setDraft(prev => {
+    const next = JSON.parse(JSON.stringify(prev));
+    let arr = next;
+    path.forEach(k => arr = arr[k]);
+    arr.push(value);
+    return next;
+  });
   const save = async () => {
     try {
       await saveData(draft);
       setData(draft);
-      onClose();
+      setJsonValue(JSON.stringify(draft, null, 2));
+      window.alert("Saved. Your website content is now updated.");
     } catch (error) {
       window.alert(`Could not save to the live database: ${error.message}`);
     }
+  };
+  const applyJSON = () => {
+    try {
+      const parsed = JSON.parse(jsonValue);
+      if (!parsed || typeof parsed !== "object") throw new Error("JSON must contain an object.");
+      setDraft(parsed);
+      setJsonError("");
+    } catch (error) { setJsonError(error.message); }
   };
   const handleThumbnailUpload = async (index, file) => {
     setUploadingIndex(index);
     try {
       const image = await uploadThumbnail(file, draft.projects[index].id || `project-${index}`);
       update(["projects", index, "image"], image);
-    } catch (error) {
-      window.alert(`Could not upload thumbnail: ${error.message}`);
-    } finally {
-      setUploadingIndex(null);
-    }
+    } catch (error) { window.alert(`Could not upload thumbnail: ${error.message}`); }
+    finally { setUploadingIndex(null); }
   };
   const handleHeroImageUpload = async (index, file) => {
     try {
       const image = await uploadThumbnail(file, `hero-${index + 1}`, "hero");
       update(["hero", "images", index], image);
-    } catch (error) {
-      window.alert(`Could not upload hero image: ${error.message}`);
-    }
+    } catch (error) { window.alert(`Could not upload hero image: ${error.message}`); }
   };
   const reset = async () => {
+    if (!window.confirm("Reset all website content to the default content?")) return;
     try {
       await saveData(DEFAULT_DATA);
       localStorage.removeItem("digisky_data");
-      setData(DEFAULT_DATA);
-      setDraft(JSON.parse(JSON.stringify(DEFAULT_DATA)));
-    } catch (error) {
-      window.alert(`Could not reset the live database: ${error.message}`);
-    }
+      const fresh = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      setData(fresh); setDraft(fresh); setJsonValue(JSON.stringify(fresh, null, 2));
+    } catch (error) { window.alert(`Could not reset the live database: ${error.message}`); }
   };
   const exportData = () => {
     const blob = new Blob([JSON.stringify(draft, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = "digisky-data.json"; a.click();
-    URL.revokeObjectURL(url);
+    const url = URL.createObjectURL(blob); const a = document.createElement("a");
+    a.href = url; a.download = "digisky-data.json"; a.click(); URL.revokeObjectURL(url);
   };
+  const field = (label, path, type="text", placeholder="") => {
+    const value = path.reduce((o,k)=>o?.[k], draft) ?? "";
+    return <label className="admin-field"><span>{label}</span>{type === "textarea" ? <textarea placeholder={placeholder} value={value} onChange={e=>update(path,e.target.value)} /> : <input type={type} placeholder={placeholder} value={value} onChange={e=>update(path,e.target.value)} />}</label>;
+  };
+  const pairRows = (path, title, firstLabel="Title", secondLabel="Description") => {
+    const rows = path.reduce((o,k)=>o?.[k], draft) || [];
+    return <div className="admin-editor-block"><div className="admin-block-head"><div><small>EDITOR</small><h3>{title}</h3></div><button className="add-project" onClick={()=>addTo(path,["New item","Add description here."])}>+ Add</button></div>{rows.map((row,i)=><div className="admin-repeat-card" key={i}><div className="admin-repeat-top"><b>{String(i+1).padStart(2,"0")}</b><button className="delete-project" onClick={()=>removeAt(path,i)}>Delete</button></div><input aria-label={firstLabel} placeholder={firstLabel} value={row?.[0] || ""} onChange={e=>update([...path,i,0],e.target.value)}/><textarea aria-label={secondLabel} placeholder={secondLabel} value={row?.[1] || ""} onChange={e=>update([...path,i,1],e.target.value)}/></div>)}</div>;
+  };
+  const tabs = [
+    ["overview","Overview","◈"],["hero","Hero","✦"],["stats","Numbers","#"],["trust","Brands","∞"],["work","Projects","↗"],["services","Services","◎"],["shopify","Shopify","S"],["why","Why DigiSky","✓"],["pricing","Pricing","₹"],["featured","Featured","◆"],["about","About","A"],["process","Process","01"],["reviews","Client notes","★"],["growth","More services","+"],["footer","Footer","▣"],["advanced","Advanced","{}"]
+  ];
+  return <aside className="admin-panel admin-v2">
+    <div className="admin-head admin-v2-head"><div><div className="admin-kicker"><span className="admin-live-dot"/> DIGISKY / CONTENT CONTROL</div><h2>Website Control Center</h2><p>Edit the content, sections, projects, services, links and visual copy of the live website from one place.</p></div><div className="admin-head-tools"><span><i/> Supabase sync</span><button onClick={onClose} aria-label="Close content studio">&times;</button></div></div>
+    <div className="admin-tabs admin-v2-tabs">{tabs.map(([id,label,icon])=><button className={tab===id?"active":""} key={id} onClick={()=>setTab(id)}><b>{icon}</b>{label}</button>)}</div>
+    <div className="admin-scroll admin-v2-scroll">
+      {tab === "overview" && <div className="admin-dashboard"><div className="admin-welcome"><span className="tag-chip">LIVE WEBSITE</span><h3>Your website, one control center.</h3><p>Everything is editable here. Make changes, save once, refresh the website.</p><button className="save admin-main-save" onClick={save}>Save all changes</button></div><div className="admin-stat-grid"><div><strong>{draft.projects?.length || 0}</strong><span>Projects</span></div><div><strong>{draft.services?.length || 0}</strong><span>Core services</span></div><div><strong>{draft.process?.length || 0}</strong><span>Process steps</span></div><div><strong>{draft.testimonials?.length || 0}</strong><span>Client notes</span></div></div><div className="admin-quick-grid">{[["hero","Hero content","Headline, description & images"],["work","Portfolio","Projects, thumbnails & links"],["why","Why DigiSky","Comparison switch & animations"],["advanced","Advanced editor","Edit the complete website JSON"]].map(([id,t,d])=><button key={id} onClick={()=>setTab(id)}><b>{t}</b><span>{d}</span><i>↗</i></button>)}</div><div className="admin-help-box"><strong>Tip</strong><p>Use <b>Advanced</b> if you want complete control over every stored value, including new fields added later.</p></div></div>}
 
-  const input = (label, path, type="text") => (
-    <label className="admin-field"><span>{label}</span>
-      {type === "textarea" ? <textarea value={path.reduce((o,k)=>o[k],draft)} onChange={e=>update(path,e.target.value)} /> :
-      <input type={type} value={path.reduce((o,k)=>o[k],draft)} onChange={e=>update(path,e.target.value)} />}
-    </label>
-  );
+      {tab === "hero" && <><div className="admin-section-title"><span>01</span><div><h3>Hero & brand</h3><p>Control the first impression and the header brand information.</p></div></div>{field("Brand name",["brand","name"])}{field("Tagline",["brand","tagline"])}{field("Hero kicker",["hero","kicker"])}{field("Hero title — line 1",["hero","titleA"])}{field("Hero title — line 2",["hero","titleB"])}{field("Hero title — line 3",["hero","titleC"])}{field("Hero description",["hero","description"],"textarea")}<div className="admin-subtitle">Hero images</div><div className="hero-image-admin-grid">{(draft.hero.images || []).map((image,index)=><div className="hero-image-admin" key={index}><strong>Image {index+1}</strong><div className="thumbnail-upload"><label className="thumbnail-upload-button">{image?"Change image":"Upload image"}<input type="file" accept="image/*" onChange={e=>{const file=e.target.files?.[0];if(file)handleHeroImageUpload(index,file);e.target.value=""}}/></label>{image&&<button className="delete-feature" onClick={()=>update(["hero","images",index],"")}>Remove</button>}</div>{image&&<a className="thumbnail-preview" href={image} target="_blank" rel="noreferrer"><img src={image} alt="Hero"/><span>View image</span></a>}</div>)}</div></>}
 
-  return (
-    <aside className="admin-panel">
-      <div className="admin-head"><div><small>DIGISKY / ADMIN</small><h2>Content Studio</h2><p>Edit the pages, portfolio and contact details that power your website.</p></div><div className="admin-head-tools"><span><i/> Live workspace</span><button onClick={onClose} aria-label="Close content studio">&times;</button></div></div>
-      <div className="admin-tabs">
-        {["home","pricing","projects","services","categories","contact"].map(t=><button className={tab===t?"active":""} key={t} onClick={()=>setTab(t)}>{t}</button>)}
-      </div>
-      <div className="admin-scroll">
-        <div className="admin-banner">Changes are saved to the shared Supabase database and appear on the live website after refresh.</div>
-        {tab==="home" && <>
-          {input("Main title \u2014 line 1",["hero","titleA"])}
-          {input("Main title \u2014 line 2",["hero","titleB"])}
-          {input("Main title \u2014 line 3",["hero","titleC"])}
-          {input("Hero description",["hero","description"],"textarea")}
-          <div className="admin-subtitle">Hero images</div>
-          <p className="admin-help">Replace the three images shown in the hero collage. Empty slots use portfolio images automatically.</p>
-          <div className="hero-image-admin-grid">
-            {draft.hero.images.map((image, index)=><div className="hero-image-admin" key={index}>
-              <strong>Image {index + 1}</strong>
-              <div className="thumbnail-upload">
-                <label className="thumbnail-upload-button">
-                  {image ? "Change image" : "Upload image"}
-                  <input type="file" accept="image/*" onChange={e=>{const file=e.target.files?.[0]; if(file) handleHeroImageUpload(index, file); e.target.value="";}} />
-                </label>
-                {image && <button type="button" className="delete-feature" onClick={()=>update(["hero","images",index],"")}>Remove</button>}
-              </div>
-                <a className="thumbnail-preview" href={image || makeThumb({ name: `Hero image ${index + 1}` }, index)} target="_blank" rel="noreferrer"><img src={image || makeThumb({ name: `Hero image ${index + 1}` }, index)} alt={`${image ? "Custom" : "Automatic"} hero image ${index + 1}`} /> <span>{image ? "View custom image" : "Automatic preview"}</span></a>
-            </div>)}
-          </div>
-          <div className="admin-subtitle">Stats strip</div>
-          {draft.stats.map((stat, i)=><div className="admin-project" key={i}>
-            <div className="admin-project-title"><strong>Stat {i+1}</strong></div>
-            <label className="admin-field"><span>Value</span><input value={stat[0]} onChange={e=>update(["stats",i,0],e.target.value)}/></label>
-            <label className="admin-field"><span>Label</span><input value={stat[1]} onChange={e=>update(["stats",i,1],e.target.value)}/></label>
-          </div>)}
-          {input("About heading \u2014 line 1",["about","titleA"])}
-          {input("About heading \u2014 line 2",["about","titleB"])}
-          {input("About text",["about","text"],"textarea")}
-          <div className="admin-subtitle">Trust strip</div>
-          {input("Eyebrow",["trust","eyebrow"])}
-          <label className="admin-field"><span>Client names (comma separated)</span><input value={draft.trust.names.join(", ")} onChange={e=>update(["trust","names"],e.target.value.split(",").map(name=>name.trim()).filter(Boolean))}/></label>
-          <div className="admin-subtitle">Why choose us</div>
-          {draft.features.map((feature,i)=><div className="admin-project" key={feature[0]}><div className="admin-project-title"><strong>{feature[0]}</strong></div><input value={feature[1]} onChange={e=>update(["features",i,1],e.target.value)}/><textarea value={feature[2]} onChange={e=>update(["features",i,2],e.target.value)}/></div>)}
-          <div className="admin-subtitle">Final CTA</div>
-          {input("Title",["cta","title"])}
-          {input("Supporting line",["cta","text"])}
-          {input("Button label",["cta","button"])}
-          <div className="admin-subtitle">Featured section</div>
-          {input("Heading",["featured","title"])}
-          {input("Description",["featured","description"],"textarea")}
-          {input("Quote before highlight",["featured","quoteBefore"],"textarea")}
-          {input("Highlighted quote text",["featured","quoteHighlight"])}
-          {input("Quote after highlight",["featured","quoteAfter"],"textarea")}
-          {input("Card title",["featured","metaTitle"])}
-          {input("Card subtitle",["featured","metaText"])}
-        </>}
-        {tab==="pricing" && <>
-          {input("Package title",["pricing","title"])}
-          {input("Price",["pricing","price"])}
-          {input("Description",["pricing","description"],"textarea")}
-          <div className="admin-subtitle">What's included</div>
-          {draft.pricing.features.map((f,i)=><div className="admin-feature-row" key={i}><label className="admin-field"><span>Feature {i+1}</span><input value={f} onChange={e=>update(["pricing","features",i],e.target.value)}/></label><button type="button" className="delete-feature" onClick={()=>setDraft(prev=>({...prev,pricing:{...prev.pricing,features:prev.pricing.features.filter((_,idx)=>idx!==i)}}))}>Delete</button></div>)}
-          <button type="button" className="add-project" onClick={()=>setDraft(prev=>({...prev,pricing:{...prev.pricing,features:[...prev.pricing.features,"New feature"]}}))}>+ Add feature</button>
-        </>}
-        {tab==="projects" && <div className="admin-projects">
-          <div className="projects-admin-top">
-            <p className="admin-help">All portfolio projects are shown on the website. Website links open in a new tab. Every project shows a designed placeholder card automatically \u2014 upload a real screenshot below to replace it (recommended for best results).</p>
-            <button className="add-project" onClick={()=>setDraft(prev=>({...prev,projects:[...prev.projects,{id:Date.now(),name:"New Project",category:"Shopify Stores",industry:"E-commerce",platform:"Shopify",description:"Add your project description here.",image:"",url:""}]}))}>+ Add project</button>
-          </div>
-          {draft.projects.map((p,i)=><div className="admin-project" key={p.id}>
-            <div className="admin-project-title"><b>{String(i+1).padStart(2,"0")}</b><strong>{p.name}</strong><button className="delete-project" onClick={()=>setDraft(prev=>({...prev,projects:prev.projects.filter((_,idx)=>idx!==i)}))}>Delete</button></div>
-            <input placeholder="Project name" value={p.name} onChange={e=>update(["projects",i,"name"],e.target.value)}/>
-            <input placeholder="Category (Shopify Stores, Fashion, Beauty...)" value={p.category || ""} onChange={e=>update(["projects",i,"category"],e.target.value)}/>
-            <input placeholder="Industry" value={p.industry} onChange={e=>update(["projects",i,"industry"],e.target.value)}/>
-            <input placeholder="Platform" value={p.platform} onChange={e=>update(["projects",i,"platform"],e.target.value)}/>
-            <input placeholder="Website URL (https://...)" value={p.url || ""} onChange={e=>update(["projects",i,"url"],e.target.value)}/>
-            <div className="thumbnail-upload">
-              <label className="thumbnail-upload-button">
-                {uploadingIndex === i ? "Uploading..." : "Upload thumbnail"}
-                <input type="file" accept="image/*" disabled={uploadingIndex !== null} onChange={e=>{const file=e.target.files?.[0]; if(file) handleThumbnailUpload(i,file); e.target.value="";}} />
-              </label>
-              {p.image && !isAutoGeneratedUrl(p.image) && <button type="button" className="delete-feature" onClick={()=>update(["projects",i,"image"],"")}>Remove custom image</button>}
-              <a className="thumbnail-preview" href={p.image && !isAutoGeneratedUrl(p.image) ? p.image : makeThumb(p, i)} target="_blank" rel="noreferrer"><img src={p.image && !isAutoGeneratedUrl(p.image) ? p.image : makeThumb(p, i)} alt="Automatic or custom thumbnail" onError={e=>{e.currentTarget.src=makeThumb(p,i);}} /> <span>{p.image && !isAutoGeneratedUrl(p.image) ? "Custom image \u2014 will always be used" : "Automatic placeholder (upload to add a real screenshot)"}</span></a>
-            </div>
-            <textarea placeholder="Description" value={p.description} onChange={e=>update(["projects",i,"description"],e.target.value)}/>
-          </div>)}
-        </div>}
-        {tab==="services" && <>
-          {draft.services.map((s,i)=><div className="admin-project" key={i}>
-            <div className="admin-project-title"><strong>Service {i+1}</strong></div>
-            <input value={s[0]} onChange={e=>update(["services",i,0],e.target.value)}/>
-            <textarea value={s[1]} onChange={e=>update(["services",i,1],e.target.value)}/>
-          </div>)}
-        </>}
-        {tab==="categories" && <div className="admin-categories">
-          <div className="admin-subtitle">Portfolio filters</div>
-          <p className="admin-help">Manage the filter buttons shown above your work. “All” stays fixed; every other category can be renamed or removed.</p>
-          {draft.categories.slice(1).map((category,i)=><div className="category-admin-row" key={`${category}-${i}`}><input value={category} onChange={e=>update(["categories",i + 1],e.target.value)}/><button type="button" className="delete-project" onClick={()=>setDraft(prev=>({...prev,categories:prev.categories.filter((_,index)=>index !== i + 1)}))}>Delete</button></div>)}
-          <button type="button" className="add-project" onClick={()=>setDraft(prev=>({...prev,categories:[...prev.categories,"New category"]}))}>+ Add category</button>
-        </div>}
-        {tab==="contact" && <>
-          {input("WhatsApp number (country code + number)",["brand","whatsapp"])}
-          {input("Email",["brand","email"])}
-          {input("Instagram URL",["brand","instagram"])}
-          <p className="admin-help">WhatsApp is used on Start a Project, pricing and the final CTA. Example: 919876543210.</p>
-        </>}
-      </div>
-      <div className="admin-actions">
-        <button className="save" onClick={save}>Save changes</button>
-        <button className="export" onClick={exportData}>Export</button>
-        <button className="reset" onClick={reset}>Reset</button>
-      </div>
-    </aside>
-  );
+      {tab === "stats" && <><div className="admin-section-title"><span>02</span><div><h3>Numbers & proof</h3><p>Edit the four proof cards shown in “The numbers don’t lie”.</p></div></div>{field("Section tag",["proof","tag"])}{field("Heading",["proof","title"])}{field("Description",["proof","description"],"textarea")}<div className="admin-proof-editor">{[0,1,2,3].map(i=><div className="admin-repeat-card" key={i}><div className="admin-repeat-top"><b>0{i+1}</b></div><input placeholder="Big value" value={draft.proof.values?.[i]||""} onChange={e=>update(["proof","values",i],e.target.value)}/><input placeholder="Card label" value={draft.proof.labels?.[i]||""} onChange={e=>update(["proof","labels",i],e.target.value)}/></div>)}</div></>}
+
+      {tab === "trust" && <><div className="admin-section-title"><span>03</span><div><h3>Brand rail</h3><p>These names power the running “Worked with amazing brands” section.</p></div></div>{field("Eyebrow",["trust","eyebrow"])}<div className="admin-editor-block"><div className="admin-block-head"><div><small>BRANDS</small><h3>Portfolio brand names</h3></div></div>{(draft.trust.names||[]).map((name,i)=><div className="admin-feature-row" key={i}><input value={name} onChange={e=>update(["trust","names",i],e.target.value)}/><button className="delete-feature" onClick={()=>removeAt(["trust","names"],i)}>Delete</button></div>)}<button className="add-project" onClick={()=>addTo(["trust","names"],"New brand")}>+ Add brand</button></div><div className="admin-subtitle">Running marquee</div><p className="admin-help">Edit the services and topics used in the top running strip.</p>{(draft.marqueeItems||[]).map((item,i)=><div className="admin-feature-row" key={i}><input value={item} onChange={e=>update(["marqueeItems",i],e.target.value)}/><button className="delete-feature" onClick={()=>removeAt(["marqueeItems"],i)}>Delete</button></div>)}<button className="add-project" onClick={()=>addTo(["marqueeItems"],"NEW SERVICE")}>+ Add marquee item</button></>}
+
+      {tab === "work" && <><div className="admin-section-title"><span>02</span><div><h3>Portfolio manager</h3><p>Add, edit, remove, reorder content fields and upload real website screenshots.</p></div></div><div className="projects-admin-top"><button className="add-project" onClick={()=>setDraft(prev=>({...prev,projects:[...prev.projects,{id:Date.now(),name:"New Project",category:"Business",industry:"",platform:"Custom",description:"",image:"",url:""}]}))}>+ Add project</button></div>{draft.projects.map((p,i)=><div className="admin-project admin-project-v2" key={p.id}><div className="admin-project-title"><b>{String(i+1).padStart(2,"0")}</b><strong>{p.name || "Untitled project"}</strong><button className="delete-project" onClick={()=>removeAt(["projects"],i)}>Delete</button></div><div className="admin-two-col"><input placeholder="Project name" value={p.name||""} onChange={e=>update(["projects",i,"name"],e.target.value)}/><input placeholder="Category" value={p.category||""} onChange={e=>update(["projects",i,"category"],e.target.value)}/><input placeholder="Industry" value={p.industry||""} onChange={e=>update(["projects",i,"industry"],e.target.value)}/><input placeholder="Platform" value={p.platform||""} onChange={e=>update(["projects",i,"platform"],e.target.value)}/></div><input placeholder="Website URL" value={p.url||""} onChange={e=>update(["projects",i,"url"],e.target.value)}/><textarea placeholder="Description" value={p.description||""} onChange={e=>update(["projects",i,"description"],e.target.value)}/><div className="thumbnail-upload"><label className="thumbnail-upload-button">{uploadingIndex===i?"Uploading…":"Upload thumbnail"}<input type="file" accept="image/*" disabled={uploadingIndex!==null} onChange={e=>{const file=e.target.files?.[0];if(file)handleThumbnailUpload(i,file);e.target.value=""}}/></label>{p.image&&<button className="delete-feature" onClick={()=>update(["projects",i,"image"],"")}>Remove image</button>}</div></div>)}</>}
+
+      {tab === "services" && <><div className="admin-section-title"><span>03</span><div><h3>Services</h3><p>Add, remove and edit the services shown across the website.</p></div></div>{pairRows(["services"],"Core services")}<div className="admin-subtitle">Portfolio filters</div>{(draft.categories||[]).map((c,i)=><div className="category-admin-row" key={`${c}-${i}`}><input value={c} onChange={e=>update(["categories",i],e.target.value)}/>{i>0&&<button className="delete-project" onClick={()=>removeAt(["categories"],i)}>Delete</button>}</div>)}<button className="add-project" onClick={()=>addTo(["categories"],"New category")}>+ Add category</button></>}
+
+      {tab === "shopify" && <><div className="admin-section-title"><span>04</span><div><h3>Shopify expertise</h3><p>Edit the heading, supporting copy and every clickable option in the Shopify section.</p></div></div>{field("Heading line 1",["shopify","titleA"])}{field("Heading line 2",["shopify","titleB"])}{field("Description",["shopify","description"],"textarea")}{pairRows(["shopify","points"],"Clickable expertise options")}</>}
+
+      {tab === "why" && <><div className="admin-section-title"><span>05</span><div><h3>Why DigiSky comparison</h3><p>Edit the switch labels, emojis, headings and every comparison point.</p></div></div>{field("Section tag",["why","tag"])}{field("Subtitle",["why","subtitle"])}{field("DigiSky heading",["why","digiTitle"])}{field("Typical agency heading",["why","otherTitle"])}<div className="admin-two-col">{field("DigiSky emoji",["why","digiEmoji"])}{field("Typical agency emoji",["why","otherEmoji"])}{field("DigiSky status",["why","digiStatus"])}{field("Typical agency status",["why","otherStatus"])}</div>{pairRows(["why","digi"],"DigiSky points")}{pairRows(["why","other"],"Typical agency points")}</>}
+
+      {tab === "pricing" && <><div className="admin-section-title"><span>06</span><div><h3>Pricing</h3><p>Edit the offer, price, description and unlimited feature rows.</p></div></div>{field("Package title",["pricing","title"])}{field("Price",["pricing","price"])}{field("Description",["pricing","description"],"textarea")}<div className="admin-subtitle">Included features</div>{(draft.pricing.features||[]).map((f,i)=><div className="admin-feature-row" key={i}><input value={f} onChange={e=>update(["pricing","features",i],e.target.value)}/><button className="delete-feature" onClick={()=>removeAt(["pricing","features"],i)}>Delete</button></div>)}<button className="add-project" onClick={()=>addTo(["pricing","features"],"New feature")}>+ Add feature</button></>}
+
+      {tab === "featured" && <><div className="admin-section-title"><span>10</span><div><h3>Featured section</h3><p>Edit the editorial featured block content.</p></div></div>{field("Heading",["featured","title"])}{field("Description",["featured","description"],"textarea")}{field("Quote before highlight",["featured","quoteBefore"],"textarea")}{field("Highlighted quote",["featured","quoteHighlight"])}{field("Quote after highlight",["featured","quoteAfter"],"textarea")}{field("Card title",["featured","metaTitle"])}{field("Card subtitle",["featured","metaText"])}</>}
+
+      {tab === "about" && <><div className="admin-section-title"><span>07</span><div><h3>About DigiSky</h3><p>Edit the story and supporting points.</p></div></div>{field("Heading line 1",["about","titleA"])}{field("Heading line 2",["about","titleB"])}{field("About text",["about","text"],"textarea")}<div className="admin-subtitle">About points</div>{(draft.about.points||[]).map((x,i)=><div className="admin-feature-row" key={i}><input value={x} onChange={e=>update(["about","points",i],e.target.value)}/><button className="delete-feature" onClick={()=>removeAt(["about","points"],i)}>Delete</button></div>)}<button className="add-project" onClick={()=>addTo(["about","points"],"New point")}>+ Add point</button></>}
+
+      {tab === "process" && <><div className="admin-section-title"><span>08</span><div><h3>Simple process</h3><p>Edit every step, title and description used by the process timeline.</p></div></div>{pairRows(["process"],"Process steps","Step name","Step description")}</>}
+
+      {tab === "reviews" && <><div className="admin-section-title"><span>09</span><div><h3>Client notes</h3><p>Add, edit or remove testimonials shown on the website.</p></div></div><div className="admin-editor-block"><div className="admin-block-head"><div><small>REVIEWS</small><h3>Testimonials</h3></div><button className="add-project" onClick={()=>addTo(["testimonials"],{name:"Client name",company:"Company",quote:"Client feedback…",rating:5})}>+ Add review</button></div>{(draft.testimonials||[]).map((t,i)=><div className="admin-repeat-card" key={i}><div className="admin-repeat-top"><b>0{i+1}</b><button className="delete-project" onClick={()=>removeAt(["testimonials"],i)}>Delete</button></div><div className="admin-two-col"><input placeholder="Client name" value={t.name||""} onChange={e=>update(["testimonials",i,"name"],e.target.value)}/><input placeholder="Company" value={t.company||""} onChange={e=>update(["testimonials",i,"company"],e.target.value)}/></div><textarea placeholder="Quote" value={t.quote||""} onChange={e=>update(["testimonials",i,"quote"],e.target.value)}/><input type="number" min="1" max="5" placeholder="Rating" value={t.rating||5} onChange={e=>update(["testimonials",i,"rating"],Number(e.target.value))}/></div>)}</div></>}
+
+      {tab === "growth" && <><div className="admin-section-title"><span>10</span><div><h3>More ways we help</h3><p>Manage the six growth cards and the WhatsApp enquiry copy.</p></div></div>{pairRows(["growthServices"],"Growth service cards","Service name","Service description")}</>}
+
+      {tab === "footer" && <><div className="admin-section-title"><span>11</span><div><h3>Footer & contact</h3><p>Control footer messaging and all social/contact details.</p></div></div>{field("Email",["brand","email"])}{field("WhatsApp number",["brand","whatsapp"])}{field("Instagram URL",["brand","instagram"])}{field("LinkedIn URL",["brand","linkedin"])}{field("GitHub URL",["brand","github"])}{field("Footer eyebrow",["footer","eyebrow"])}{field("Footer heading line 1",["footer","titleA"])}{field("Footer heading line 2",["footer","titleB"])}{field("Footer description",["footer","text"],"textarea")}{field("CTA button",["cta","button"])}{field("CTA title",["cta","title"])}{field("CTA supporting text",["cta","text"],"textarea")}</>}
+
+      {tab === "advanced" && <div className="admin-json-editor"><div className="admin-section-title"><span>∞</span><div><h3>Advanced content editor</h3><p>This is the master editor. Every value stored for the website can be edited here.</p></div></div><textarea className="admin-json-textarea" value={jsonValue} onChange={e=>{setJsonValue(e.target.value);setJsonError("")}} spellCheck={false}/>{jsonError&&<div className="admin-json-error">{jsonError}</div>}<div className="admin-json-actions"><button className="export" onClick={applyJSON}>Apply JSON to editor</button><button className="export" onClick={()=>setJsonValue(JSON.stringify(draft,null,2))}>Refresh JSON</button></div></div>}
+    </div>
+    <div className="admin-actions admin-v2-actions"><button className="save" onClick={save}>Save all changes</button><button className="export" onClick={exportData}>Export JSON</button><button className="reset" onClick={reset}>Reset</button></div>
+  </aside>;
 }
 
-
-function MarqueeStrip({ reverse = false }) {
-  const items = ["SHOPIFY", "WEB DEVELOPMENT", "META ADS", "GOOGLE ADS", "AI AUTOMATION", "SEO + CRO", "AD CREATIVES", "CUSTOM CODE"];
-  const row = [...items, ...items];
+function MarqueeStrip({ reverse = false, items = [] }) {
+  const safeItems = Array.isArray(items) && items.length ? items : ["SHOPIFY", "WEB DEVELOPMENT", "META ADS", "GOOGLE ADS", "AI AUTOMATION", "SEO + CRO", "AD CREATIVES", "CUSTOM CODE"];
+  const row = [...safeItems, ...safeItems];
   return <section className={`marquee-strip ${reverse ? "marquee-reverse" : ""}`} aria-label="DigiSky services">
     <div className="marquee-window">
       <div className="marquee-track">{row.map((item, index) => <span className="marquee-item" key={`${item}-${index}`}><b>{item}</b><i aria-hidden="true">•</i></span>)}</div>
@@ -785,29 +752,15 @@ function CountUpNumber({ value }) {
 }
 
 function ProofNumbers({ data }) {
-  const proofLabels = ["Projects delivered", "20+ builds", "Websites built from scratch", "Client satisfaction"];
-  const proofValues = [data.stats?.[0]?.[0] || "34+", "Shopify", "Custom-coded", "100%"];
-  const brandNames = Array.from(new Set((data.projects || []).map((project) => String(project.name || "").trim()).filter(Boolean)));
+  const proof = data.proof || {};
+  const labels = proof.labels || ["Projects delivered", "Shopify builds", "Custom-coded", "Client satisfaction"];
+  const values = proof.values || [data.stats?.[0]?.[0] || "34+", "20+", "Custom", "100%"];
+  const brandNames = Array.from(new Set((data.projects || []).map(project => String(project.name || "").trim()).filter(Boolean)));
   const brandLoop = [...brandNames, ...brandNames];
   return <section className="proof-section section">
-    <div className="proof-head"><div><span className="tag-chip">The numbers don't lie</span><h2>Big builds. Bigger results.</h2></div><p>From Shopify storefronts to custom-coded experiences, the work speaks for itself — and every number is a piece of that story.</p></div>
-    <div className="proof-grid">
-      {proofLabels.map((label, index) => <article className={`proof-card proof-card-${index + 1}`} key={label}>
-        <span className="proof-index">0{index + 1}</span>
-        <strong><CountUpNumber value={proofValues[index]} /></strong>
-        <span>{label}</span>
-        <i className="proof-line" />
-        <b className="proof-card-mark">{index === 0 ? "↗" : index === 1 ? "S" : index === 2 ? "</>" : "★"}</b>
-      </article>)}
-    </div>
-    <div className="proof-brands" aria-label="Brands and projects DigiSky has worked with">
-      <div className="proof-brands-heading">Worked with amazing brands</div>
-      <div className="proof-brand-window">
-        <div className="proof-brand-track">
-          {brandLoop.map((name, index) => <span className="proof-brand-name" key={`${name}-${index}`}><b>{name}</b><i aria-hidden="true">✦</i></span>)}
-        </div>
-      </div>
-    </div>
+    <div className="proof-head"><div><span className="tag-chip">{proof.tag || "The numbers don't lie"}</span><h2>{proof.title || "Big builds. Bigger results."}</h2></div><p>{proof.description || "From Shopify storefronts to custom-coded experiences, the work speaks for itself."}</p></div>
+    <div className="proof-grid">{[0,1,2,3].map(index => <article className={`proof-card proof-card-${index+1}`} key={index}><span className="proof-index">0{index+1}</span><strong><CountUpNumber value={values[index] ?? ""}/></strong><span>{labels[index] || ""}</span><i className="proof-line"/><b className="proof-card-mark">{index===0?"↗":index===1?"S":index===2?"</>":"★"}</b></article>)}</div>
+    <div className="proof-brands" aria-label="Brands and projects DigiSky has worked with"><div className="proof-brands-heading">Worked with amazing brands</div><div className="proof-brand-window"><div className="proof-brand-track">{brandLoop.map((name,index)=><span className="proof-brand-name" key={`${name}-${index}`}><b>{name}</b><i aria-hidden="true">✦</i></span>)}</div></div></div>
   </section>;
 }
 
@@ -914,55 +867,14 @@ function CustomCursor() {
 
 function WhyDigiSky({ data }) {
   const [mode, setMode] = useState("digisky");
+  const config = data.why || {};
   const isDigi = mode === "digisky";
-  const other = [
-    ["Strategy without a clear conversion path", "Looks polished, but the next action is often unclear."],
-    ["Template-first experiences", "The brand gets adjusted to the template instead of the other way around."],
-    ["Slow handoffs", "Too many layers between the idea, design and final build."],
-    ["One-size-fits-all packages", "The same process is applied even when the business needs something different."],
-    ["Launch and disappear", "The project ends at launch instead of improving after real users arrive."],
-  ];
-  const digi = [
-    ["Strategy tied to the next click", "Every section has a job — explain, build trust or move the visitor forward."],
-    ["Design made around your brand", "A distinctive visual system built around your offer, audience and products."],
-    ["Design + development together", "One team keeps the experience consistent from first screen to final interaction."],
-    ["Built for speed and growth", "Clean structure, responsive interactions and a foundation ready for the next stage."],
-    ["Support beyond launch", "We stay close when you need improvements, fixes, new pages or growth experiments."],
-  ];
-  const items = isDigi ? digi : other;
-  return (
-    <section className="why-switch-section section" id="why-digisky">
-      <div className="why-switch-head">
-        <span className="why-switch-tag">WHY DIGISKY?</span>
-        <h2>{isDigi ? <>Your brand on <span>DigiSky.</span></> : <>Your brand without <span>the usual friction.</span></>}</h2>
-        <p>Flip the switch. See the difference.</p>
-      </div>
-      <div className="why-switch-toggle" role="tablist" aria-label="Why DigiSky comparison">
-        <button className={!isDigi ? "active" : ""} onClick={() => setMode("other")} role="tab" aria-selected={!isDigi}>Typical agency</button>
-        <button className={isDigi ? "active" : ""} onClick={() => setMode("digisky")} role="tab" aria-selected={isDigi}>DigiSky</button>
-      </div>
-      <div className={`why-switch-content ${isDigi ? "is-digisky" : "is-other"}`}>
-        <div className="why-switch-visual">
-          <div className="why-device-card">
-            <div className="why-orbit orbit-one"/><div className="why-orbit orbit-two"/>
-            <div className="why-core" aria-hidden="true">{isDigi ? "🤩" : "🤯"}</div>
-            <div className="why-spark spark-one">✦</div><div className="why-spark spark-two">✦</div><div className="why-spark spark-three">✦</div>
-            <div className="why-progress"><span/></div>
-            <strong>{isDigi ? "Built to move." : "Still figuring it out…"}</strong>
-            <small>{isDigi ? "strategy · design · build · growth" : "brief · handoff · revisions · launch"}</small>
-          </div>
-        </div>
-        <div className="why-switch-list" aria-live="polite">
-          {items.map(([title, desc], index) => (
-            <article className="why-switch-item" key={`${mode}-${index}`} style={{"--delay": `${index * 70}ms`}}>
-              <span className="why-switch-icon">{isDigi ? "✓" : "×"}</span>
-              <div><h3>{title}</h3><p>{desc}</p></div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  const items = isDigi ? (config.digi || []) : (config.other || []);
+  return <section className="why-switch-section section" id="why-digisky">
+    <div className="why-switch-head"><span className="why-switch-tag">{config.tag || "WHY DIGISKY?"}</span><h2>{isDigi ? (config.digiTitle || "Your brand on DigiSky.") : (config.otherTitle || "Your brand without the usual friction.")}</h2><p>{config.subtitle || "Flip the switch. See the difference."}</p></div>
+    <div className="why-switch-toggle" role="tablist" aria-label="Why DigiSky comparison"><button className={!isDigi ? "active" : ""} onClick={()=>setMode("other")} role="tab" aria-selected={!isDigi}>Typical agency</button><button className={isDigi ? "active" : ""} onClick={()=>setMode("digisky")} role="tab" aria-selected={isDigi}>DigiSky</button></div>
+    <div className={`why-switch-content ${isDigi ? "is-digisky" : "is-other"}`}><div className="why-switch-visual"><div className="why-device-card"><div className="why-orbit orbit-one"/><div className="why-orbit orbit-two"/><div className="why-core" aria-hidden="true">{isDigi ? (config.digiEmoji || "🤩") : (config.otherEmoji || "🤯")}</div><div className="why-spark spark-one">✦</div><div className="why-spark spark-two">✦</div><div className="why-spark spark-three">✦</div><div className="why-progress"><span/></div><strong>{isDigi ? (config.digiStatus || "Built to move.") : (config.otherStatus || "Still figuring it out…")}</strong><small>{isDigi ? "strategy · design · build · growth" : "brief · handoff · revisions · launch"}</small></div></div><div className="why-switch-list" aria-live="polite">{items.map(([title,desc],index)=><article className="why-switch-item" key={`${mode}-${index}`} style={{"--delay":`${index*70}ms`}}><span className="why-switch-icon">{isDigi ? "✓" : "×"}</span><div><h3>{title}</h3><p>{desc}</p></div></article>)}</div></div>
+  </section>;
 }
 
 function App() {
@@ -1046,16 +958,12 @@ function App() {
               <a className="pill-button" href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a project</a>
               <button className="text-link" onClick={()=>document.getElementById("work")?.scrollIntoView({behavior:"smooth"})}>View our work</button>
             </div>
-            <div className="hero-trust">
-              <span><CheckIcon/>Website development</span>
-              <span><CheckIcon/>Shopify &amp; e-commerce</span>
-              <span><CheckIcon/>Conversion-focused marketing</span>
-            </div>
+            <div className="hero-trust">{(data.hero.trustItems || ["Website development","Shopify & e-commerce","Conversion-focused marketing"]).map(item=><span key={item}><CheckIcon/>{item}</span>)}</div>
           </div>
           <div className="hero-visual"><HeroShowcase projects={projects} heroImages={data.hero.images || [data.hero.image || "", "", ""]} /></div>
         </section>
 
-        <MarqueeStrip />
+        <MarqueeStrip items={data.marqueeItems} />
 
         <section id="work" className="section work-section work-showcase-section">
           <div className="work-showcase-head">
@@ -1089,7 +997,7 @@ function App() {
           <div className="services-list services-card-grid">{data.services.map((s,i)=><article className={`service-card ${i === 0 ? "service-featured" : ""}`} key={i}><div className="service-card-top"><span>{String(i + 1).padStart(2,"0")}</span><b>↗</b></div><div><small>{i === 0 ? "ECOMMERCE" : i === 1 ? "WEBSITE" : i === 2 ? "DEVELOPMENT" : "CONVERSION"}</small><h3>{s[0]}</h3><p>{s[1]}</p></div><div className="service-card-bottom"><span>Explore service</span><i/></div></article>)}</div>
         </section>
 
-        <ShopifyExpertise projects={projects}/>
+        <ShopifyExpertise projects={projects} data={data}/>
 
         <WhyDigiSky data={data}/> 
 
@@ -1121,9 +1029,9 @@ function App() {
           <div className="footer-divider" />
           <div className="footer-message">
             <div className="footer-message-copy">
-              <span className="footer-eyebrow">DIGITAL PARTNERS FOR MODERN BRANDS</span>
-              <h2>Step Up Your<br className="footer-break"/> Digital Presence</h2>
-              <p>From Shopify stores and e-commerce websites to high-converting websites and digital growth, DigiSky helps brands build a stronger presence online.</p>
+              <span className="footer-eyebrow">{data.footer?.eyebrow || "DIGITAL PARTNERS FOR MODERN BRANDS"}</span>
+              <h2>{data.footer?.titleA || "Step Up Your"}<br className="footer-break"/> {data.footer?.titleB || "Digital Presence"}</h2>
+              <p>{data.footer?.text || "From Shopify stores and e-commerce websites to high-converting websites and digital growth, DigiSky helps brands build a stronger presence online."}</p>
               <a className="footer-cta" href={waLink(data.brand.whatsapp,"Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a Project <CtaArrow/></a>
             </div>
             <div className="footer-socials">
