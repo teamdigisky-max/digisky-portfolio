@@ -412,6 +412,20 @@ function ShopifyExpertise({ projects, data }) {
     </div>
   </section>;
 }
+
+function ShopifyFaq() {
+  const questions = [
+    ["What does DigiSky's Shopify website development service include?", "DigiSky can help with Shopify storefront design and development, responsive layouts, product and collection setup, navigation, payment and shipping setup assistance, basic SEO structure and launch testing. The exact scope is agreed for each project."],
+    ["How much does a Shopify website cost?", "Shopify website cost depends on the design, number of pages and products, custom functionality and integrations required. Contact DigiSky with your requirements for a project-specific quote."],
+    ["Does DigiSky work with businesses outside India?", "Yes. DigiSky works with ambitious brands in India and worldwide on Shopify, ecommerce and custom website projects."],
+    ["Can DigiSky customize an existing Shopify theme?", "Yes. DigiSky can tailor a Shopify storefront to a brand's products and customer journey, including theme sections, interactions and conversion-focused user experience."],
+  ];
+  return <section className="faq-section section" aria-labelledby="shopify-faq-title">
+    <div className="faq-heading"><span className="tag-chip">Shopify development FAQs</span><h2 id="shopify-faq-title">Planning a Shopify website?</h2><p>Clear answers about our Shopify store design and development services.</p></div>
+    <div className="faq-list">{questions.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div>
+  </section>;
+}
+
 function HeroShowcase({ projects, heroImages = [] }) {
   const showcaseRef = React.useRef(null);
   const move = event => {
@@ -998,6 +1012,8 @@ function App() {
         </section>
 
         <ShopifyExpertise projects={projects} data={data}/>
+
+        <ShopifyFaq />
 
         <WhyDigiSky data={data}/> 
 

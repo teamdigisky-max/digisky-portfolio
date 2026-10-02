@@ -1612,11 +1612,16 @@ main{width:100%!important}
   .marquee-item{font-size:9px!important;padding:0 17px!important;gap:14px!important}
   .services-redesigned .services-intro,
   .services-redesigned .services-list,
+  .faq-heading,
+  .faq-list,
   .shopify-redesigned .shopify-topline,
   .shopify-redesigned .shopify-heading,
   .shopify-redesigned .shopify-platform-pills,
   .shopify-redesigned .shopify-stage{width:calc(100% - 36px)!important}
   .footer-panel{padding:54px 18px 20px!important}
+  .faq-section{padding-bottom:75px!important}
+  .faq-heading h2{font-size:36px}
+  .faq-list summary{font-size:16px}
 }
 
 /* ================= V10 FINAL POLISH ================= */
@@ -1707,6 +1712,15 @@ main{width:100%!important}
 .shopify-redesigned .shopify-list button.active small,
 .shopify-redesigned .shopify-list button.active>span,
 .shopify-redesigned .shopify-list button.active>b{color:#111510!important}
+
+.faq-section{padding-top:24px!important;padding-bottom:110px!important;color:#172016}
+.faq-heading{width:min(1360px,calc(100% - 72px));margin:0 auto 30px}
+.faq-heading h2{margin:14px 0 10px;font-size:clamp(34px,5vw,58px);line-height:1.05;color:#172016}
+.faq-heading p,.faq-list details p{color:#596359;line-height:1.7}
+.faq-list{width:min(920px,calc(100% - 72px));margin:0 auto;border-top:1px solid #dfe4db}
+.faq-list details{border-bottom:1px solid #dfe4db;padding:22px 0}
+.faq-list summary{cursor:pointer;font-size:18px;font-weight:700;line-height:1.45;color:#172016}
+.faq-list details p{max-width:760px;margin:14px 0 0}
 
 /* 4) Simple process — centered rail + complete hover color system. */
 .how-redesigned{
