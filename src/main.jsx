@@ -523,6 +523,7 @@ function AppRoutes() {
       <SeoMeta />
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="/admin" element={<App />} />
         <Route path="/services" element={<LandingPage pageKey="services" />} />
         <Route path="/services/shopify-development" element={<ServicePage pageKey="services/shopify-development" />} />
         <Route path="/services/shopify-store-design" element={<ServicePage pageKey="services/shopify-store-design" />} />
