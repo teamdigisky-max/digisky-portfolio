@@ -945,7 +945,7 @@ function WhyDigiSky({ data }) {
         <div className="why-switch-visual">
           <div className="why-device-card">
             <div className="why-orbit orbit-one"/><div className="why-orbit orbit-two"/>
-            <div className="why-core">DS</div>
+            <div className="why-core" aria-hidden="true">{isDigi ? "🤩" : "🤯"}</div>
             <div className="why-spark spark-one">✦</div><div className="why-spark spark-two">✦</div><div className="why-spark spark-three">✦</div>
             <div className="why-progress"><span/></div>
             <strong>{isDigi ? "Built to move." : "Still figuring it out…"}</strong>
