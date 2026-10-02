@@ -786,7 +786,7 @@ function CountUpNumber({ value }) {
 
 function ProofNumbers({ data }) {
   const proofLabels = ["Projects delivered", "Shopify builds", "Custom-coded websites", "Client satisfaction"];
-  const proofValues = [data.stats?.[0]?.[0] || "34+", data.stats?.[1]?.[0] || "20+", "Custom", data.stats?.[2]?.[0] || "4.9/5"];
+  const proofValues = [data.stats?.[0]?.[0] || "34+", data.stats?.[1]?.[0] || "20+", "Custom-coded", data.stats?.[2]?.[0] || "4.9/5"];
   return <section className="proof-section section">
     <div className="proof-head"><div><span className="tag-chip">The numbers don't lie</span><h2>Built. Shipped. Proven.</h2></div><p>From Shopify storefronts to custom-coded experiences, the work speaks for itself — and every number is a piece of that story.</p></div>
     <div className="proof-grid">
@@ -909,7 +909,7 @@ function App() {
         <section id="work" className="section work-section work-showcase-section">
           <div className="work-showcase-head">
             <div><span className="tag-chip">Featured work / selected builds</span><h2>Our latest projects<span>.</span></h2><p>Stores, websites and digital experiences built to look sharp, load fast and give the next click somewhere useful to go.</p></div>
-            <div className="work-head-side"><span>01 — 06</span><a className="pill-button work-head-button" href="#work">Explore all work <CtaArrow/></a></div>
+            <div className="work-head-side"><span>ALL SELECTED BUILDS</span><a className="pill-button work-head-button" href="#work">Explore all work <CtaArrow/></a></div>
           </div>
           <div className="project-filters" role="group" aria-label="Filter projects by category">{data.categories.map(filter=><button key={filter} className={effectiveFilter === filter ? "active" : ""} onClick={()=>setActiveFilter(filter)}>{filter}</button>)}</div>
           <div className="projects-featured-layout projects-all-layout">
@@ -939,9 +939,7 @@ function App() {
 
         <ShopifyExpertise projects={projects}/>
 
-        <section className="why-section section why-redesigned"><div className="why-intro"><div><span className="tag-chip">Why DigiSky</span><h2>Built with intent.<br/><em>Designed to move.</em></h2></div><p>We care about what happens after launch — how fast the site feels, how clearly it communicates, and whether people know what to do next.</p></div><div className="why-grid">{data.features.map((feature,index)=><article key={feature[0]}><div className="why-number">{feature[0]}</div><div className="why-icon">✦</div><h3>{feature[1]}</h3><p>{feature[2]}</p><span className="why-arrow">↗</span></article>)}</div></section>
-
-        <Pricing data={data}/>
+        <section className="why-section section why-redesigned"><div className="why-intro"><div><span className="tag-chip">Why DigiSky</span><h2>Built with intent.<br/><em>Designed to move.</em></h2></div><p>We care about what happens after launch — how fast the site feels, how clearly it communicates, and whether people know what to do next.</p></div><div className="why-grid">{[...(data.features || []), ["04", "Built to evolve", "Flexible systems, clean code and scalable foundations so your next change does not become a rebuild."]].slice(0,4).map((feature,index)=><article key={`${feature[0]}-${index}`}><div className="why-number">{String(index+1).padStart(2,"0")}</div><div className="why-icon">✦</div><h3>{feature[1]}</h3><p>{feature[2]}</p><span className="why-arrow">↗</span></article>)}</div></section>
 
         <AboutSection data={data}/>
         <HowItWorks data={data}/>
