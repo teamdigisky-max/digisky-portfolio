@@ -36,4 +36,4 @@ If you're not sure how, the easiest path:
 2. Upload the contents of `dist/` to your existing host, or drag-and-drop the `dist` folder into Vercel's dashboard.
 
 ## Thumbnail note
-Portfolio cards automatically request a website screenshot from the project's URL (Thum.io first, then Microlink). These providers may expire or rate-limit their screenshots. In the admin Projects tab, choose **Save screenshot permanently** to copy the current screenshot into Supabase Storage and publish its permanent URL. Updating the project URL changes the automatic preview; save the new screenshot again to cache it. Upload a custom image to use your own thumbnail, or choose **Use automatic screenshot** to switch back. If both screenshot services are unavailable, a local generated thumbnail is shown.
+Portfolio cards use a generated thumbnail bundled with the site, so they do not depend on screenshot services, expiring URLs, or external network requests. In the admin Projects tab, upload a custom thumbnail and choose **Save all changes** to publish it. Choose **Use automatic thumbnail** to switch back to the permanent generated thumbnail.
