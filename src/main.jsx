@@ -6,7 +6,7 @@ import { supabase } from "./lib/supabase";
 const ADMIN_PASSWORD = "digisky2026";
 
 const DEFAULT_DATA = {
-  brand: { name: "DigiSky", tagline: "Step Up Digitally", email: "team.digisky@gmail.com", whatsapp: "", instagram: "https://www.instagram.com/digisky.world/" },
+  brand: { name: "DigiSky", tagline: "Step Up Digitally", email: "team.digisky@gmail.com", whatsapp: "+919753622101", instagram: "https://www.instagram.com/digisky.world/" },
   hero: { trustItems: ["Website development", "Shopify & e-commerce", "Conversion-focused marketing"], kicker: "SHOPIFY & WORDPRESS STUDIO", titleA: "Shopify Stores", titleB: "Built To", titleC: "Sell.", description: "We design, build and optimise high-converting Shopify stores for ambitious brands — from strategy and UX to launch and growth.", images: ["", "", ""] },
   stats: [["31+", "Projects Delivered"], ["20+", "Happy Clients"], ["4.9/5", "Client Satisfaction"], ["2x", "Average Growth"]],
   pricing: { title: "Shopify Website", price: "\u20B97,500", description: "A polished Shopify storefront designed, configured and made ready to launch — without needing a premium theme.", features: ["Custom homepage design", "Mobile responsive layout", "Product & collection setup", "Navigation, pages & basic policies", "Payment / shipping setup assistance", "Basic SEO structure", "Launch-ready testing"] },
@@ -1021,10 +1021,10 @@ function App() {
               <a className="footer-wordmark" href="#top"><img src="/logo.png" alt="DigiSky logo"/><span>{data.brand.name}</span></a>
               <span className="footer-tagline">{data.brand.tagline}</span>
             </div>
-            <div className="footer-nav-group"><small>MAIN</small><a href="#top">Home</a><a href="#about">About</a><a href="#services">Services</a><a href="#work">Portfolio</a><a href={`mailto:${data.brand.email}`}>Contact</a></div>
+            <div className="footer-nav-group"><small>MAIN</small><a href="#top">Home</a><a href="#about">About</a><a href="#services">Services</a><a href="#work">Portfolio</a><a href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to discuss a project.")} target="_blank" rel="noreferrer">Contact</a></div>
             <div className="footer-nav-group"><small>SERVICES</small><a href="#shopify-expertise">Shopify Development</a><a href="#work">E-commerce Websites</a><a href="#services">WordPress &amp; WooCommerce</a><a href="#services">Website Redesign</a><a href="#work">Landing Pages</a></div>
             <div className="footer-nav-group"><small>GROWTH</small><a href="#services">Digital Marketing</a><a href={`mailto:${data.brand.email}?subject=Meta%20Ads%20project`}>Meta Ads</a><a href={`mailto:${data.brand.email}?subject=Google%20Ads%20project`}>Google Ads</a><a href="#work">UGC &amp; Ad Creatives</a><a href="#about">Digital Strategy</a></div>
-            <div className="footer-nav-group"><small>COMPANY</small><a href="#about">About DigiSky</a><a href="#work">Our Work</a><a href={waLink(data.brand.whatsapp,"Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a Project</a><a href={`mailto:${data.brand.email}`}>Contact Us</a></div>
+            <div className="footer-nav-group"><small>COMPANY</small><a href="#about">About DigiSky</a><a href="#work">Our Work</a><a href={waLink(data.brand.whatsapp,"Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a Project</a><a href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to discuss a project.")} target="_blank" rel="noreferrer">Contact Us</a></div>
           </div>
           <div className="footer-divider" />
           <div className="footer-message">
