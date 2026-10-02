@@ -175,13 +175,6 @@ function InstagramIcon() {
   </svg>;
 }
 
-function WhatsAppIcon() {
-  return <svg width="17" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M20.5 3.5A11.9 11.9 0 0 0 12.04 0C5.47 0 .12 5.35.12 11.92c0 2.1.55 4.15 1.6 5.97L.02 24l6.25-1.64a11.9 11.9 0 0 0 5.77 1.47h.01c6.57 0 11.92-5.35 11.92-11.92 0-3.18-1.24-6.17-3.47-8.41Z" fill="currentColor"/>
-    <path d="M17.46 13.98c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.47-1.76-1.64-2.06-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.09 4.49.71.31 1.27.49 1.7.63.71.23 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z" fill="#0b0f0c"/>
-  </svg>;
-}
-
 function LinkedInIcon() {
   return <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M6.4 8.1H3.2V20h3.2V8.1ZM4.8 3A1.9 1.9 0 1 0 4.8 6.8 1.9 1.9 0 0 0 4.8 3ZM20.8 13.2c0-3.6-1.9-5.3-4.5-5.3-2.1 0-3 .9-3.5 1.6V8.1H9.6V20h3.2v-5.9c0-1.6.3-3.2 2.3-3.2 2 0 2 1.9 2 3.3V20h3.2l.5-6.8Z"/>
@@ -1034,7 +1027,7 @@ function App() {
               <small>SOCIALS</small>
               <div>
                 {data.brand.instagram && <a href={data.brand.instagram} target="_blank" rel="noreferrer" aria-label="DigiSky on Instagram"><InstagramIcon/><span>Instagram</span></a>}
-                {data.brand.whatsapp && <a href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to discuss a project.")} target="_blank" rel="noreferrer" aria-label="DigiSky on WhatsApp"><span className="footer-whatsapp-icon" aria-hidden="true"><WhatsAppIcon/></span><span>WhatsApp</span></a>}
+                {data.brand.whatsapp && <a href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to discuss a project.")} target="_blank" rel="noreferrer" aria-label="DigiSky on WhatsApp"><span className="footer-whatsapp-icon" aria-hidden="true">⌕</span><span>WhatsApp</span></a>}
                 {data.brand.linkedin && <a href={data.brand.linkedin} target="_blank" rel="noreferrer" aria-label="DigiSky on LinkedIn"><LinkedInIcon/><span>LinkedIn</span></a>}
                 {data.brand.github && <a href={data.brand.github} target="_blank" rel="noreferrer" aria-label="DigiSky on GitHub"><GitHubIcon/><span>GitHub</span></a>}
               </div>
