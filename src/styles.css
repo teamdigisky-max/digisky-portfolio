@@ -2091,3 +2091,63 @@ main{width:100%!important}
 .footer-socials > div{display:flex!important;flex-direction:column!important;gap:0!important;}
 .footer-socials a{display:flex!important;align-items:center!important;gap:10px!important;}
 .footer-whatsapp-icon{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:24px!important;height:24px!important;border:1px solid currentColor!important;border-radius:50%!important;font-size:15px!important;line-height:1!important;font-weight:700!important;}
+
+
+/* ================= V18 — FINAL CTA + FOOTER MERGE =================
+   Green CTA now touches the black footer with no white seam/gap.
+   Footer remains a single clean black surface and WhatsApp uses a real icon.
+*/
+.final-cta{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  border-radius:0!important;
+  min-height:390px!important;
+  padding:92px max(24px,calc((100vw - 1240px)/2)) 82px!important;
+  background:#16a34a!important;
+  color:#fff!important;
+}
+.final-cta h2{color:#fff!important}
+.final-cta p{color:rgba(255,255,255,.82)!important}
+.final-cta .tag-chip{
+  color:#fff!important;
+  background:rgba(255,255,255,.12)!important;
+  border-color:rgba(255,255,255,.28)!important;
+}
+.final-cta .pill-button.light{background:#fff!important;color:#111510!important}
+.footer-shell{
+  margin-top:0!important;
+  border-top:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+.footer-panel{
+  margin-top:0!important;
+}
+.footer-whatsapp-icon{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:24px!important;
+  height:24px!important;
+  flex:0 0 24px!important;
+  border:1px solid currentColor!important;
+  border-radius:50%!important;
+  line-height:0!important;
+}
+.footer-whatsapp-icon svg{
+  width:15px!important;
+  height:15px!important;
+  display:block!important;
+}
+.footer-socials a:hover .footer-whatsapp-icon{
+  background:#baff35!important;
+  border-color:#baff35!important;
+  color:#111510!important;
+}
+@media(max-width:700px){
+  .final-cta{
+    min-height:330px!important;
+    padding:68px 20px 62px!important;
+  }
+}
