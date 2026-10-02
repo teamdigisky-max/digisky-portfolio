@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { BrowserRouter, Link, Route, Routes, useLocation } from "react-router-dom";
 import "./styles.css";
 import { supabase } from "./lib/supabase";
 
@@ -47,6 +48,502 @@ const DEFAULT_DATA = {
   },
   footer: { eyebrow: "DIGITAL PARTNERS FOR MODERN BRANDS", titleA: "Step Up Your", titleB: "Digital Presence", text: "From Shopify stores and e-commerce websites to high-converting websites and digital growth, DigiSky helps brands build a stronger presence online." }
 };
+
+const PAGE_METADATA = {
+  home: {
+    title: "DigiSky | Shopify & Ecommerce Development Agency in India",
+    description: "DigiSky is a digital agency specializing in Shopify development, ecommerce website development, custom web development, SEO and digital marketing for growing brands in India.",
+    canonical: "https://www.digisky.info/",
+    ogTitle: "DigiSky | Shopify & Ecommerce Development Agency",
+    ogDescription: "Shopify stores, ecommerce websites and digital growth solutions for ambitious brands in India.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png"
+  },
+  services: {
+    title: "Shopify & Ecommerce Services | DigiSky",
+    description: "Explore DigiSky Shopify development, ecommerce website design, Shopify SEO, digital marketing and custom web development services for growing brands.",
+    canonical: "https://www.digisky.info/services",
+    ogTitle: "DigiSky Services",
+    ogDescription: "Shopify development, ecommerce websites, SEO and digital marketing services built for growing brands.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png"
+  },
+  "services/shopify-development": {
+    title: "Shopify Development Company in India | DigiSky",
+    description: "DigiSky builds custom Shopify websites and ecommerce stores in India with theme customization, product setup, integrations, SEO and conversion-focused design.",
+    canonical: "https://www.digisky.info/services/shopify-development",
+    ogTitle: "Shopify Development Company | DigiSky",
+    ogDescription: "Custom Shopify development, theme customization, store setup and optimization for growth-focused ecommerce brands.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "Shopify development company built for growth.",
+    intro: "DigiSky helps brands launch and improve Shopify stores that are fast, conversion-ready and aligned with the business. We build storefronts that look premium, support product discovery and make it easier for shoppers to buy.",
+    highlights: ["Custom Shopify storefronts", "Theme customization & section builds", "Responsive ecommerce UX", "Product, collection and navigation setup", "SEO & speed improvements"],
+    deliverables: ["Store architecture & homepage structure", "Shopify theme customization and section builds", "Product and collection setup", "Payment, shipping and app integrations", "Analytics-ready launch and post-launch support"],
+    faqs: [{ q: "What does a Shopify development project include?", a: "Scope usually includes storefront design, theme customization, product configuration, collection structure, navigation, mobile UX, app integrations and launch support tailored to the brand." }, { q: "Do you work with businesses in India?", a: "Yes. DigiSky works with ecommerce brands and startups across India and beyond on Shopify builds and optimization projects." }, { q: "Can you customize an existing Shopify theme?", a: "Yes. We can update an existing theme, build custom sections and improve layout, speed and conversion flow without starting from scratch when it is the better fit." }],
+    related: [
+      { to: "/services/shopify-store-design", label: "Shopify store design" },
+      { to: "/services/shopify-theme-customization", label: "Shopify theme customization" },
+      { to: "/services/shopify-seo", label: "Shopify SEO services" }
+    ]
+  },
+  "services/shopify-store-design": {
+    title: "Shopify Store Design Services | DigiSky",
+    description: "DigiSky creates Shopify store design systems that improve buyer trust, showcase collections clearly and support stronger conversion-focused ecommerce experiences.",
+    canonical: "https://www.digisky.info/services/shopify-store-design",
+    ogTitle: "Shopify Store Design | DigiSky",
+    ogDescription: "Premium Shopify store design and ecommerce UX for brands that want a better customer journey and higher conversion potential.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "Shopify store design for stronger first impressions.",
+    intro: "A polished storefront helps customers understand the offer quickly and builds trust before the first purchase. DigiSky designs Shopify stores with clear product storytelling, intuitive navigation and conversion-focused layouts.",
+    highlights: ["Brand-led ecommerce design", "Conversion-focused homepage flow", "Mobile-first experience design", "Collection and product page thinking", "Design systems for growth"],
+    deliverables: ["Homepage and landing page design", "Collection page structure", "Product page UX recommendations", "Navigation and buyer journey mapping", "Responsive design refinements"],
+    faqs: [{ q: "Is Shopify store design only for new brands?", a: "Not at all. We also redesign or refresh established stores that need a cleaner experience, faster mobile UX or better conversion flow." }, { q: "How does good store design improve sales?", a: "Clear messaging, stronger product storytelling and easier navigation reduce friction and help shoppers understand the offer with less confusion." }],
+    related: [
+      { to: "/services/shopify-development", label: "Shopify development" },
+      { to: "/services/shopify-website-redesign", label: "Shopify website redesign" },
+      { to: "/services/ecommerce-development", label: "Ecommerce development" }
+    ]
+  },
+  "services/shopify-theme-customization": {
+    title: "Shopify Theme Customization Services | DigiSky",
+    description: "DigiSky provides Shopify theme customization services for brands that need custom sections, storefront improvements, better UX and stronger conversion performance.",
+    canonical: "https://www.digisky.info/services/shopify-theme-customization",
+    ogTitle: "Shopify Theme Customization | DigiSky",
+    ogDescription: "Shopify theme customization, custom sections and storefront updates for brands that need a better customer experience.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "Shopify theme customization that fits your brand.",
+    intro: "A Shopify theme can be a good starting point, but most growing brands eventually need more than a template. We customize the layout, sections and interactions to match the products, customer journey and conversion goals.",
+    highlights: ["Custom sections and page blocks", "Improved shopping flow", "Theme-level UX refinement", "Responsive styling and performance", "Brand consistency"],
+    deliverables: ["Theme section edits and custom blocks", "Homepage, collection and product improvements", "Mobile handling and spacing adjustments", "Custom styling and interaction refinements", "Launch QA and optimization support"],
+    faqs: [{ q: "Can you customize a theme without rebuilding the whole store?", a: "Yes. In many cases we improve the current theme with targeted customizations that reduce cost while improving brand presentation and conversion flow." }, { q: "Does Shopify theme customization help SEO?", a: "It can help by improving layout clarity, mobile usability, page speed and overall user experience, which supports stronger engagement and better performance." }],
+    related: [
+      { to: "/services/shopify-development", label: "Shopify development" },
+      { to: "/services/shopify-website-redesign", label: "Shopify redesign" },
+      { to: "/services/shopify-seo", label: "Shopify SEO" }
+    ]
+  },
+  "services/shopify-website-redesign": {
+    title: "Shopify Website Redesign Services | DigiSky",
+    description: "DigiSky helps brands redesign their Shopify website with clearer messaging, better UX and a premium experience designed for conversion and growth.",
+    canonical: "https://www.digisky.info/services/shopify-website-redesign",
+    ogTitle: "Shopify Website Redesign | DigiSky",
+    ogDescription: "Improve your Shopify storefront with stronger user experience, clearer messaging and a more conversion-focused design.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "Shopify website redesign for a stronger customer journey.",
+    intro: "If a store feels outdated, hard to navigate or inconsistent with the brand, it can quietly reduce trust and sales. DigiSky redesigns Shopify stores to create a more premium and easier-to-buy experience.",
+    highlights: ["UX and messaging improvements", "Modern storefront styling", "Faster and cleaner browsing flow", "Better product discovery", "Mobile-first improvements"],
+    deliverables: ["Homepage and category page redesign", "Navigation cleanup and structure review", "Conversion-focused UX updates", "Product page refinement", "Visual refresh aligned to the brand"],
+    faqs: [{ q: "When should a business consider a Shopify redesign?", a: "A redesign is a good option when the site no longer reflects the brand, has inconsistent product presentation, weak mobile UX or lower conversion performance than expected." }, { q: "Can redesigns include SEO improvements?", a: "Yes. We can improve structure, page hierarchy, content clarity and technical foundations to support better crawlability and user experience." }],
+    related: [
+      { to: "/services/shopify-store-design", label: "Shopify store design" },
+      { to: "/services/shopify-development", label: "Shopify development" },
+      { to: "/services/shopify-seo", label: "Shopify SEO" }
+    ]
+  },
+  "services/shopify-seo": {
+    title: "Shopify SEO Services | DigiSky",
+    description: "DigiSky provides Shopify SEO services to improve product discoverability, collection ranking and technical optimization for ecommerce growth.",
+    canonical: "https://www.digisky.info/services/shopify-seo",
+    ogTitle: "Shopify SEO Services | DigiSky",
+    ogDescription: "Shopify SEO, technical optimization and content improvements to help stores become easier to find and easier to buy from.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "Shopify SEO services that help stores get found.",
+    intro: "Search visibility matters for ecommerce brands that rely on product discovery and organic traffic. DigiSky supports Shopify SEO with technical, on-page and content-driven improvements designed around the store's real commercial goals.",
+    highlights: ["Technical SEO fixes", "Collection and product page optimization", "Keyword-aligned content structure", "Internal linking and crawlability support", "Improved page experience"],
+    deliverables: ["Technical SEO review", "Collection page and product page optimization", "Metadata and content structure improvements", "Internal linking guidance", "Shopify performance and crawlability support"],
+    faqs: [{ q: "Does Shopify SEO include technical fixes?", a: "Yes. Technical structure, crawlability, internal linking, metadata and faster page experiences are all relevant parts of ecommerce SEO strategy." }, { q: "Can SEO improvements work alongside design and development?", a: "Absolutely. Good Shopify SEO is strongest when it is built alongside how the store is structured, how products are organized and how shoppers browse." }],
+    related: [
+      { to: "/services/ecommerce-development", label: "Ecommerce development" },
+      { to: "/services/seo-services", label: "SEO services" },
+      { to: "/services/shopify-development", label: "Shopify development" }
+    ]
+  },
+  "services/ecommerce-development": {
+    title: "Ecommerce Website Development Company | DigiSky",
+    description: "DigiSky offers ecommerce website development services for brands that need a polished online store, custom product flows and conversion-focused digital experiences.",
+    canonical: "https://www.digisky.info/services/ecommerce-development",
+    ogTitle: "Ecommerce Website Development | DigiSky",
+    ogDescription: "Ecommerce website development and custom online store builds for businesses ready to sell more online.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "Ecommerce website development for bigger online growth.",
+    intro: "A strong ecommerce site does more than look modern. It helps shoppers understand the offer, browse naturally and complete purchases without unnecessary friction. DigiSky builds online stores designed around real buyer behavior.",
+    highlights: ["Custom ecommerce storefronts", "Product and collection structure", "Conversion-focused UX", "Payment, shipping and app support", "Performance and SEO foundations"],
+    deliverables: ["Store structure and UX planning", "Homepage and category page build", "Product detail and checkout support", "Platform setup and integrations", "Launch QA and optimization"],
+    faqs: [{ q: "Do you build non-Shopify ecommerce websites too?", a: "Yes. DigiSky works on ecommerce website development projects beyond Shopify when a custom platform or technology stack is a better fit for the business." }, { q: "What makes an ecommerce site more effective?", a: "Strong product presentation, transparent offers, a simple path to purchase and a faster, mobile-friendly storefront all contribute to better conversion performance." }],
+    related: [
+      { to: "/services/shopify-development", label: "Shopify development" },
+      { to: "/services/custom-web-development", label: "Custom web development" },
+      { to: "/services/seo-services", label: "SEO services" }
+    ]
+  },
+  "services/custom-web-development": {
+    title: "Custom Website Development Agency | DigiSky",
+    description: "DigiSky builds custom website development solutions for brands that need flexibility, cleaner user experience and a digital presence designed around their business goals.",
+    canonical: "https://www.digisky.info/services/custom-web-development",
+    ogTitle: "Custom Web Development | DigiSky",
+    ogDescription: "Custom website development for businesses that need tailored user experiences, clearer messaging and better digital performance.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "Custom web development without the template limit.",
+    intro: "When a business needs more than a standard template, custom development creates room for more flexibility, tailored flows and a clearer digital strategy. DigiSky focuses on clean execution and user experience that supports business objectives.",
+    highlights: ["Custom UX and front-end builds", "Flexible, scalable pages and flows", "Business-specific functionality", "Fast and responsive experiences", "Clear conversion opportunities"],
+    deliverables: ["Custom website architecture", "Responsive front-end implementation", "Business-specific sections and interactions", "Performance monitoring and iterative improvements", "Launch and optimization support"],
+    faqs: [{ q: "When is custom web development a better fit than a template?", a: "When the business has a more specific experience, conversion flow or technical requirement than a standard setup can comfortably support." }, { q: "Can custom websites be built to grow over time?", a: "Yes. A custom foundation can be structured with long-term expansion in mind without forcing the business to rebuild the entire experience later." }],
+    related: [
+      { to: "/services/ecommerce-development", label: "Ecommerce website development" },
+      { to: "/services/seo-services", label: "SEO services" },
+      { to: "/services/digital-marketing", label: "Digital marketing" }
+    ]
+  },
+  "services/seo-services": {
+    title: "SEO Services India | DigiSky",
+    description: "DigiSky provides SEO services in India for brands looking to improve technical foundations, content structure, search visibility and organic growth.",
+    canonical: "https://www.digisky.info/services/seo-services",
+    ogTitle: "SEO Services India | DigiSky",
+    ogDescription: "Search engine optimization services for businesses that want stronger technical foundations and sustainable organic growth.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "SEO services that support long-term visibility.",
+    intro: "SEO works best when the site architecture, content and technical health all support the same objective. DigiSky builds practical SEO strategy around how buyers actually search and how the website converts that traffic.",
+    highlights: ["Technical SEO review", "On-page and content structure support", "Ecommerce SEO improvements", "Search Console and crawlability guidance", "Organic growth support"],
+    deliverables: ["SEO audit and opportunity review", "Technical health recommendations", "Content structure support", "Internal linking guidance", "Performance and crawlability improvements"],
+    faqs: [{ q: "What types of businesses benefit from SEO services?", a: "Any business with a website, service offer or ecommerce funnel can benefit when they need more sustainable discovery beyond paid traffic." }, { q: "Does SEO require a new website?", a: "Not necessarily. Many improvements can be made to an existing site, especially when the technical and content foundations are not aligned with search intent." }],
+    related: [
+      { to: "/services/shopify-seo", label: "Shopify SEO" },
+      { to: "/services/ecommerce-development", label: "Ecommerce development" },
+      { to: "/services/digital-marketing", label: "Digital marketing" }
+    ]
+  },
+  "services/digital-marketing": {
+    title: "Digital Marketing Agency India | DigiSky",
+    description: "DigiSky offers digital marketing services that connect brand awareness, lead generation and website performance across customer journeys.",
+    canonical: "https://www.digisky.info/services/digital-marketing",
+    ogTitle: "Digital Marketing Agency India | DigiSky",
+    ogDescription: "Digital marketing services for brands looking to grow demand, generate leads and improve online visibility across channels.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "Digital marketing services built around real demand.",
+    intro: "Digital marketing works best when it is connected to the right offer, landing experience and conversion path. DigiSky helps brands align their channels with the business goals rather than driving traffic without structure.",
+    highlights: ["Campaign strategy", "Search and performance marketing", "Creative support", "Lead and conversion focus", "Brand visibility improvements"],
+    deliverables: ["Audience and offer review", "Channel planning", "Ad creative and landing page alignment", "Campaign reporting guidance", "Conversion optimization support"],
+    faqs: [{ q: "Which channels do you support?", a: "DigiSky works across digital channels relevant to the brand, including search, social and performance marketing depending on the business objective." }, { q: "Is digital marketing only for paid ads?", a: "No. It can also include website alignment, offers, messaging, funnel clarity and testing that improves how the brand turns attention into action." }],
+    related: [
+      { to: "/services/google-ads", label: "Google Ads" },
+      { to: "/services/meta-ads", label: "Meta Ads" },
+      { to: "/services/seo-services", label: "SEO services" }
+    ]
+  },
+  "services/social-media-marketing": {
+    title: "Social Media Marketing Services | DigiSky",
+    description: "DigiSky supports social media marketing strategies for brands that need stronger audience engagement, content consistency and stronger digital visibility.",
+    canonical: "https://www.digisky.info/services/social-media-marketing",
+    ogTitle: "Social Media Marketing | DigiSky",
+    ogDescription: "Social media marketing support that helps brands stay visible, relevant and consistent across customer touchpoints.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "Social media marketing for visible, consistent brand growth.",
+    intro: "Social content does not only create awareness; it reinforces the brand, supports engagement and drives closer attention to the offer. DigiSky helps brands build a more coherent and useful social presence.",
+    highlights: ["Content planning", "Brand visibility", "Audience engagement support", "Creative direction", "Sales and lead support"],
+    deliverables: ["Content strategy support", "Campaign and asset guidance", "Brand consistency review", "Audience engagement planning", "Cross-channel alignment"],
+    faqs: [{ q: "What is included in social media marketing support?", a: "The right mix depends on the brand, but it often includes content planning, channel strategy, creative direction and messaging alignment to keep the audience engaged and moving toward the offer." }],
+    related: [
+      { to: "/services/digital-marketing", label: "Digital marketing" },
+      { to: "/services/meta-ads", label: "Meta Ads" },
+      { to: "/services/google-ads", label: "Google Ads" }
+    ]
+  },
+  "services/google-ads": {
+    title: "Google Ads Management Services | DigiSky",
+    description: "DigiSky helps brands create more relevant traffic and leads with search-focused Google Ads strategies aligned to ecommerce and business goals.",
+    canonical: "https://www.digisky.info/services/google-ads",
+    ogTitle: "Google Ads Services | DigiSky",
+    ogDescription: "Google Ads strategy and campaign support for brands that want more qualified demand and stronger online performance.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "Google Ads strategies built for intent-driven demand.",
+    intro: "Search demand is often the clearest signal of buyer intent. DigiSky supports paid search strategies that align messaging, targeting and landing experience so campaigns are built around the right opportunity.",
+    highlights: ["Search campaign strategy", "Landing page alignment", "Performance monitoring", "Keyword and offer refinement", "Lead or sales focus"],
+    deliverables: ["Campaign structure guidance", "Offer and landing-page review", "Targeting and keyword planning", "Reporting support", "Optimization roadmap"],
+    faqs: [{ q: "Do Google Ads work for service businesses and ecommerce brands?", a: "Yes. Search-based campaigns can be very effective when the offer, audience and landing experience are aligned with the actual customer intent." }],
+    related: [
+      { to: "/services/meta-ads", label: "Meta Ads" },
+      { to: "/services/digital-marketing", label: "Digital marketing" },
+      { to: "/services/seo-services", label: "SEO services" }
+    ]
+  },
+  "services/meta-ads": {
+    title: "Meta Ads Services | DigiSky",
+    description: "DigiSky creates Meta Ads strategies for brands that want stronger social visibility, audience engagement and action-oriented campaign performance.",
+    canonical: "https://www.digisky.info/services/meta-ads",
+    ogTitle: "Meta Ads Services | DigiSky",
+    ogDescription: "Meta Ads management and audience growth support for brands looking to improve visibility, engagement and qualified action.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "Meta Ads campaigns designed around your offer.",
+    intro: "Meta channels can work well when the creative and message match the audience and the landing experience. DigiSky helps brands build campaigns that are more strategic and more aligned to measurable business goals.",
+    highlights: ["Audience and offer strategy", "Creative alignment", "Campaign testing", "Landing page and conversion flow support", "Performance-focused reporting"],
+    deliverables: ["Campaign planning", "Creative direction support", "Audience strategy review", "Offer and funnel alignment", "Optimization guidance"],
+    faqs: [{ q: "Are Meta Ads useful for ecommerce brands?", a: "Yes, especially when product storytelling, offer clarity and landing experience all support the campaign objective." }],
+    related: [
+      { to: "/services/google-ads", label: "Google Ads" },
+      { to: "/services/social-media-marketing", label: "Social media marketing" },
+      { to: "/services/digital-marketing", label: "Digital marketing" }
+    ]
+  },
+  about: {
+    title: "About DigiSky | Shopify & Ecommerce Agency",
+    description: "Learn more about DigiSky, a digital agency focused on Shopify development, ecommerce websites, custom web design and digital growth for ambitious brands.",
+    canonical: "https://www.digisky.info/about",
+    ogTitle: "About DigiSky",
+    ogDescription: "DigiSky is a digital agency focused on ecommerce, Shopify development and custom digital experiences for growing brands.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "DigiSky builds digital experiences that do more than look premium.",
+    intro: "DigiSky helps brands create cleaner, clearer and more conversion-focused digital experiences. The focus is on practical growth: websites, storefronts and digital systems that support real customer journeys and business goals.",
+    highlights: ["Shopify and ecommerce specialists", "UX, design and technical execution together", "Longer-term support after launch", "Clear conversion thinking"],
+    deliverables: ["Design and development guidance", "Brand-led ecommerce strategy", "Launch support and iterative improvements", "Business-focused digital growth support"],
+    faqs: [{ q: "What does DigiSky focus on?", a: "DigiSky focuses on Shopify development, ecommerce websites, custom web development, SEO and digital marketing for brands that want a more cohesive online presence." }, { q: "Does DigiSky work with businesses in India?", a: "Yes. DigiSky works with brands in India and beyond, especially where growth depends on stronger ecommerce and digital experience design." }],
+    related: [
+      { to: "/services/shopify-development", label: "Shopify development" },
+      { to: "/services/ecommerce-development", label: "Ecommerce development" },
+      { to: "/contact", label: "Contact DigiSky" }
+    ]
+  },
+  contact: {
+    title: "Contact DigiSky | Shopify & Ecommerce Development",
+    description: "Contact DigiSky for Shopify development, ecommerce website development, custom web projects, SEO and digital marketing support.",
+    canonical: "https://www.digisky.info/contact",
+    ogTitle: "Contact DigiSky",
+    ogDescription: "Talk to DigiSky about your Shopify, ecommerce or web development project.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "Start a project with DigiSky.",
+    intro: "If you want a more polished ecommerce experience, a stronger Shopify store or a clear digital growth foundation, DigiSky can help with the next step.",
+    highlights: ["Shopify project enquiries", "Custom website development", "SEO and digital growth conversations", "Existing store improvements"],
+    deliverables: ["Project discussion", "Website and ecommerce planning", "Recommendations on scope and next steps", "A practical path toward launch or optimization"],
+    faqs: [{ q: "How do I start?", a: "Use the WhatsApp contact or email to share your project goals, timeline and business context so DigiSky can suggest the best next step." }],
+    related: [
+      { to: "/services/shopify-development", label: "Shopify development" },
+      { to: "/services/ecommerce-development", label: "Ecommerce development" },
+      { to: "/about", label: "About DigiSky" }
+    ]
+  },
+  work: {
+    title: "DigiSky Portfolio | Shopify & Ecommerce Projects",
+    description: "View DigiSky portfolio work across Shopify stores, ecommerce websites and custom digital experiences built for growing brands.",
+    canonical: "https://www.digisky.info/work",
+    ogTitle: "DigiSky Portfolio",
+    ogDescription: "Explore selected DigiSky projects across Shopify and ecommerce website development.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "Selected work for brands with momentum.",
+    intro: "DigiSky's portfolio reflects storefront design, ecommerce strategy and web experiences built for brands looking for an easier path to sell online.",
+    highlights: ["Shopify storefronts", "Ecommerce websites", "Custom digital experiences", "Brand-first UX"],
+    deliverables: ["Portfolio case studies", "Project highlights", "Platform-specific examples", "Relevant service links"],
+    related: [
+      { to: "/services/shopify-development", label: "Shopify development" },
+      { to: "/services/ecommerce-development", label: "Ecommerce development" },
+      { to: "/about", label: "About DigiSky" }
+    ]
+  },
+  blog: {
+    title: "DigiSky Blog | Shopify, SEO and Ecommerce Insights",
+    description: "Read practical Shopify, ecommerce and SEO insights from DigiSky to help growing brands understand store strategy, design and digital growth.",
+    canonical: "https://www.digisky.info/blog",
+    ogTitle: "DigiSky Blog",
+    ogDescription: "Insights on Shopify ecommerce, conversion strategy, SEO and digital growth for modern brands.",
+    ogImage: "https://www.digisky.info/portfolio-reference.png",
+    heading: "Useful ecommerce and Shopify guidance.",
+    intro: "The DigiSky blog focuses on practical strategy, ecommerce UX and digital growth topics that help founders and teams make better decisions.",
+    highlights: ["Shopify ecommerce guidance", "SEO and technical improvements", "Conversion optimization", "Ecommerce growth strategy"],
+    deliverables: ["Practical article topics", "Commercial and informational guidance", "Links to relevant services"],
+    related: [
+      { to: "/services/shopify-seo", label: "Shopify SEO" },
+      { to: "/services/shopify-development", label: "Shopify development" },
+      { to: "/services/ecommerce-development", label: "Ecommerce development" }
+    ]
+  }
+};
+
+function normalizePath(pathname) {
+  const normalized = pathname || "/";
+  if (normalized === "/") return "/";
+  return normalized.replace(/\/+$/, "") || "/";
+}
+
+function setMetaTag(selector, attributeName, content, attributeValue) {
+  const node = document.head.querySelector(selector);
+  if (node) {
+    node.setAttribute(attributeName, attributeValue);
+    node.setAttribute("content", content);
+    return;
+  }
+  const meta = document.createElement("meta");
+  meta.setAttribute(attributeName, attributeValue);
+  meta.setAttribute("content", content);
+  document.head.appendChild(meta);
+}
+
+function applySeo(metadata) {
+  const fallback = PAGE_METADATA.home;
+  const page = metadata || fallback;
+  document.title = page.title || fallback.title;
+  setMetaTag('meta[name="description"]', "name", page.description || fallback.description, "description");
+  const canonical = document.head.querySelector('link[rel="canonical"]') || document.createElement("link");
+  canonical.setAttribute("rel", "canonical");
+  canonical.setAttribute("href", page.canonical || fallback.canonical);
+  if (!document.head.contains(canonical)) document.head.appendChild(canonical);
+  const ogTitle = document.head.querySelector('meta[property="og:title"]') || document.createElement("meta");
+  ogTitle.setAttribute("property", "og:title");
+  ogTitle.setAttribute("content", page.ogTitle || page.title || fallback.ogTitle);
+  if (!document.head.contains(ogTitle)) document.head.appendChild(ogTitle);
+  const ogDescription = document.head.querySelector('meta[property="og:description"]') || document.createElement("meta");
+  ogDescription.setAttribute("property", "og:description");
+  ogDescription.setAttribute("content", page.ogDescription || page.description || fallback.ogDescription);
+  if (!document.head.contains(ogDescription)) document.head.appendChild(ogDescription);
+  const ogImage = document.head.querySelector('meta[property="og:image"]') || document.createElement("meta");
+  ogImage.setAttribute("property", "og:image");
+  ogImage.setAttribute("content", page.ogImage || fallback.ogImage);
+  if (!document.head.contains(ogImage)) document.head.appendChild(ogImage);
+  const twitterTitle = document.head.querySelector('meta[name="twitter:title"]') || document.createElement("meta");
+  twitterTitle.setAttribute("name", "twitter:title");
+  twitterTitle.setAttribute("content", page.ogTitle || page.title || fallback.ogTitle);
+  if (!document.head.contains(twitterTitle)) document.head.appendChild(twitterTitle);
+  const twitterDescription = document.head.querySelector('meta[name="twitter:description"]') || document.createElement("meta");
+  twitterDescription.setAttribute("name", "twitter:description");
+  twitterDescription.setAttribute("content", page.ogDescription || page.description || fallback.ogDescription);
+  if (!document.head.contains(twitterDescription)) document.head.appendChild(twitterDescription);
+  const twitterImage = document.head.querySelector('meta[name="twitter:image"]') || document.createElement("meta");
+  twitterImage.setAttribute("name", "twitter:image");
+  twitterImage.setAttribute("content", page.ogImage || fallback.ogImage);
+  if (!document.head.contains(twitterImage)) document.head.appendChild(twitterImage);
+}
+
+function SeoMeta() {
+  const location = useLocation();
+  useEffect(() => {
+    const routePath = normalizePath(location.pathname);
+    const key = routePath === "/" ? "home" : routePath.replace(/^\//, "");
+    applySeo(PAGE_METADATA[key] || PAGE_METADATA.home);
+  }, [location.pathname]);
+  return null;
+}
+
+function GenericPage({ pageKey, heroTitle, introduction, points, deliverables, faqs, relatedLinks }) {
+  const waMessage = "Hi DigiSky, I want to discuss a digital project.";
+  return (
+    <div className="seo-page-shell">
+      <div className="seo-page-hero">
+        <div className="seo-page-copy">
+          <span className="tag-chip">DigiSky</span>
+          <h1>{heroTitle}</h1>
+          <p>{introduction}</p>
+          <div className="hero-actions">
+            <a className="pill-button" href={waLink("+919753622101", waMessage)} target="_blank" rel="noreferrer">Start a project</a>
+            <Link className="text-link" to="/services">Explore services</Link>
+          </div>
+        </div>
+      </div>
+      <div className="seo-page-content">
+        <section className="seo-details">
+          <h2>What this service includes</h2>
+          <ul>{points.map((point) => <li key={point}>{point}</li>)}</ul>
+        </section>
+        <section className="seo-details">
+          <h2>Deliverables</h2>
+          <ul>{deliverables.map((item) => <li key={item}>{item}</li>)}</ul>
+        </section>
+        <section className="seo-details">
+          <h2>FAQs</h2>
+          <div className="faq-list">
+            {faqs.map((faq) => (
+              <article key={faq.q}>
+                <h3>{faq.q}</h3>
+                <p>{faq.a}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+        <section className="seo-details">
+          <h2>Related services</h2>
+          <div className="seo-related-links">
+            {relatedLinks.map((link) => (
+              <Link key={link.to} to={link.to}>{link.label}</Link>
+            ))}
+          </div>
+        </section>
+      </div>
+      <div className="seo-page-cta">
+        <h2>Talk to DigiSky</h2>
+        <p>Build a smarter ecommerce or digital presence with a team that focuses on clarity, speed and conversion.</p>
+        <a className="pill-button light" href={waLink("+919753622101", waMessage)} target="_blank" rel="noreferrer">Discuss your project</a>
+      </div>
+    </div>
+  );
+}
+
+function ServicePage({ pageKey }) {
+  const page = PAGE_METADATA[pageKey] || PAGE_METADATA.home;
+  return (
+    <GenericPage
+      pageKey={pageKey}
+      heroTitle={page.heading || page.title}
+      introduction={page.intro || page.description}
+      points={page.highlights || []}
+      deliverables={page.deliverables || []}
+      faqs={page.faqs || []}
+      relatedLinks={page.related || []}
+    />
+  );
+}
+
+function LandingPage({ pageKey }) {
+  const page = PAGE_METADATA[pageKey] || PAGE_METADATA.home;
+  return (
+    <div className="seo-page-shell">
+      <div className="seo-page-hero">
+        <div className="seo-page-copy">
+          <span className="tag-chip">DigiSky</span>
+          <h1>{page.heading || page.title}</h1>
+          <p>{page.intro || page.description}</p>
+          <div className="hero-actions">
+            <a className="pill-button" href={waLink("+919753622101", "Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a project</a>
+            <Link className="text-link" to="/services">View services</Link>
+          </div>
+        </div>
+      </div>
+      <div className="seo-page-content">
+        <section className="seo-details">
+          <h2>Key focus areas</h2>
+          <ul>{(page.highlights || []).map((point) => <li key={point}>{point}</li>)}</ul>
+        </section>
+        <section className="seo-details">
+          <h2>Related pages</h2>
+          <div className="seo-related-links">
+            {(page.related || []).map((link) => <Link key={link.to} to={link.to}>{link.label}</Link>)}
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}
+
+function AppRoutes() {
+  return (
+    <>
+      <SeoMeta />
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/services" element={<LandingPage pageKey="services" />} />
+        <Route path="/services/shopify-development" element={<ServicePage pageKey="services/shopify-development" />} />
+        <Route path="/services/shopify-store-design" element={<ServicePage pageKey="services/shopify-store-design" />} />
+        <Route path="/services/shopify-theme-customization" element={<ServicePage pageKey="services/shopify-theme-customization" />} />
+        <Route path="/services/shopify-website-redesign" element={<ServicePage pageKey="services/shopify-website-redesign" />} />
+        <Route path="/services/shopify-seo" element={<ServicePage pageKey="services/shopify-seo" />} />
+        <Route path="/services/ecommerce-development" element={<ServicePage pageKey="services/ecommerce-development" />} />
+        <Route path="/services/custom-web-development" element={<ServicePage pageKey="services/custom-web-development" />} />
+        <Route path="/services/seo-services" element={<ServicePage pageKey="services/seo-services" />} />
+        <Route path="/services/digital-marketing" element={<ServicePage pageKey="services/digital-marketing" />} />
+        <Route path="/services/social-media-marketing" element={<ServicePage pageKey="services/social-media-marketing" />} />
+        <Route path="/services/google-ads" element={<ServicePage pageKey="services/google-ads" />} />
+        <Route path="/services/meta-ads" element={<ServicePage pageKey="services/meta-ads" />} />
+        <Route path="/about" element={<LandingPage pageKey="about" />} />
+        <Route path="/contact" element={<LandingPage pageKey="contact" />} />
+        <Route path="/work" element={<LandingPage pageKey="work" />} />
+        <Route path="/blog" element={<LandingPage pageKey="blog" />} />
+      </Routes>
+    </>
+  );
+}
 
 function loadData() {
   try {
@@ -1075,4 +1572,8 @@ function App() {
   );
 }
 
-createRoot(document.getElementById("root")).render(<App />);
+createRoot(document.getElementById("root")).render(
+  <BrowserRouter>
+    <AppRoutes />
+  </BrowserRouter>
+);
