@@ -312,7 +312,7 @@ function AboutSection({ data }) {
     </div>
     <div className="about-story-grid">
       <div className="about-orbit-card">
-        <div className="about-orbit"><span>DS</span><i>✦</i><b>01</b><strong>BUILD<br/>BETTER</strong></div>
+        <div className="about-orbit"><div className="about-logo-core"><img src="/logo.png" alt="DigiSky" /></div><i>✦</i><b>01</b><strong>BUILD<br/>BETTER</strong></div>
         <div className="about-orbit-caption"><span>INDORE / INDIA</span><span>WEB • E-COMMERCE • GROWTH</span></div>
       </div>
       <div className="about-content-card">
@@ -329,11 +329,14 @@ function ProcessSection({ data }) {
 
 function Testimonials({ data }) {
   return <section id="testimonials" className="testimonials section testimonials-redesigned">
-    <div className="section-top"><div><span className="tag-chip">Client notes</span><h2>Good work travels.</h2></div><span className="testimonial-count">{String(data.testimonials.length).padStart(2,"0")} / client stories</span></div>
+    <div className="testimonial-heading-row">
+      <div><span className="tag-chip">Client notes</span><h2>Good work <em>gets remembered.</em></h2></div>
+      <div className="testimonial-heading-meta"><span>REAL PEOPLE</span><strong>{String(data.testimonials.length).padStart(2,"0")}</strong><small>client stories</small></div>
+    </div>
     <div className="testimonial-stage">
-      <div className="testimonial-quote-mark">“</div>
-      <div className="testimonial-main">{data.testimonials.map((item,index)=><article className="testimonial-card" key={`${item.name}-${index}`}><div className="testimonial-stars">{"★".repeat(Number(item.rating || 5))}</div><blockquote>{item.quote}</blockquote><footer><div className="client-avatar">{String(item.name || "C").slice(0,1)}</div><div><strong>{item.name}</strong><span>{item.company}</span></div><em>Project partner</em></footer></article>)}</div>
-      <div className="testimonial-side"><span>THE DIGISKY STANDARD</span><strong>Good work<br/><em>keeps moving.</em></strong><p>Clear communication, thoughtful design and digital experiences made to keep working after launch.</p></div>
+      <div className="testimonial-brand-card"><span className="quote-symbol">“</span><div className="testimonial-brand-logo"><img src="/logo.png" alt="DigiSky" /></div><span>BUILT WITH DIGISKY</span></div>
+      <div className="testimonial-main">{data.testimonials.map((item,index)=><article className="testimonial-card" key={`${item.name}-${index}`}><div className="testimonial-card-top"><span className="testimonial-kicker">CLIENT NOTE / 0{index + 1}</span><div className="testimonial-stars">{"★".repeat(Number(item.rating || 5))}</div></div><blockquote>“{item.quote}”</blockquote><footer><div className="client-avatar">{String(item.name || "C").slice(0,1)}</div><div><strong>{item.name}</strong><span>{item.company}</span></div><em>Verified project partner</em></footer></article>)}</div>
+      <div className="testimonial-side"><span>THE DIGISKY STANDARD</span><strong>Clear work.<br/><em>Clear results.</em></strong><p>Strategy, design, development and support — handled with the same attention from first call to launch.</p><div className="testimonial-side-list"><span>01 <b>Direct communication</b></span><span>02 <b>Premium execution</b></span><span>03 <b>Support after launch</b></span></div></div>
     </div>
   </section>;
 }
@@ -346,7 +349,7 @@ function Journal({ data }) {
     ["SEO + CRO", "Technical foundations and conversion improvements that help more visitors become customers."],
     ["SOCIAL MEDIA", "A consistent content system that keeps your brand visible, useful and memorable."],
   ];
-  return <section id="journal" className="journal section growth-services-section"><div className="section-top"><div><span className="tag-chip">More ways we help</span><h2>Growth services beyond the website.</h2></div><span className="project-count">Strategy → execution</span></div><div className="growth-services-grid">{growthServices.map((service,index)=><article className="growth-service-card" key={service[0]}><div className="growth-service-top"><span>0{index+1}</span><i>↗</i></div><small>{service[0]}</small><h3>{service[1]}</h3><div className="growth-service-line"><span/></div></article>)}</div></section>;
+  return <section id="journal" className="journal section growth-services-section"><div className="growth-services-heading"><div><span className="tag-chip">More ways we help</span><h2>More ways to turn <em>attention into growth.</em></h2></div><p>Pick the growth layer your brand needs next. Every service is designed to work with your website, store and customer journey.</p></div><div className="growth-services-grid">{growthServices.map((service,index)=><article className={`growth-service-card growth-service-${index + 1}`} key={service[0]}><div className="growth-service-top"><span>0{index+1}</span><i>↗</i></div><div className="growth-service-icon">{index === 0 ? "◎" : index === 1 ? "⌁" : index === 2 ? "✦" : index === 3 ? "◈" : index === 4 ? "↗" : "◌"}</div><small>{service[0]}</small><h3>{service[1]}</h3><div className="growth-service-bottom"><span>EXPLORE SERVICE</span><b>→</b></div></article>)}</div></section>;
 }
 function ShopifyExpertise({ projects }) {
   const [active, setActive] = useState(0);
@@ -356,14 +359,20 @@ function ShopifyExpertise({ projects }) {
     ["Custom coded websites", "When Shopify is not the right fit, we build the experience from the ground up."],
     ["Conversion-focused UX", "Navigation, product pages and checkout journeys shaped around customer intent."],
   ];
-  const preview = projects.find(project => project.platform === "Shopify") || projects[0];
+  const previewProjects = [
+    projects.find(project => project.platform === "Shopify") || projects[0],
+    projects.find(project => /Shopify/i.test(project.platform || "") && /fashion|e-commerce/i.test(`${project.industry} ${project.name}`)) || projects[4] || projects[0],
+    projects.find(project => /Website|Custom/i.test(project.platform || "")) || projects[6] || projects[0],
+    projects.find(project => /Shopify/i.test(project.platform || "")) || projects[0],
+  ];
+  const preview = previewProjects[active] || projects[0];
   return <section id="shopify-expertise" className="shopify-expertise section shopify-redesigned">
     <div className="shopify-topline"><span className="tag-chip">Shopify expertise</span><span>SHOPIFY + CUSTOM CODE</span></div>
     <div className="shopify-heading"><div><h2>Built for brands<br/><em>that want to sell more.</em></h2></div><p>From a clean Shopify storefront to a fully custom-coded experience, DigiSky builds around the business — not around a template.</p></div>
     <div className="shopify-platform-pills"><span className="active">SHOPIFY</span><span>CUSTOM CODED</span><span>ECOMMERCE</span></div>
     <div className="shopify-stage">
       <div className="shopify-list">{points.map((point,index)=><button className={active === index ? "active" : ""} key={point[0]} onClick={()=>setActive(index)}><span>0{index + 1}</span><div><strong>{point[0]}</strong><small>{point[1]}</small></div><b>↗</b></button>)}</div>
-      <div className="shopify-preview"><div className="preview-top"><span>digisky / digital build</span><b>● ● ●</b></div><div className="preview-screen"><img src={preview?.image} alt="DigiSky project preview" loading="lazy"/><div><span>{active === 2 ? "Custom coded experience" : "Selected Shopify build"}</span><strong>{preview?.name || "DigiSky Store"}</strong></div></div><div className="preview-footer"><span>{active === 2 ? "Built from the ground up" : "Conversion-first ecommerce"}</span><span>0{active + 1} — 04</span></div></div>
+      <div className="shopify-preview"><div className="preview-top"><span>digisky / digital build</span><b>● ● ●</b></div><div className="preview-screen" key={`${active}-${preview?.name || "preview"}`}><img src={preview?.image} alt={`${preview?.name || "DigiSky"} project preview`} loading="lazy"/><div><span>{active === 2 ? "Custom coded experience" : active === 1 ? "Custom Shopify development" : "Selected DigiSky build"}</span><strong>{preview?.name || "DigiSky Store"}</strong></div></div><div className="preview-footer"><span>{active === 2 ? "Built from the ground up" : "Conversion-first ecommerce"}</span><span>0{active + 1} — 04</span></div></div>
     </div>
   </section>;
 }
@@ -480,18 +489,24 @@ function Pricing({ data }) {
   const message = `Hi DigiSky, I'm interested in the ${data.pricing.title} package (${data.pricing.price}).`;
   return (
     <section id="pricing" className="section pricing-section">
+      <div className="pricing-heading-row">
+        <div><span className="tag-chip">Pricing</span><h2>Everything you need<br/><em>to launch properly.</em></h2></div>
+        <p>One focused package for brands that want a premium storefront without a confusing list of add-ons. Need custom development or marketing too? We can build the scope around you.</p>
+      </div>
       <div className="pricing-grid">
-        <div>
-          <span className="tag-chip">Pricing</span>
-          <h2>Everything you need<br/>to launch.</h2>
-          <p className="section-copy">{data.pricing.description}</p>
+        <div className="pricing-intro-card">
+          <span className="pricing-number">01</span>
+          <div><strong>Launch ready.</strong><span>Not just another template.</span></div>
+          <div className="pricing-mini-list"><span>✓ Strategy + UX</span><span>✓ Responsive build</span><span>✓ Store setup</span><span>✓ Launch support</span></div>
+          <a className="text-link" href="#contact">Talk about your project <CtaArrow/></a>
         </div>
         <div className="price-card">
-          <div className="price-top"><span>{data.pricing.title}</span><strong>{data.pricing.price}</strong></div>
+          <div className="price-card-badge">MOST REQUESTED <span>✦</span></div>
+          <div className="price-top"><span>{data.pricing.title}</span><strong>{data.pricing.price}</strong><small>starting package · final scope confirmed before work begins</small></div>
           <div className="feature-list">
             {data.pricing.features.map((f,i)=><div key={i}><i>&#10003;</i><span>{f}</span></div>)}
           </div>
-          <a className="pill-button dark" href={waLink(data.brand.whatsapp, message)} target="_blank" rel="noreferrer" style={{width:"100%",justifyContent:"center"}}>Get started</a>
+          <a className="pill-button dark" href={waLink(data.brand.whatsapp, message)} target="_blank" rel="noreferrer" style={{width:"100%",justifyContent:"center"}}>Start your project <CtaArrow/></a>
         </div>
       </div>
     </section>
@@ -714,10 +729,14 @@ function AdminPanel({ data, setData, onClose }) {
 
 
 function MarqueeStrip({ reverse = false }) {
-  const items = ["SHOPIFY", "META ADS", "GOOGLE ADS", "AI AUTOMATION", "AD CREATIVES", "CRO", "E-COMMERCE", "CUSTOM CODE"];
-  return <div className={`marquee-strip ${reverse ? "marquee-reverse" : ""}`} aria-label="DigiSky services">
-    <div className="marquee-track">{[...items, ...items].map((item, index) => <span key={`${item}-${index}`}><i>✦</i>{item}</span>)}</div>
-  </div>;
+  const items = ["SHOPIFY", "META ADS", "GOOGLE ADS", "AI AUTOMATION", "AD CREATIVES", "SEO + CRO", "E-COMMERCE", "CUSTOM CODE", "SOCIAL MEDIA"];
+  const row = [...items, ...items];
+  return <section className={`marquee-strip ${reverse ? "marquee-reverse" : ""}`} aria-label="DigiSky services">
+    <div className="marquee-badge"><span>✦</span><strong>DIGISKY</strong><small>DIGITAL STUDIO</small></div>
+    <div className="marquee-window">
+      <div className="marquee-track">{row.map((item, index) => <span className="marquee-item" key={`${item}-${index}`}><i>{index % 3 === 0 ? "✦" : "↗"}</i>{item}</span>)}</div>
+    </div>
+  </section>;
 }
 
 function CountUpNumber({ value }) {
@@ -757,14 +776,17 @@ function CountUpNumber({ value }) {
 }
 
 function ProofNumbers({ data }) {
+  const proofLabels = ["Projects delivered", "Shopify builds", "Custom coded builds", "Client satisfaction"];
+  const proofValues = [data.stats?.[0]?.[0] || "34+", data.stats?.[1]?.[0] || "20+", data.stats?.[3]?.[0] || "12+", data.stats?.[2]?.[0] || "4.9/5"];
   return <section className="proof-section section">
-    <div className="proof-head"><div><span className="tag-chip">The numbers don't lie</span><h2>Big builds. Real work.</h2></div><p>Every number is a reminder that good design is not decoration. It is a business tool.</p></div>
+    <div className="proof-head"><div><span className="tag-chip">The numbers don't lie</span><h2>Built. Shipped. Proven.</h2></div><p>From Shopify storefronts to custom-coded experiences, the work speaks for itself — and every number is a piece of that story.</p></div>
     <div className="proof-grid">
-      {data.stats.map((stat, index) => <article className="proof-card" key={index}>
+      {proofLabels.map((label, index) => <article className={`proof-card proof-card-${index + 1}`} key={label}>
         <span className="proof-index">0{index + 1}</span>
-        <strong><CountUpNumber value={stat[0]} /></strong>
-        <span>{stat[1]}</span>
+        <strong><CountUpNumber value={proofValues[index]} /></strong>
+        <span>{label}</span>
         <i className="proof-line" />
+        <b className="proof-card-mark">{index === 0 ? "↗" : index === 1 ? "S" : index === 2 ? "</>" : "★"}</b>
       </article>)}
     </div>
   </section>;
