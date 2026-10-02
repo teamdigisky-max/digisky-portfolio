@@ -2356,3 +2356,228 @@ main{width:100%!important}
   }
 }
 
+
+/* =========================================================
+   DigiSky — Featured Work Mobile Upgrade
+   Two portfolio cards per row on phones
+   ========================================================= */
+@media (max-width: 680px){
+  .work-showcase-section{
+    padding-top:68px!important;
+    padding-bottom:72px!important;
+    border-radius:26px!important;
+  }
+
+  .work-showcase-head{
+    padding:0 14px!important;
+  }
+
+  .work-showcase-head .tag-chip{
+    font-size:10px!important;
+    padding:6px 10px!important;
+    margin-bottom:12px!important;
+  }
+
+  .work-showcase-head h2{
+    font-size:clamp(43px,12.5vw,58px)!important;
+    line-height:.88!important;
+    letter-spacing:-.065em!important;
+    margin:14px 0 14px!important;
+  }
+
+  .work-showcase-head p{
+    font-size:12px!important;
+    line-height:1.55!important;
+    max-width:100%!important;
+  }
+
+  .work-head-side{
+    margin-top:18px!important;
+    gap:10px!important;
+  }
+
+  .work-head-side>span{
+    font-size:8px!important;
+  }
+
+  .work-head-button{
+    padding:10px 13px!important;
+    font-size:11px!important;
+  }
+
+  .work-showcase-section .project-filters{
+    padding:0 14px!important;
+    margin-bottom:18px!important;
+    gap:6px!important;
+  }
+
+  .work-showcase-section .project-filters button{
+    padding:8px 11px!important;
+    font-size:9px!important;
+  }
+
+  /* Exactly two portfolio cards per row on mobile. */
+  .projects-featured-layout.projects-all-layout{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:10px!important;
+    padding:0 14px!important;
+    align-items:stretch!important;
+  }
+
+  .projects-all-layout .project-card,
+  .projects-all-layout .project-card:first-child,
+  .projects-all-layout .project-card:nth-child(1),
+  .projects-all-layout .project-card:nth-child(4){
+    grid-column:span 1!important;
+    width:100%!important;
+    min-width:0!important;
+    border-radius:17px!important;
+    box-shadow:0 7px 22px rgba(15,20,15,.055)!important;
+  }
+
+  .projects-all-layout .project-card:hover{
+    transform:translateY(-4px)!important;
+    box-shadow:0 14px 30px rgba(15,20,15,.10)!important;
+  }
+
+  .projects-all-layout .project-media{
+    padding:6px!important;
+    border-radius:0!important;
+  }
+
+  .projects-all-layout .project-browser-frame{
+    border-radius:11px!important;
+  }
+
+  .projects-all-layout .browser-bar{
+    height:24px!important;
+    padding:0 7px!important;
+    gap:5px!important;
+  }
+
+  .projects-all-layout .browser-dots{gap:3px!important}
+  .projects-all-layout .browser-dots i{width:4px!important;height:4px!important}
+
+  .projects-all-layout .browser-url{
+    height:15px!important;
+    padding:0 5px!important;
+    font-size:5.8px!important;
+    gap:3px!important;
+    border-radius:99px!important;
+  }
+
+  .projects-all-layout .browser-url svg{
+    width:7px!important;
+    height:7px!important;
+  }
+
+  .projects-all-layout .browser-viewport,
+  .projects-all-layout .project-card:first-child .browser-viewport,
+  .projects-all-layout .project-card:nth-child(4) .browser-viewport{
+    aspect-ratio:1.38!important;
+  }
+
+  .projects-all-layout .project-index{
+    top:10px!important;
+    left:10px!important;
+    padding:4px 6px!important;
+    font-size:7px!important;
+    line-height:1!important;
+  }
+
+  .projects-all-layout .project-meta,
+  .projects-all-layout .project-card:first-child .project-meta{
+    padding:10px 10px 11px!important;
+    gap:7px!important;
+    align-items:flex-start!important;
+  }
+
+  .projects-all-layout .project-copy{
+    gap:5px!important;
+  }
+
+  .projects-all-layout .project-labels{
+    gap:4px!important;
+    margin-bottom:3px!important;
+    flex-wrap:nowrap!important;
+    overflow:hidden!important;
+  }
+
+  .projects-all-layout .project-labels span{
+    max-width:100%!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    white-space:nowrap!important;
+    padding:3px 5px!important;
+    font-size:6px!important;
+    letter-spacing:.055em!important;
+    line-height:1.1!important;
+  }
+
+  .projects-all-layout .project-label-category i{
+    width:3px!important;
+    height:3px!important;
+    margin-right:3px!important;
+  }
+
+  .projects-all-layout .project-copy h3,
+  .projects-all-layout .project-card:first-child .project-copy h3{
+    font-size:15px!important;
+    line-height:1.05!important;
+    letter-spacing:-.035em!important;
+    margin:0!important;
+  }
+
+  .projects-all-layout .project-copy p{
+    display:-webkit-box!important;
+    -webkit-line-clamp:2!important;
+    -webkit-box-orient:vertical!important;
+    overflow:hidden!important;
+    font-size:8.5px!important;
+    line-height:1.35!important;
+    margin:4px 0 0!important;
+    color:#7a8179!important;
+  }
+
+  .projects-all-layout .project-cta{
+    width:27px!important;
+    height:27px!important;
+    min-width:27px!important;
+    flex-basis:27px!important;
+    margin-top:auto!important;
+    font-size:0!important;
+    border-radius:50%!important;
+  }
+
+  .projects-all-layout .project-cta svg{
+    width:10px!important;
+    height:10px!important;
+  }
+
+  .projects-all-layout .project-overlay{
+    left:9px!important;
+    right:9px!important;
+    bottom:8px!important;
+    font-size:8px!important;
+  }
+
+  .projects-all-layout .project-overlay span{
+    font-size:7px!important;
+  }
+}
+
+@media (max-width:380px){
+  .projects-featured-layout.projects-all-layout{
+    gap:8px!important;
+    padding:0 11px!important;
+  }
+
+  .work-showcase-head{padding:0 11px!important}
+  .work-showcase-section .project-filters{padding:0 11px!important}
+
+  .projects-all-layout .project-meta{padding:9px 8px 10px!important}
+  .projects-all-layout .project-copy h3,
+  .projects-all-layout .project-card:first-child .project-copy h3{font-size:14px!important}
+  .projects-all-layout .project-copy p{font-size:8px!important}
+  .projects-all-layout .project-cta{width:24px!important;height:24px!important;min-width:24px!important;flex-basis:24px!important}
+}
