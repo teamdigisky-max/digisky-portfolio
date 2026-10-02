@@ -787,8 +787,10 @@ function CountUpNumber({ value }) {
 function ProofNumbers({ data }) {
   const proofLabels = ["Projects delivered", "20+ builds", "Websites built from scratch", "Client satisfaction"];
   const proofValues = [data.stats?.[0]?.[0] || "34+", "Shopify", "Custom-coded", "100%"];
+  const brandNames = Array.from(new Set((data.projects || []).map((project) => String(project.name || "").trim()).filter(Boolean)));
+  const brandLoop = [...brandNames, ...brandNames];
   return <section className="proof-section section">
-    <div className="proof-head"><div><span className="tag-chip">The numbers don't lie</span><h2>Built. Shipped. Proven.</h2></div><p>From Shopify storefronts to custom-coded experiences, the work speaks for itself — and every number is a piece of that story.</p></div>
+    <div className="proof-head"><div><span className="tag-chip">The numbers don't lie</span><h2>Big builds. Bigger results.</h2></div><p>From Shopify storefronts to custom-coded experiences, the work speaks for itself — and every number is a piece of that story.</p></div>
     <div className="proof-grid">
       {proofLabels.map((label, index) => <article className={`proof-card proof-card-${index + 1}`} key={label}>
         <span className="proof-index">0{index + 1}</span>
@@ -797,6 +799,14 @@ function ProofNumbers({ data }) {
         <i className="proof-line" />
         <b className="proof-card-mark">{index === 0 ? "↗" : index === 1 ? "S" : index === 2 ? "</>" : "★"}</b>
       </article>)}
+    </div>
+    <div className="proof-brands" aria-label="Brands and projects DigiSky has worked with">
+      <div className="proof-brands-heading">Worked with amazing brands</div>
+      <div className="proof-brand-window">
+        <div className="proof-brand-track">
+          {brandLoop.map((name, index) => <span className="proof-brand-name" key={`${name}-${index}`}><b>{name}</b><i aria-hidden="true">✦</i></span>)}
+        </div>
+      </div>
     </div>
   </section>;
 }
