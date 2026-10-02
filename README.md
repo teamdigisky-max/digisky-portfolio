@@ -16,9 +16,11 @@ Open `yourdomain.com/admin`.
 ### One-time Supabase setup
 1. Open the Supabase project connected in `.env`.
 2. Open **SQL Editor** and run the contents of `supabase-schema.sql`.
-3. Commit and deploy the app with the commands below.
+3. Apply `supabase/migrations/20261002230000_project_thumbnail_metadata.sql` in the **SQL Editor**, or install the Supabase CLI and run `supabase login`, `supabase link --project-ref YOUR_PROJECT_REF`, then `supabase db push`.
+4. Deploy the thumbnail Edge Function with `supabase functions deploy project-thumbnail` after linking the CLI.
+5. Commit and deploy the web app with the commands below.
 
-The admin Projects tab supports direct image uploads. The schema creates the public `project-thumbnails` Storage bucket; uploaded images are limited to 5 MB and their public URL is saved with the project.
+Project records remain in the existing `site_content.content` JSONB data; the migration adds `thumbnail_url` and `thumbnail_source` to each project without replacing or deleting project data. When an automatic thumbnail is missing, the Edge Function generates a screenshot, stores the image in the public `project-thumbnails` bucket, and saves its permanent public URL. Manual thumbnail URLs and uploaded images are marked `manual` and cannot be overwritten by automatic generation. The Supabase service-role key is read only by the Edge Function runtime and must never be added to the frontend `.env`.
 
 The app keeps a local browser fallback if the database is temporarily unavailable. The current password gate is client-side only; use Supabase Auth and server-side policies before treating this as a security boundary for sensitive content.
 
@@ -36,4 +38,4 @@ If you're not sure how, the easiest path:
 2. Upload the contents of `dist/` to your existing host, or drag-and-drop the `dist` folder into Vercel's dashboard.
 
 ## Thumbnail note
-Portfolio cards use a generated thumbnail bundled with the site, so they do not depend on screenshot services, expiring URLs, or external network requests. In the admin Projects tab, upload a custom thumbnail and choose **Save all changes** to publish it. Choose **Use automatic thumbnail** to switch back to the permanent generated thumbnail.
+Portfolio cards render `thumbnail_url` from Supabase, with the existing generated preview as a fallback. Automatic screenshots are copied into Supabase Storage so the public site does not depend on expiring screenshot-provider URLs. In **Admin → Projects**, enter a thumbnail URL or upload an image, then choose **Save**. Choose **Use Automatic Thumbnail** to regenerate from the project's website URL, or **Regenerate Thumbnail** to refresh an existing automatic screenshot.

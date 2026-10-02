@@ -1,0 +1,4 @@
+project_id = "digisky-portfolio"
+
+[functions.project-thumbnail]
+verify_jwt = true
