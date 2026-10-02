@@ -329,25 +329,25 @@ function ProcessSection({ data }) {
 
 function Testimonials({ data }) {
   const stories = Array.isArray(data.testimonials) ? data.testimonials : [];
-  const lead = stories[0];
+  const lead = stories[0] || { name: "DigiSky Client", company: "Brand partner", quote: "Clear communication, strong execution and a website that feels built for the business.", rating: 5 };
   const rest = stories.slice(1, 4);
   return <section id="testimonials" className="testimonials section testimonials-redesigned">
-    <div className="testimonial-heading-row">
+    <div className="client-notes-head">
       <div><span className="tag-chip">Client notes</span><h2>Good work.<br/><em>Good people.</em></h2></div>
-      <div className="testimonial-heading-copy"><p>Real feedback from brands that trusted DigiSky with their website, store or digital growth.</p><div className="testimonial-heading-meta"><strong>{String(stories.length).padStart(2,"0")}</strong><small>client stories</small></div></div>
+      <p>Short notes from brands that trusted DigiSky with their website, store or digital growth.</p>
     </div>
-    {lead && <div className="testimonial-showcase">
-      <article className="testimonial-lead-card">
-        <div className="testimonial-lead-top"><span>01 / CLIENT NOTE</span><div className="testimonial-stars">{"★".repeat(Number(lead.rating || 5))}</div></div>
-        <div className="testimonial-lead-quote">“{lead.quote}”</div>
-        <div className="testimonial-lead-footer"><div className="client-avatar">{String(lead.name || "C").slice(0,1)}</div><div><strong>{lead.name}</strong><span>{lead.company}</span></div><b>PROJECT PARTNER ↗</b></div>
+    <div className="client-notes-grid">
+      <article className="client-note-main">
+        <div className="client-note-top"><span>CLIENT NOTE / 01</span><span className="client-stars">{"★".repeat(Number(lead.rating || 5))}</span></div>
+        <blockquote>“{lead.quote}”</blockquote>
+        <div className="client-note-person"><div className="client-avatar">{String(lead.name || "D").slice(0,1)}</div><div><strong>{lead.name}</strong><small>{lead.company}</small></div><span>DIGISKY PARTNER ↗</span></div>
       </article>
-      <aside className="testimonial-story-rail">
-        <div className="testimonial-rail-head"><span>WHY CLIENTS STAY</span><b>↗</b></div>
-        {rest.map((item,index)=><article className="testimonial-mini-card" key={`${item.name}-${index}`}><span>0{index+2}</span><p>“{item.quote}”</p><footer><strong>{item.name}</strong><small>{item.company}</small></footer></article>)}
-      </aside>
-      <div className="testimonial-standard-card"><div className="testimonial-standard-logo"><img src="/logo.png" alt="DigiSky" /></div><span>THE DIGISKY STANDARD</span><h3>Clear work.<br/><em>Clear results.</em></h3><p>Strategy, design, development and support — one focused team from first call to launch.</p><div className="testimonial-standard-list"><span><i/> Direct communication</span><span><i/> Premium execution</span><span><i/> Support after launch</span></div></div>
-    </div>}
+      <div className="client-note-list">
+        {rest.map((item,index)=><article className="client-note-small" key={`${item.name}-${index}`}><span>0{index+2}</span><p>“{item.quote}”</p><div><strong>{item.name}</strong><small>{item.company}</small></div></article>)}
+        {rest.length === 0 && <article className="client-note-small"><span>02</span><p>“From strategy to launch, the process stays clear and focused.”</p><div><strong>DigiSky</strong><small>Website & growth partner</small></div></article>}
+      </div>
+      <aside className="client-note-standard"><img src="/logo.png" alt="DigiSky"/><span>THE DIGISKY STANDARD</span><h3>Clear work.<br/><em>Clear results.</em></h3><p>Strategy, design, development and support — one focused team from first call to launch.</p><div><b>01</b> Direct communication</div><div><b>02</b> Premium execution</div><div><b>03</b> Support after launch</div></aside>
+    </div>
   </section>;
 }
 function Journal({ data }) {
@@ -739,18 +739,11 @@ function AdminPanel({ data, setData, onClose }) {
 
 
 function MarqueeStrip({ reverse = false }) {
-  const items = ["SHOPIFY", "META ADS", "GOOGLE ADS", "AI AUTOMATION", "AD CREATIVES", "SEO + CRO", "E-COMMERCE", "CUSTOM CODE", "SOCIAL MEDIA"];
+  const items = ["SHOPIFY", "WEB DEVELOPMENT", "META ADS", "GOOGLE ADS", "AI AUTOMATION", "SEO + CRO", "AD CREATIVES", "CUSTOM CODE"];
   const row = [...items, ...items];
   return <section className={`marquee-strip ${reverse ? "marquee-reverse" : ""}`} aria-label="DigiSky services">
-    <div className="marquee-shell">
-      <div className="marquee-rail-top">
-        <span className="marquee-live"><i/> DIGISKY / DIGITAL GROWTH SYSTEM</span>
-        <span>WE BUILD • WE LAUNCH • WE OPTIMISE</span>
-        <span className="marquee-counter">09 SERVICES <b>↗</b></span>
-      </div>
-      <div className="marquee-window">
-        <div className="marquee-track">{row.map((item, index) => <span className="marquee-item" key={`${item}-${index}`}><i>{String(index % items.length + 1).padStart(2,"0")}</i><b>{item}</b><em>✦</em></span>)}</div>
-      </div>
+    <div className="marquee-window">
+      <div className="marquee-track">{row.map((item, index) => <span className="marquee-item" key={`${item}-${index}`}><b>{item}</b><i aria-hidden="true">•</i></span>)}</div>
     </div>
   </section>;
 }
@@ -792,8 +785,8 @@ function CountUpNumber({ value }) {
 }
 
 function ProofNumbers({ data }) {
-  const proofLabels = ["Projects delivered", "Shopify builds", "Custom coded builds", "Client satisfaction"];
-  const proofValues = [data.stats?.[0]?.[0] || "34+", data.stats?.[1]?.[0] || "20+", data.stats?.[3]?.[0] || "12+", data.stats?.[2]?.[0] || "4.9/5"];
+  const proofLabels = ["Projects delivered", "Shopify builds", "Custom-coded websites", "Client satisfaction"];
+  const proofValues = [data.stats?.[0]?.[0] || "34+", data.stats?.[1]?.[0] || "20+", "Custom", data.stats?.[2]?.[0] || "4.9/5"];
   return <section className="proof-section section">
     <div className="proof-head"><div><span className="tag-chip">The numbers don't lie</span><h2>Built. Shipped. Proven.</h2></div><p>From Shopify storefronts to custom-coded experiences, the work speaks for itself — and every number is a piece of that story.</p></div>
     <div className="proof-grid">
@@ -919,9 +912,8 @@ function App() {
             <div className="work-head-side"><span>01 — 06</span><a className="pill-button work-head-button" href="#work">Explore all work <CtaArrow/></a></div>
           </div>
           <div className="project-filters" role="group" aria-label="Filter projects by category">{data.categories.map(filter=><button key={filter} className={effectiveFilter === filter ? "active" : ""} onClick={()=>setActiveFilter(filter)}>{filter}</button>)}</div>
-          <div className="projects-featured-layout">
-            <div className="projects-lead">{filteredProjects.slice(0,1).map((p)=><ProjectCard project={p} index={0} featured key={`${p.id || "project"}-${p.name}-lead`}/>)}</div>
-            <div className="projects-side-grid">{filteredProjects.slice(1,5).map((p,i)=><ProjectCard project={p} index={i+1} key={`${p.id || "project"}-${p.name}-${i+1}`}/>)}</div>
+          <div className="projects-featured-layout projects-all-layout">
+            {filteredProjects.map((p,i)=><ProjectCard project={p} index={i} featured={i === 0} key={`${p.id || "project"}-${p.name}-${i}`}/>)}
           </div>
         </section>
 

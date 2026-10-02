@@ -1164,3 +1164,226 @@ body{background:var(--paper);color:var(--ink);overflow-x:hidden}
   .testimonials-redesigned{padding:80px 18px!important;border-radius:28px!important}.testimonial-heading-row{display:block!important}.testimonial-heading-row h2{font-size:60px!important}.testimonial-heading-copy{display:block;margin-top:24px}.testimonial-heading-meta{align-items:flex-start!important;text-align:left!important;margin-top:18px}.testimonial-showcase{grid-template-columns:1fr}.testimonial-lead-card{min-height:430px;grid-row:auto}.testimonial-lead-quote{font-size:36px;padding:35px 0}.testimonial-story-rail{min-height:0}.testimonial-mini-card{min-height:120px}.testimonial-standard-card{min-height:400px}
   .footer-nav-group a{font-size:10px!important}.footer-message-copy h2{font-size:58px!important}
 }
+
+/* =========================================================
+   V6 — clean marquee + complete portfolio grid
+   ========================================================= */
+.marquee-strip{
+  background:#fff!important;
+  color:#111!important;
+  border-top:1px solid #e7e9e3!important;
+  border-bottom:1px solid #e7e9e3!important;
+  min-height:58px!important;
+  padding:0!important;
+  box-shadow:none!important;
+}
+.marquee-window{
+  width:100%!important;
+  padding:16px 0!important;
+  overflow:hidden!important;
+  mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)!important;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)!important;
+}
+.marquee-track{
+  display:flex!important;
+  align-items:center!important;
+  width:max-content!important;
+  gap:0!important;
+  animation:marqueeClean 30s linear infinite!important;
+}
+.marquee-reverse .marquee-track{animation-direction:reverse!important;animation-duration:34s!important}
+.marquee-track span.marquee-item{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:24px!important;
+  padding:0 24px!important;
+  color:#171a16!important;
+  font:800 11px/1 "DM Mono",monospace!important;
+  letter-spacing:.13em!important;
+  white-space:nowrap!important;
+}
+.marquee-track span.marquee-item i{
+  width:auto!important;height:auto!important;border:0!important;background:none!important;
+  color:#8bc52d!important;font:normal 13px/1 inherit!important;
+}
+.marquee-track span.marquee-item b{font-weight:800!important}
+@keyframes marqueeClean{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* Featured work: show the complete portfolio instead of only five cards. */
+.projects-all-layout{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:18px!important;
+  padding:0 clamp(18px,4vw,40px)!important;
+}
+.projects-all-layout .project-card{
+  grid-column:auto!important;
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  height:100%!important;
+  background:#fff!important;
+  border:1px solid #e1e4dc!important;
+  border-radius:24px!important;
+  box-shadow:0 8px 28px rgba(18,22,18,.045)!important;
+  overflow:hidden!important;
+  transform:none!important;
+}
+.projects-all-layout .project-card:first-child{
+  grid-column:span 2!important;
+}
+.projects-all-layout .project-card:first-child .browser-viewport{aspect-ratio:1.9!important}
+.projects-all-layout .project-media{padding:8px!important;background:#f0f2ed!important}
+.projects-all-layout .project-browser-frame{
+  border-radius:17px!important;
+  overflow:hidden!important;
+  border:1px solid #e0e3dc!important;
+  background:#fff!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.06)!important;
+}
+.projects-all-layout .browser-bar{height:34px!important;background:#f8f9f6!important;border-bottom:1px solid #e6e8e2!important}
+.projects-all-layout .browser-dots i{width:6px!important;height:6px!important}
+.projects-all-layout .browser-url{background:#fff!important;border:1px solid #e4e7e0!important;color:#70776f!important;height:22px!important;font-size:8px!important}
+.projects-all-layout .browser-viewport{aspect-ratio:1.65!important;background:#f4f5f1!important;overflow:hidden!important}
+.projects-all-layout .browser-viewport img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;transition:transform .6s cubic-bezier(.2,.8,.2,1)!important}
+.projects-all-layout .project-card:hover .browser-viewport img{transform:scale(1.025)!important}
+.projects-all-layout .project-index{top:17px!important;left:17px!important;padding:6px 9px!important;background:rgba(255,255,255,.94)!important;color:#171a16!important}
+.projects-all-layout .project-meta{display:flex!important;gap:15px!important;padding:17px 18px 19px!important;align-items:center!important;flex:1!important}
+.projects-all-layout .project-copy{min-width:0!important;flex:1!important}
+.projects-all-layout .project-labels{margin-bottom:8px!important}
+.projects-all-layout .project-labels span{font-size:8px!important;letter-spacing:.09em!important}
+.projects-all-layout .project-copy h3{font-size:22px!important;line-height:1!important;letter-spacing:-.045em!important;margin:0!important}
+.projects-all-layout .project-copy p{font-size:11px!important;line-height:1.45!important;color:#777d75!important;margin:6px 0 0!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important}
+.projects-all-layout .project-cta{width:38px!important;height:38px!important;flex:0 0 38px!important;background:#f5f6f2!important;border:1px solid #dfe2da!important}
+.projects-all-layout .project-card:hover{transform:translateY(-7px)!important;box-shadow:0 24px 55px rgba(18,22,18,.10)!important}
+.projects-all-layout .project-card:hover .project-cta{background:#baff35!important;border-color:#baff35!important}
+.projects-all-layout .project-overlay{background:linear-gradient(180deg,transparent 45%,rgba(9,12,10,.72))!important}
+.projects-all-layout .project-overlay span{font-size:9px!important;font-weight:800!important;letter-spacing:.06em!important}
+
+/* A dedicated portfolio card treatment: cleaner, less like a generic placeholder. */
+.projects-all-layout .project-card:first-child .project-copy h3{font-size:30px!important}
+.projects-all-layout .project-card:first-child .project-meta{padding:21px 22px 23px!important}
+
+@media(max-width:1000px){
+  .projects-all-layout{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .projects-all-layout .project-card:first-child{grid-column:span 2!important}
+}
+@media(max-width:640px){
+  .marquee-window{padding:14px 0!important}
+  .marquee-track span.marquee-item{padding:0 16px!important;gap:15px!important;font-size:9px!important}
+  .projects-all-layout{grid-template-columns:1fr!important;padding:0 14px!important;gap:14px!important}
+  .projects-all-layout .project-card:first-child{grid-column:span 1!important}
+  .projects-all-layout .project-card:first-child .browser-viewport,.projects-all-layout .browser-viewport{aspect-ratio:1.55!important}
+  .projects-all-layout .project-card:first-child .project-copy h3{font-size:24px!important}
+}
+
+/* =========================================================
+   V7 — clean marquee, complete portfolio, readable type,
+        aligned Why DigiSky and simplified client notes
+   ========================================================= */
+:root{--v7-ink:#111510;--v7-muted:#60675f;--v7-line:#e1e5dd;--v7-paper:#f7f8f4}
+
+/* Keep normal sections readable; dark sections retain their own palettes. */
+body{color:var(--v7-ink)!important}
+.work-showcase-section,.proof-section,.services-section,.why-section,.pricing-section,.about,.how-section,.testimonials,.journal{color:var(--v7-ink)!important}
+.work-showcase-section p,.proof-section p,.services-section p,.why-section p,.pricing-section p,.about p,.how-section p,.testimonials p,.journal p{color:var(--v7-muted)}
+.work-showcase-section h1,.work-showcase-section h2,.work-showcase-section h3,.proof-section h1,.proof-section h2,.proof-section h3,.services-section h1,.services-section h2,.services-section h3,.why-section h1,.why-section h2,.why-section h3,.pricing-section h1,.pricing-section h2,.pricing-section h3,.about h1,.about h2,.about h3,.how-section h1,.how-section h2,.how-section h3,.testimonials h1,.testimonials h2,.testimonials h3,.journal h1,.journal h2,.journal h3{color:var(--v7-ink)!important}
+
+/* Marquee: intentionally quiet and editorial, not a loud promo ticker. */
+.marquee-strip{height:52px!important;min-height:52px!important;background:#fff!important;border-top:1px solid #e7e9e3!important;border-bottom:1px solid #e7e9e3!important;box-shadow:none!important}
+.marquee-window{padding:0!important;height:52px!important;display:flex!important;align-items:center!important;mask-image:none!important;-webkit-mask-image:none!important}
+.marquee-track{height:52px!important;align-items:center!important;animation:marqueeV7 38s linear infinite!important}
+.marquee-reverse .marquee-track{animation-name:marqueeV7Reverse!important;animation-duration:42s!important}
+.marquee-track span.marquee-item{padding:0 22px!important;gap:20px!important;color:#242923!important;font:700 10px/1 "DM Mono",monospace!important;letter-spacing:.14em!important}
+.marquee-track span.marquee-item i{color:#9acb42!important;font-size:10px!important;font-family:Arial,sans-serif!important}
+.marquee-strip:hover .marquee-track{animation-play-state:paused!important}
+@keyframes marqueeV7{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+@keyframes marqueeV7Reverse{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
+
+/* Featured work: a true portfolio grid so every project is visible in the section. */
+.work-showcase-section{overflow:visible!important;background:#fff!important;border-top:1px solid #eceee8;border-bottom:1px solid #eceee8}
+.work-showcase-head{max-width:1380px!important}
+.work-head-side{align-items:flex-end!important}
+.projects-all-layout{max-width:1380px!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:16px!important;padding:0 clamp(18px,3.5vw,38px)!important}
+.projects-all-layout .project-card,.projects-all-layout .project-card:first-child{grid-column:auto!important}
+.projects-all-layout .project-card:first-child .browser-viewport{aspect-ratio:1.58!important}
+.projects-all-layout .project-card{border-radius:20px!important;box-shadow:0 7px 26px rgba(16,19,15,.045)!important}
+.projects-all-layout .project-media{padding:7px!important;background:#f2f4ef!important}
+.projects-all-layout .project-browser-frame{border-radius:14px!important;box-shadow:0 2px 10px rgba(16,19,15,.07)!important}
+.projects-all-layout .browser-bar{height:30px!important}
+.projects-all-layout .browser-url{height:20px!important;font-size:7px!important}
+.projects-all-layout .browser-viewport{aspect-ratio:1.55!important}
+.projects-all-layout .project-meta{padding:14px 15px 16px!important;gap:10px!important}
+.projects-all-layout .project-copy h3,.projects-all-layout .project-card:first-child .project-copy h3{font-size:19px!important;line-height:1.05!important}
+.projects-all-layout .project-copy p{font-size:10px!important;line-height:1.4!important}
+.projects-all-layout .project-labels span{font-size:7px!important}
+.projects-all-layout .project-cta{width:34px!important;height:34px!important;flex-basis:34px!important}
+.projects-all-layout .project-card:hover{transform:translateY(-5px)!important;box-shadow:0 18px 42px rgba(16,19,15,.09)!important}
+
+/* Make fallback portfolio artwork look like a clean website preview, not a placeholder. */
+.projects-all-layout .browser-viewport img{object-position:center top!important}
+
+/* Numbers: third card uses a readable word treatment instead of a clipped fake numeric stat. */
+.proof-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important}
+.proof-card{min-width:0!important;background:#fff!important;border:1px solid #e1e5dd!important}
+.proof-card:nth-child(even){background:#fff!important}
+.proof-card strong{white-space:nowrap!important}
+.proof-card>span:last-of-type{max-width:100%!important;font-size:14px!important;line-height:1.25!important}
+.proof-card-3 strong{font-size:clamp(40px,4.4vw,68px)!important;letter-spacing:-.065em!important}
+.proof-card-3>span:last-of-type{font-size:13px!important;max-width:180px!important}
+
+/* Why DigiSky: lock the section into the page rhythm and align the heading/cards. */
+.why-redesigned{max-width:1380px!important;margin:0 auto!important;padding:105px clamp(18px,4vw,38px)!important;box-sizing:border-box!important}
+.why-intro{max-width:1280px!important;margin:0 auto 36px!important;grid-template-columns:1.1fr .9fr!important;gap:50px!important;align-items:end!important}
+.why-grid{max-width:1280px!important;margin:0 auto!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
+.why-grid article{min-height:300px!important;background:#fff!important;border:1px solid #e1e5dd!important;border-radius:22px!important;padding:22px!important}
+.why-grid article:nth-child(2),.why-grid article:nth-child(3){background:#fff!important}
+.why-grid article:nth-child(4){background:#f1f7e7!important}
+.why-icon{margin:48px 0 24px!important;width:46px!important;height:46px!important}
+.why-grid h3{font-size:24px!important}
+.why-grid p{font-size:13px!important}
+
+/* Client notes: simple white editorial layout instead of the previous heavy cards. */
+.testimonials-redesigned{background:#f7f8f4!important;border-radius:0!important;padding:115px clamp(18px,4vw,38px)!important;color:#111510!important}
+.client-notes-head{max-width:1280px;margin:0 auto 38px;display:grid;grid-template-columns:1fr .55fr;gap:60px;align-items:end}
+.client-notes-head h2{font-size:clamp(56px,7vw,96px);line-height:.86;letter-spacing:-.07em;margin:17px 0 0;color:#111510!important}
+.client-notes-head h2 em{font-style:normal;color:#7b8479!important}
+.client-notes-head p{max-width:390px;margin:0 0 5px;line-height:1.65;color:#626a61!important}
+.client-notes-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.45fr .8fr .65fr;gap:14px;align-items:stretch}
+.client-note-main{background:#fff;border:1px solid #dfe4db;border-radius:24px;padding:26px;min-height:430px;display:flex;flex-direction:column;box-shadow:0 10px 35px rgba(17,21,16,.045)}
+.client-note-top{display:flex;justify-content:space-between;align-items:center;font:9px "DM Mono",monospace;letter-spacing:.12em;color:#737c72}
+.client-stars{color:#80b52d;letter-spacing:2px}
+.client-note-main blockquote{font-size:clamp(31px,3.4vw,53px);line-height:.98;letter-spacing:-.055em;margin:auto 0;padding:45px 0;color:#111510}
+.client-note-person{border-top:1px solid #e3e7df;padding-top:15px;display:flex;align-items:center;gap:10px}
+.client-note-person>div:nth-child(2){display:flex;flex-direction:column}.client-note-person strong{font-size:12px}.client-note-person small{font-size:9px;color:#747d73}.client-note-person>span{margin-left:auto;font:8px "DM Mono",monospace;color:#737c72}
+.client-note-list{display:flex;flex-direction:column;gap:10px}
+.client-note-small{background:#fff;border:1px solid #dfe4db;border-radius:20px;padding:19px;min-height:0;display:flex;flex-direction:column;transition:.3s ease}
+.client-note-small:hover{transform:translateY(-4px);box-shadow:0 15px 35px rgba(17,21,16,.07)}
+.client-note-small>span{font:9px "DM Mono",monospace;color:#8ab73b}.client-note-small p{font-size:14px;line-height:1.35;color:#252b24!important;margin:22px 0 28px}.client-note-small>div{display:flex;flex-direction:column;margin-top:auto}.client-note-small strong{font-size:10px}.client-note-small small{font-size:8px;color:#7b837a}
+.client-note-standard{border-radius:24px;background:#111510;color:#fff;padding:23px;min-height:430px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.client-note-standard:after{content:"DS";position:absolute;right:-22px;bottom:-45px;font-size:175px;font-weight:1000;color:rgba(186,255,53,.08);line-height:.8;letter-spacing:-.12em}
+.client-note-standard img{width:48px;height:48px;object-fit:contain;background:#fff;border-radius:13px;padding:6px;margin-bottom:auto;position:relative;z-index:2}
+.client-note-standard>span{font:8px "DM Mono",monospace;letter-spacing:.13em;color:#baff35;position:relative;z-index:2}.client-note-standard h3{font-size:clamp(32px,3vw,47px);line-height:.9;letter-spacing:-.06em;margin:13px 0;color:#fff!important;position:relative;z-index:2}.client-note-standard h3 em{font-style:normal;color:#baff35}.client-note-standard p{font-size:11px;line-height:1.55;color:#b8c0b6!important;max-width:260px;position:relative;z-index:2}.client-note-standard>div{font-size:9px;font-weight:800;color:#dce4d9;margin-top:9px;position:relative;z-index:2}.client-note-standard>div b{display:inline-block;color:#baff35;margin-right:7px;font:9px "DM Mono",monospace}
+
+/* Footer contrast: guarantee every footer link/text is visible. */
+.footer-shell{background:#070a07!important;color:#fff!important}
+.footer-shell,.footer-shell a,.footer-shell p,.footer-shell span,.footer-shell small,.footer-shell h2{color:#fff!important}
+.footer-shell .footer-tagline,.footer-shell .footer-message-copy p{color:#b8c1b7!important}
+.footer-shell .footer-nav-group small,.footer-shell .footer-socials>small{color:#94a094!important}
+.footer-shell .footer-nav-group a,.footer-shell .footer-socials a{color:#e9eee8!important}
+.footer-shell .footer-nav-group a:hover,.footer-shell .footer-socials a:hover{color:#baff35!important}
+.footer-shell .footer-message-copy .footer-eyebrow{color:#baff35!important}
+.footer-shell .footer-bottom,.footer-shell .footer-bottom span{color:#a0aaa0!important}
+.footer-shell .footer-wordmark span{color:#fff!important}
+
+@media(max-width:1050px){
+  .projects-all-layout{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .proof-grid,.why-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .client-notes-grid{grid-template-columns:1fr 1fr!important}.client-note-main{grid-row:span 2}.client-note-standard{min-height:330px}
+}
+@media(max-width:700px){
+  .marquee-strip,.marquee-window,.marquee-track{height:48px!important;min-height:48px!important}.marquee-track span.marquee-item{font-size:8px!important;padding:0 14px!important;gap:13px!important}
+  .projects-all-layout{grid-template-columns:1fr 1fr!important;padding:0 14px!important;gap:12px!important}.projects-all-layout .project-copy h3,.projects-all-layout .project-card:first-child .project-copy h3{font-size:17px!important}.projects-all-layout .project-copy p{font-size:9px!important}.projects-all-layout .project-cta{width:30px!important;height:30px!important;flex-basis:30px!important}
+  .proof-grid,.why-grid{grid-template-columns:1fr!important}.why-redesigned{padding:80px 18px!important}.why-intro{display:block!important}.why-intro>p{margin-top:24px}
+  .client-notes-head{display:block!important}.client-notes-head p{margin-top:22px}.client-notes-grid{grid-template-columns:1fr!important}.client-note-main{grid-row:auto;min-height:390px}.client-note-standard{min-height:350px}
+}
