@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
 import { supabase } from "./lib/supabase";
@@ -815,6 +815,93 @@ function HowItWorks({ data }) {
     </div>
   </section>;
 }
+function CustomCursor() {
+  const dotRef = useRef(null);
+  const ringRef = useRef(null);
+
+  useEffect(() => {
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+    if (!finePointer.matches) return undefined;
+
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return undefined;
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let ringX = mouseX;
+    let ringY = mouseY;
+    let frame = 0;
+    let visible = false;
+    let overInteractive = false;
+
+    const setPosition = (x, y) => {
+      mouseX = x;
+      mouseY = y;
+      dot.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+      if (!visible) {
+        ringX = x;
+        ringY = y;
+        ring.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+        document.documentElement.classList.add("custom-cursor-ready");
+        visible = true;
+      }
+    };
+
+    const onMove = (event) => setPosition(event.clientX, event.clientY);
+    const onOver = (event) => {
+      const target = event.target instanceof Element ? event.target.closest("a, button, [role=button], input, select, textarea, summary, .clickable, [data-cursor-hover]") : null;
+      overInteractive = Boolean(target);
+      document.documentElement.classList.toggle("cursor-hovering", overInteractive);
+    };
+    const onDown = () => document.documentElement.classList.add("cursor-pressed");
+    const onUp = () => document.documentElement.classList.remove("cursor-pressed");
+    const onLeave = () => document.documentElement.classList.remove("custom-cursor-ready");
+    const onEnter = () => document.documentElement.classList.add("custom-cursor-ready");
+
+    const animate = () => {
+      ringX += (mouseX - ringX) * 0.16;
+      ringY += (mouseY - ringY) * 0.16;
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+      frame = requestAnimationFrame(animate);
+    };
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerover", onOver, { passive: true });
+    window.addEventListener("pointerdown", onDown, { passive: true });
+    window.addEventListener("pointerup", onUp, { passive: true });
+    window.addEventListener("pointercancel", onUp, { passive: true });
+    document.documentElement.addEventListener("mouseleave", onLeave);
+    document.documentElement.addEventListener("mouseenter", onEnter);
+    frame = requestAnimationFrame(animate);
+
+    const onMediaChange = (event) => {
+      if (!event.matches) {
+        document.documentElement.classList.remove("custom-cursor-ready", "cursor-hovering", "cursor-pressed");
+      }
+    };
+    finePointer.addEventListener?.("change", onMediaChange);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerover", onOver);
+      window.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
+      document.documentElement.removeEventListener("mouseenter", onEnter);
+      finePointer.removeEventListener?.("change", onMediaChange);
+      document.documentElement.classList.remove("custom-cursor-ready", "cursor-hovering", "cursor-pressed");
+    };
+  }, []);
+
+  return <>
+    <span ref={dotRef} className="custom-cursor-dot" aria-hidden="true" />
+    <span ref={ringRef} className="custom-cursor-ring" aria-hidden="true"><i /></span>
+  </>;
+}
+
 function App() {
   const [data, setData] = useState(loadData);
   const isAdminRoute = window.location.pathname.replace(/\/$/,"") === "/admin" || new URLSearchParams(window.location.search).has("admin");
@@ -881,6 +968,7 @@ function App() {
       <CodeBackground />
       <IntroSplash />
       <Header data={data}/>
+      <CustomCursor />
       {adminOpen && isAdminRoute && (unlocked
         ? <AdminPanel data={data} setData={setData} onClose={closeAdmin}/>
         : <AdminGate onUnlock={()=>setUnlocked(true)}/>

@@ -1755,3 +1755,105 @@ main{width:100%!important}
   .how-redesigned .how-head,
   .how-redesigned .how-timeline{width:calc(100% - 36px)!important}
 }
+
+/* =========================================================
+   DIGISKY CUSTOM CURSOR
+   Desktop precision pointer only; touch/mobile stays native.
+   ========================================================= */
+@media (hover: hover) and (pointer: fine) {
+  html.custom-cursor-ready,
+  html.custom-cursor-ready body,
+  html.custom-cursor-ready body * {
+    cursor: none !important;
+  }
+
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 2147483647;
+    opacity: 0;
+    will-change: transform;
+  }
+
+  .custom-cursor-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #9cff00;
+    box-shadow: 0 0 0 3px rgba(156, 255, 0, .10);
+    transition: width .18s ease, height .18s ease, background-color .18s ease, box-shadow .18s ease;
+  }
+
+  .custom-cursor-ring {
+    width: 34px;
+    height: 34px;
+    border: 1.5px solid rgba(14, 19, 15, .72);
+    border-radius: 50%;
+    background: rgba(255,255,255,.035);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    transition: width .28s cubic-bezier(.22,1,.36,1), height .28s cubic-bezier(.22,1,.36,1), border-color .22s ease, background-color .22s ease, opacity .22s ease;
+  }
+
+  .custom-cursor-ring i {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #0e130f;
+    transform: translate(-50%, -50%);
+    opacity: .75;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+
+  html.custom-cursor-ready .custom-cursor-dot,
+  html.custom-cursor-ready .custom-cursor-ring {
+    opacity: 1;
+  }
+
+  html.cursor-hovering .custom-cursor-ring {
+    width: 58px;
+    height: 58px;
+    border-color: #9cff00;
+    background: rgba(156,255,0,.10);
+  }
+
+  html.cursor-hovering .custom-cursor-dot {
+    width: 5px;
+    height: 5px;
+    background: #0e130f;
+    box-shadow: 0 0 0 4px rgba(156,255,0,.22);
+  }
+
+  html.cursor-hovering .custom-cursor-ring i {
+    width: 6px;
+    height: 6px;
+    background: #0e130f;
+    opacity: 1;
+  }
+
+  html.cursor-pressed .custom-cursor-ring {
+    width: 25px;
+    height: 25px;
+    border-color: #0e130f;
+    background: rgba(156,255,0,.22);
+    transition-duration: .09s;
+  }
+
+  html.cursor-pressed .custom-cursor-dot {
+    width: 10px;
+    height: 10px;
+    transition-duration: .09s;
+  }
+}
+
+@media (hover: none), (pointer: coarse), (max-width: 767px) {
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    display: none !important;
+  }
+}
