@@ -36,4 +36,4 @@ If you're not sure how, the easiest path:
 2. Upload the contents of `dist/` to your existing host, or drag-and-drop the `dist` folder into Vercel's dashboard.
 
 ## Thumbnail note
-Live thumbnails use Thum.io's free screenshot service unless a custom image is uploaded in the admin panel. If a screenshot fails to load, a local fallback image is used instead.
+Portfolio cards automatically request a website screenshot from the project's URL (Microlink first, then Thum.io). The admin Projects tab shows the same automatic preview; updating and saving a project's URL updates its screenshot. Upload a custom image to override the automatic screenshot, or choose **Use automatic screenshot** to switch back. If both screenshot services are unavailable, a local generated thumbnail is shown.
