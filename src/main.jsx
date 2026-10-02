@@ -502,7 +502,7 @@ function ProjectCard({ project, index, featured = false }) {
   const thumbnail = candidates[0];
   const projectCategoryName = projectCategory(project);
   const domain = hasUrl ? project.url.trim().replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/$/, "") : "preview unavailable";
-  const image = <img src={thumbnail} alt={`${project.name} project thumbnail`} loading={index < 12 ? "eager" : "lazy"} fetchPriority={index < 6 ? "high" : "auto"} decoding="async" onError={(e)=>{
+  const image = <img src={thumbnail} alt={`${project.name} project thumbnail`} loading="lazy" decoding="async" onError={(e)=>{
     const stage = Number(e.currentTarget.dataset.fallback || "0") + 1;
     if (stage < candidates.length) { e.currentTarget.dataset.fallback = String(stage); e.currentTarget.src = candidates[stage]; }
   }} />;
@@ -899,23 +899,41 @@ function App() {
   const [activeFilter, setActiveFilter] = useState("All");
   useEffect(() => {
     let active = true;
-    fetchRemoteData()
-      .then(remote => {
-        if (active && remote) {
-          const remoteProjects = Array.isArray(remote.projects) ? remote.projects.map((project, index) => ({
-            ...project,
-            image: project.image || makeThumb(project, index),
-          })) : undefined;
-          setData(prev => ({
-            ...prev,
-            ...remote,
-            ...(remoteProjects ? { projects: remoteProjects } : {}),
-            categories: (Array.isArray(remote.categories) && remote.categories.length ? remote.categories : prev.categories).filter(category => category !== "E-commerce"),
-          }));
-        }
-      })
-      .catch(error => console.warn("Remote content unavailable; using local content.", error.message));
-    return () => { active = false; };
+    let idleCallbackId;
+    let timeoutId;
+    const loadRemoteContent = () => {
+      fetchRemoteData()
+        .then(remote => {
+          if (active && remote) {
+            const remoteProjects = Array.isArray(remote.projects) ? remote.projects.map((project, index) => ({
+              ...project,
+              image: project.image || makeThumb(project, index),
+            })) : undefined;
+            setData(prev => ({
+              ...prev,
+              ...remote,
+              ...(remoteProjects ? { projects: remoteProjects } : {}),
+              categories: (Array.isArray(remote.categories) && remote.categories.length ? remote.categories : prev.categories).filter(category => category !== "E-commerce"),
+            }));
+          }
+        })
+        .catch(error => console.warn("Remote content unavailable; using local content.", error.message));
+    };
+    const scheduleRemoteContent = () => {
+      if ("requestIdleCallback" in window) {
+        idleCallbackId = window.requestIdleCallback(loadRemoteContent, { timeout: 2000 });
+      } else {
+        timeoutId = window.setTimeout(loadRemoteContent, 1000);
+      }
+    };
+    if (document.readyState === "complete") scheduleRemoteContent();
+    else window.addEventListener("load", scheduleRemoteContent, { once: true });
+    return () => {
+      active = false;
+      window.removeEventListener("load", scheduleRemoteContent);
+      if (idleCallbackId !== undefined && "cancelIdleCallback" in window) window.cancelIdleCallback(idleCallbackId);
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+    };
   }, []);
   useEffect(()=>{
     document.documentElement.style.scrollBehavior="smooth";

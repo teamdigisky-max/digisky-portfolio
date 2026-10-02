@@ -546,8 +546,6 @@ footer.footer-shell:before{content:"";position:absolute;z-index:-1;left:50%;top:
    Keeps the existing React/Supabase/admin markup intact.
    Replace styles.css with the generated styles.css in this package. */
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
-
 :root{
   --paper:#f8f7f2!important;
   --ink:#11120f!important;
