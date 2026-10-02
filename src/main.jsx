@@ -305,33 +305,68 @@ function TrustStrip({ data }) {
 }
 
 function AboutSection({ data }) {
-  return <section id="about" className="about section"><div className="about-grid"><div><span className="tag-chip">About DigiSky</span><h2>{data.about.titleA}<br/>{data.about.titleB}</h2><div className="about-stamp"><strong>DS</strong><span>Digital studio<br/>for ambitious brands</span></div></div><div><p>{data.about.text}</p><ul className="about-points">{data.about.points.map(point=><li key={point}><span>+</span>{point}</li>)}</ul><div className="about-metrics"><div><strong>34+</strong><span>launches</span></div><div><strong>100%</strong><span>custom thinking</span></div></div></div></div></section>;
+  return <section id="about" className="about section about-redesigned">
+    <div className="about-intro">
+      <div><span className="tag-chip">About DigiSky</span><h2>Small studio.<br/><em>Serious digital thinking.</em></h2></div>
+      <p>{data.about.text} We bring strategy, design, development and growth thinking into one focused workflow — so your website feels like a business asset, not just another project.</p>
+    </div>
+    <div className="about-story-grid">
+      <div className="about-orbit-card">
+        <div className="about-orbit"><span>DS</span><i>✦</i><b>01</b><strong>BUILD<br/>BETTER</strong></div>
+        <div className="about-orbit-caption"><span>INDORE / INDIA</span><span>WEB • E-COMMERCE • GROWTH</span></div>
+      </div>
+      <div className="about-content-card">
+        <div className="about-copy"><span className="mini-label">What we believe</span><h3>Clarity first. Design second. Results always.</h3><p>We start by understanding what needs to happen after someone lands on your website. Then we build the design, content and technology around that goal.</p></div>
+        <div className="about-points-grid">{data.about.points.map((point,i)=><div key={point}><span>0{i+1}</span><strong>{point}</strong></div>)}</div>
+        <div className="about-metrics"><div><strong><CountUpNumber value="34+"/></strong><span>projects shipped</span></div><div><strong><CountUpNumber value="20+"/></strong><span>brands worked with</span></div><div><strong>24/7</strong><span>digital mindset</span></div></div>
+      </div>
+    </div>
+  </section>;
 }
-
 function ProcessSection({ data }) {
   return <section id="process" className="process section"><div className="section-top"><div><span className="tag-chip">How we work</span><h2>Our process.</h2></div><p className="section-copy">A clear path from first conversation to a digital experience ready to grow with you.</p></div><div className="process-grid">{data.process.map(step=><div className="process-step" key={step[0]}><span>{step[0]}</span><h3>{step[1]}</h3><p>{step[2]}</p></div>)}</div></section>;
 }
 
 function Testimonials({ data }) {
-  return <section id="testimonials" className="testimonials section"><div className="section-top"><div><span className="tag-chip">Client notes</span><h2>Good work travels.</h2></div><span className="testimonial-count">{String(data.testimonials.length).padStart(2,"0")} / client stories</span></div><div className="testimonial-grid">{data.testimonials.map((item, index)=><article className="testimonial" key={`${item.name}-${index}`}><span className="quote-mark">“</span><div className="rating">{"★".repeat(Number(item.rating || 5))}</div><blockquote>{item.quote}</blockquote><footer><strong>{item.name}</strong><span>{item.company}</span><em>Project partner</em></footer></article>)}</div></section>;
+  return <section id="testimonials" className="testimonials section testimonials-redesigned">
+    <div className="section-top"><div><span className="tag-chip">Client notes</span><h2>Good work travels.</h2></div><span className="testimonial-count">{String(data.testimonials.length).padStart(2,"0")} / client stories</span></div>
+    <div className="testimonial-stage">
+      <div className="testimonial-quote-mark">“</div>
+      <div className="testimonial-main">{data.testimonials.map((item,index)=><article className="testimonial-card" key={`${item.name}-${index}`}><div className="testimonial-stars">{"★".repeat(Number(item.rating || 5))}</div><blockquote>{item.quote}</blockquote><footer><div className="client-avatar">{String(item.name || "C").slice(0,1)}</div><div><strong>{item.name}</strong><span>{item.company}</span></div><em>Project partner</em></footer></article>)}</div>
+      <div className="testimonial-side"><span>THE DIGISKY STANDARD</span><strong>Good work<br/><em>keeps moving.</em></strong><p>Clear communication, thoughtful design and digital experiences made to keep working after launch.</p></div>
+    </div>
+  </section>;
 }
-
 function Journal({ data }) {
-  return <section id="journal" className="journal section"><div className="section-top"><div><span className="tag-chip">From the studio</span><h2>Ideas worth sharing.</h2></div><span className="project-count">Latest thinking</span></div><div className="journal-grid">{data.blog.map((post, index)=><article className={`journal-card ${index === 0 ? "journal-featured" : ""}`} key={`${post.title}-${index}`}><div className="journal-art"><span>{post.category}</span><i>{String(index + 1).padStart(2,"0")}</i></div><div className="journal-copy"><small>{post.date}</small><h3>{post.title}</h3><p>{post.excerpt}</p><a href="#contact" className="journal-link">Read the note</a></div></article>)}</div></section>;
+  const growthServices = [
+    ["META ADS", "Performance campaigns built around the offer, audience and landing experience."],
+    ["GOOGLE ADS", "Search and intent-led campaigns designed to turn demand into qualified leads."],
+    ["AI AUTOMATION", "Smarter workflows that reduce repetitive work and keep customer journeys moving."],
+    ["AD CREATIVES", "Scroll-stopping static, UGC and short-form creative for modern campaigns."],
+    ["SEO + CRO", "Technical foundations and conversion improvements that help more visitors become customers."],
+    ["SOCIAL MEDIA", "A consistent content system that keeps your brand visible, useful and memorable."],
+  ];
+  return <section id="journal" className="journal section growth-services-section"><div className="section-top"><div><span className="tag-chip">More ways we help</span><h2>Growth services beyond the website.</h2></div><span className="project-count">Strategy → execution</span></div><div className="growth-services-grid">{growthServices.map((service,index)=><article className="growth-service-card" key={service[0]}><div className="growth-service-top"><span>0{index+1}</span><i>↗</i></div><small>{service[0]}</small><h3>{service[1]}</h3><div className="growth-service-line"><span/></div></article>)}</div></section>;
 }
-
 function ShopifyExpertise({ projects }) {
   const [active, setActive] = useState(0);
   const points = [
-    ["Custom Shopify store design", "Premium storefronts designed around the brand, not a template."],
-    ["Theme customization", "Custom sections and experiences beyond basic theme settings."],
-    ["Product & collection architecture", "Clear shopping journeys that make products easier to discover."],
-    ["Conversion-focused UX", "Strategic navigation and product flows built around customer intent."],
+    ["Shopify store design", "Premium storefronts designed around the brand, customer journey and product."],
+    ["Custom Shopify development", "Sections, interactions and functionality built beyond the limits of a basic theme."],
+    ["Custom coded websites", "When Shopify is not the right fit, we build the experience from the ground up."],
+    ["Conversion-focused UX", "Navigation, product pages and checkout journeys shaped around customer intent."],
   ];
   const preview = projects.find(project => project.platform === "Shopify") || projects[0];
-  return <section id="shopify-expertise" className="shopify-expertise section"><div className="shopify-heading"><div><span className="tag-chip">Shopify expertise</span><h2>Built for brands<br/>that want to sell more.</h2></div><p>We don't just make Shopify stores look beautiful. We design ecommerce experiences focused on trust, clarity and conversion.</p></div><div className="shopify-stage"><div className="shopify-list">{points.map((point,index)=><button className={active === index ? "active" : ""} key={point[0]} onClick={()=>setActive(index)}><span>0{index + 1}</span><strong>{point[0]}</strong><small>{point[1]}</small></button>)}</div><div className="shopify-preview"><div className="preview-top"><span>digisky / Shopify build</span><b>● ● ●</b></div><div className="preview-screen"><img src={preview?.image} alt="Shopify project preview" loading="lazy"/><div><span>Selected Shopify build</span><strong>{preview?.name || "DigiSky Store"}</strong></div></div><div className="preview-footer"><span>Conversion-first design</span><span>01 — 04</span></div></div></div></section>;
+  return <section id="shopify-expertise" className="shopify-expertise section shopify-redesigned">
+    <div className="shopify-topline"><span className="tag-chip">Shopify expertise</span><span>SHOPIFY + CUSTOM CODE</span></div>
+    <div className="shopify-heading"><div><h2>Built for brands<br/><em>that want to sell more.</em></h2></div><p>From a clean Shopify storefront to a fully custom-coded experience, DigiSky builds around the business — not around a template.</p></div>
+    <div className="shopify-platform-pills"><span className="active">SHOPIFY</span><span>CUSTOM CODED</span><span>ECOMMERCE</span></div>
+    <div className="shopify-stage">
+      <div className="shopify-list">{points.map((point,index)=><button className={active === index ? "active" : ""} key={point[0]} onClick={()=>setActive(index)}><span>0{index + 1}</span><div><strong>{point[0]}</strong><small>{point[1]}</small></div><b>↗</b></button>)}</div>
+      <div className="shopify-preview"><div className="preview-top"><span>digisky / digital build</span><b>● ● ●</b></div><div className="preview-screen"><img src={preview?.image} alt="DigiSky project preview" loading="lazy"/><div><span>{active === 2 ? "Custom coded experience" : "Selected Shopify build"}</span><strong>{preview?.name || "DigiSky Store"}</strong></div></div><div className="preview-footer"><span>{active === 2 ? "Built from the ground up" : "Conversion-first ecommerce"}</span><span>0{active + 1} — 04</span></div></div>
+    </div>
+  </section>;
 }
-
 function HeroShowcase({ projects, heroImages = [] }) {
   const showcaseRef = React.useRef(null);
   const move = event => {
@@ -679,7 +714,7 @@ function AdminPanel({ data, setData, onClose }) {
 
 
 function MarqueeStrip({ reverse = false }) {
-  const items = ["SHOPIFY", "META ADS", "CHATGPT", "WHATSAPP", "GOOGLE ADS", "AI AUTOMATION", "AD CREATIVES", "CRO", "E-COMMERCE"];
+  const items = ["SHOPIFY", "META ADS", "GOOGLE ADS", "AI AUTOMATION", "AD CREATIVES", "CRO", "E-COMMERCE", "CUSTOM CODE"];
   return <div className={`marquee-strip ${reverse ? "marquee-reverse" : ""}`} aria-label="DigiSky services">
     <div className="marquee-track">{[...items, ...items].map((item, index) => <span key={`${item}-${index}`}><i>✦</i>{item}</span>)}</div>
   </div>;
@@ -736,19 +771,19 @@ function ProofNumbers({ data }) {
 }
 
 function HowItWorks({ data }) {
-  return <section id="how-it-works" className="how-section section">
-    <div className="how-head"><div><span className="tag-chip">Simple process</span><h2>How it works.</h2></div><p>From the first call to launch day, every step has a purpose.</p></div>
-    <div className="how-rail">
-      {data.process.map((step, index) => <article className="how-card" key={step[0]}>
-        <div className="how-card-top"><span>{step[0]}</span><b>{String(index + 1).padStart(2, "0")}</b></div>
-        <div className="how-dot" />
+  return <section id="how-it-works" className="how-section section how-redesigned">
+    <div className="how-head"><div><span className="tag-chip">Simple process</span><h2>How it works.</h2></div><p>One clear workflow. No mystery handoffs. You always know what happens next.</p></div>
+    <div className="how-timeline">
+      <div className="how-progress-line"><span/></div>
+      {data.process.map((step,index)=><article className="how-step-card" key={step[0]}>
+        <div className="how-step-number">{String(index+1).padStart(2,"0")}</div>
+        <span className="how-step-label">{step[0]}</span>
         <h3>{step[1]}</h3><p>{step[2]}</p>
-        <span className="how-arrow">↗</span>
+        <div className="how-step-foot"><span>{index === data.process.length-1 ? "GO LIVE" : "NEXT STEP"}</span><b>↗</b></div>
       </article>)}
     </div>
   </section>;
 }
-
 function App() {
   const [data, setData] = useState(loadData);
   const isAdminRoute = window.location.pathname.replace(/\/$/,"") === "/admin" || new URLSearchParams(window.location.search).has("admin");
@@ -867,14 +902,14 @@ function App() {
         <ProofNumbers data={data} />
         <MarqueeStrip reverse />
 
-        <section id="services" className="services-section section">
-          <div className="services-intro"><div><span className="tag-chip">Our services</span><h2 className="services-heading">Everything you need to grow online</h2></div><p>From stunning websites to results-driven marketing, we build digital experiences that help your brand convert and scale.</p></div>
-          <div className="services-list">{data.services.map((s,i)=><div className={`service-row ${i === 0 ? "service-featured" : ""}`} key={i}><span className="service-number">{String(i + 1).padStart(2,"0")}</span><div className="service-copy"><h3>{s[0]}</h3><p>{s[1]}</p></div><b>&#8599;</b></div>)}</div>
+        <section id="services" className="services-section section services-redesigned">
+          <div className="services-intro"><div><span className="tag-chip">Our services</span><h2 className="services-heading">Everything you need<br/><em>to grow online.</em></h2></div><p>One studio for the parts that matter most: a stronger website, a better store and marketing that gives people a reason to click.</p></div>
+          <div className="services-list services-card-grid">{data.services.map((s,i)=><article className={`service-card ${i === 0 ? "service-featured" : ""}`} key={i}><div className="service-card-top"><span>{String(i + 1).padStart(2,"0")}</span><b>↗</b></div><div><small>{i === 0 ? "ECOMMERCE" : i === 1 ? "WEBSITE" : i === 2 ? "DEVELOPMENT" : "CONVERSION"}</small><h3>{s[0]}</h3><p>{s[1]}</p></div><div className="service-card-bottom"><span>Explore service</span><i/></div></article>)}</div>
         </section>
 
         <ShopifyExpertise projects={projects}/>
 
-        <section className="why-section section"><div className="section-top"><div><span className="tag-chip">Why DigiSky</span><h2>Built with intent.</h2></div></div><div className="why-grid">{data.features.map(feature=><article key={feature[0]}><span>{feature[0]}</span><h3>{feature[1]}</h3><p>{feature[2]}</p></article>)}</div></section>
+        <section className="why-section section why-redesigned"><div className="why-intro"><div><span className="tag-chip">Why DigiSky</span><h2>Built with intent.<br/><em>Designed to move.</em></h2></div><p>We care about what happens after launch — how fast the site feels, how clearly it communicates, and whether people know what to do next.</p></div><div className="why-grid">{data.features.map((feature,index)=><article key={feature[0]}><div className="why-number">{feature[0]}</div><div className="why-icon">✦</div><h3>{feature[1]}</h3><p>{feature[2]}</p><span className="why-arrow">↗</span></article>)}</div></section>
 
         <Pricing data={data}/>
 
