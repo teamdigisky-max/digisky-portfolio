@@ -2002,3 +2002,36 @@ main{width:100%!important}
   .proof-brand-track{min-height:72px!important}
   .proof-brand-name{padding:0 24px!important;gap:22px!important;font-size:15px!important}
 }
+
+/* V13 — Why DigiSky comparison switch inspired by the supplied reference */
+.why-switch-section{padding:125px 0 140px!important;background:#fbfaf6!important;color:#111827!important;overflow:hidden}
+.why-switch-head{text-align:center;max-width:980px;margin:0 auto}
+.why-switch-tag{display:inline-flex;align-items:center;padding:9px 16px;border-radius:999px;background:#e3efff;color:#2f6df6;font:700 12px/1 'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+.why-switch-head h2{font-size:clamp(48px,6.2vw,88px)!important;line-height:.94!important;letter-spacing:-.065em!important;margin:28px auto 18px!important;max-width:1000px!important;color:#111827!important}
+.why-switch-head h2 span{color:#2f6df6}
+.why-switch-head p{font-size:19px;color:#64748b;margin:0}
+.why-switch-toggle{width:min(380px,calc(100% - 32px));margin:32px auto 54px;padding:5px;border:2px solid #111827;border-radius:999px;background:#fff;display:grid;grid-template-columns:1fr 1fr;box-shadow:5px 6px 0 #111827}
+.why-switch-toggle button{border:0;background:transparent;color:#111827;padding:14px 18px;border-radius:999px;font:700 15px/1 'DM Sans',sans-serif;cursor:pointer;transition:.35s cubic-bezier(.2,.8,.2,1)}
+.why-switch-toggle button.active{background:#2f6df6;color:#fff;box-shadow:0 2px 10px rgba(47,109,246,.2)}
+.why-switch-content{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:330px minmax(0,1fr);gap:62px;align-items:center}
+.why-switch-visual{display:flex;justify-content:center}
+.why-device-card{width:330px;height:260px;border:2px solid #111827;border-radius:30px;background:#fff;box-shadow:9px 10px 0 #111827;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:28px 28px 27px;overflow:hidden}
+.why-core{position:absolute;top:55px;width:82px;height:82px;border-radius:26px;display:grid;place-items:center;background:#baff35;color:#111827;font:900 28px/1 'Manrope',sans-serif;letter-spacing:-.08em;box-shadow:0 12px 35px rgba(186,255,53,.28);animation:whyFloat 3s ease-in-out infinite}
+.why-orbit{position:absolute;border:1px dashed rgba(47,109,246,.28);border-radius:50%;animation:whySpin 9s linear infinite}
+.orbit-one{width:150px;height:150px;top:21px}.orbit-two{width:205px;height:205px;top:-6px;animation-direction:reverse;animation-duration:14s}
+.why-spark{position:absolute;color:#2f6df6;font-size:18px;animation:whySpark 2.6s ease-in-out infinite}.spark-one{top:39px;left:57px}.spark-two{top:92px;right:49px;animation-delay:.5s}.spark-three{top:137px;left:72px;animation-delay:1s}
+.why-progress{width:100%;height:10px;border-radius:999px;background:#e8edf4;overflow:hidden;margin-bottom:12px;border:1px solid #dbe2ea}.why-progress span{display:block;height:100%;width:88%;background:#2f6df6;border-radius:999px;animation:whyProgress 1.1s ease-out both}
+.is-other .why-progress span{width:28%;background:#ef4444}.is-other .why-core{background:#ffd9d9;color:#ef4444}.is-other .why-orbit{border-color:rgba(239,68,68,.22)}.is-other .why-spark{color:#ef4444}
+.why-device-card strong{font:800 18px/1.2 'Manrope',sans-serif;color:#111827}.why-device-card small{margin-top:6px;color:#64748b;font:600 10px/1.3 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.04em;text-align:center}
+.why-switch-list{display:flex;flex-direction:column;gap:14px}
+.why-switch-item{display:grid;grid-template-columns:36px minmax(0,1fr);gap:16px;align-items:start;border:1px solid #dbe3ef;background:#fff;border-radius:20px;padding:18px 20px;min-height:76px;opacity:0;transform:translateY(12px);animation:whyItemIn .5s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--delay);transition:.25s ease}
+.why-switch-item:hover{transform:translateX(5px);border-color:#b8d0ff;box-shadow:0 12px 30px rgba(15,23,42,.07)}
+.why-switch-icon{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#22c55e;color:#fff;font:900 17px/1 'DM Sans',sans-serif}.is-other .why-switch-icon{background:#ef4444}
+.why-switch-item h3{margin:0;color:#111827;font:700 18px/1.35 'DM Sans',sans-serif;letter-spacing:-.02em}.why-switch-item p{margin:5px 0 0;color:#64748b;font:400 13px/1.5 'DM Sans',sans-serif}
+@keyframes whyItemIn{to{opacity:1;transform:translateY(0)}}
+@keyframes whyFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+@keyframes whySpin{to{transform:rotate(360deg)}}
+@keyframes whySpark{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+@keyframes whyProgress{from{width:0}}
+@media (max-width:900px){.why-switch-content{grid-template-columns:1fr;gap:38px}.why-switch-visual{order:1}.why-switch-list{order:2}.why-device-card{width:min(330px,100%)} }
+@media (max-width:600px){.why-switch-section{padding:82px 18px 95px!important}.why-switch-head h2{font-size:48px!important}.why-switch-head p{font-size:16px}.why-switch-toggle{margin-bottom:40px}.why-switch-item{padding:16px}.why-switch-item h3{font-size:16px}.why-switch-item p{font-size:12px}.why-device-card{height:235px}.why-core{top:46px}}

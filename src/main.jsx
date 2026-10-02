@@ -912,6 +912,59 @@ function CustomCursor() {
   </>;
 }
 
+function WhyDigiSky({ data }) {
+  const [mode, setMode] = useState("digisky");
+  const isDigi = mode === "digisky";
+  const other = [
+    ["Strategy without a clear conversion path", "Looks polished, but the next action is often unclear."],
+    ["Template-first experiences", "The brand gets adjusted to the template instead of the other way around."],
+    ["Slow handoffs", "Too many layers between the idea, design and final build."],
+    ["One-size-fits-all packages", "The same process is applied even when the business needs something different."],
+    ["Launch and disappear", "The project ends at launch instead of improving after real users arrive."],
+  ];
+  const digi = [
+    ["Strategy tied to the next click", "Every section has a job — explain, build trust or move the visitor forward."],
+    ["Design made around your brand", "A distinctive visual system built around your offer, audience and products."],
+    ["Design + development together", "One team keeps the experience consistent from first screen to final interaction."],
+    ["Built for speed and growth", "Clean structure, responsive interactions and a foundation ready for the next stage."],
+    ["Support beyond launch", "We stay close when you need improvements, fixes, new pages or growth experiments."],
+  ];
+  const items = isDigi ? digi : other;
+  return (
+    <section className="why-switch-section section" id="why-digisky">
+      <div className="why-switch-head">
+        <span className="why-switch-tag">WHY DIGISKY?</span>
+        <h2>{isDigi ? <>Your brand on <span>DigiSky.</span></> : <>Your brand without <span>the usual friction.</span></>}</h2>
+        <p>Flip the switch. See the difference.</p>
+      </div>
+      <div className="why-switch-toggle" role="tablist" aria-label="Why DigiSky comparison">
+        <button className={!isDigi ? "active" : ""} onClick={() => setMode("other")} role="tab" aria-selected={!isDigi}>Typical agency</button>
+        <button className={isDigi ? "active" : ""} onClick={() => setMode("digisky")} role="tab" aria-selected={isDigi}>DigiSky</button>
+      </div>
+      <div className={`why-switch-content ${isDigi ? "is-digisky" : "is-other"}`}>
+        <div className="why-switch-visual">
+          <div className="why-device-card">
+            <div className="why-orbit orbit-one"/><div className="why-orbit orbit-two"/>
+            <div className="why-core">DS</div>
+            <div className="why-spark spark-one">✦</div><div className="why-spark spark-two">✦</div><div className="why-spark spark-three">✦</div>
+            <div className="why-progress"><span/></div>
+            <strong>{isDigi ? "Built to move." : "Still figuring it out…"}</strong>
+            <small>{isDigi ? "strategy · design · build · growth" : "brief · handoff · revisions · launch"}</small>
+          </div>
+        </div>
+        <div className="why-switch-list" aria-live="polite">
+          {items.map(([title, desc], index) => (
+            <article className="why-switch-item" key={`${mode}-${index}`} style={{"--delay": `${index * 70}ms`}}>
+              <span className="why-switch-icon">{isDigi ? "✓" : "×"}</span>
+              <div><h3>{title}</h3><p>{desc}</p></div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function App() {
   const [data, setData] = useState(loadData);
   const isAdminRoute = window.location.pathname.replace(/\/$/,"") === "/admin" || new URLSearchParams(window.location.search).has("admin");
@@ -1038,7 +1091,7 @@ function App() {
 
         <ShopifyExpertise projects={projects}/>
 
-        <section className="why-section section why-redesigned"><div className="why-intro"><div><span className="tag-chip">Why DigiSky</span><h2>Built with intent.<br/><em>Designed to move.</em></h2></div><p>We care about what happens after launch — how fast the site feels, how clearly it communicates, and whether people know what to do next.</p></div><div className="why-grid">{[...(data.features || []), ["04", "Built to evolve", "Flexible systems, clean code and scalable foundations so your next change does not become a rebuild."]].slice(0,4).map((feature,index)=><article key={`${feature[0]}-${index}`}><div className="why-number">{String(index+1).padStart(2,"0")}</div><div className="why-icon">✦</div><h3>{feature[1]}</h3><p>{feature[2]}</p><span className="why-arrow">↗</span></article>)}</div></section>
+        <WhyDigiSky data={data}/> 
 
         <AboutSection data={data}/>
         <HowItWorks data={data}/>
