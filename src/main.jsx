@@ -635,44 +635,25 @@ async function fetchRemoteData() {
   return data?.content || null;
 }
 
-function fallbackProjectThumbnail(project) {
-  const fallbackUrl = project?.thumbnail_url || project?.image || "";
-  return {
-    thumbnail_url: fallbackUrl,
-    thumbnail_source: project?.thumbnail_source === "manual" ? "manual" : "automatic",
-    image: fallbackUrl,
-  };
-}
-
 async function generateProjectThumbnail(project, force = false, useAutomatic = false) {
-  const fallback = fallbackProjectThumbnail(project);
-  if (projectThumbnailFunctionUnavailable || !project || !isValidProjectUrl(project.url)) {
-    return fallback;
+  if (projectThumbnailFunctionUnavailable) {
+    throw new Error("Thumbnail Edge Function is unavailable. Deploy project-thumbnail in Supabase, then reload.");
   }
-  try {
-    const { data, error } = await supabase.functions.invoke("project-thumbnail", {
-      body: { projectId: String(project.id), force, useAutomatic },
-    });
-    if (error) {
-      if (["FunctionsFetchError", "FunctionsRelayError"].includes(error.name)) {
-        projectThumbnailFunctionUnavailable = true;
-      }
-      return fallback;
-    }
-    if (!data?.thumbnail_url) return fallback;
-    return {
-      thumbnail_url: data.thumbnail_url,
-      thumbnail_source: data.thumbnail_source === "manual" ? "manual" : "automatic",
-      image: data.thumbnail_url,
-    };
-  } catch (error) {
-    const errorName = error?.name || "";
-    if (["FunctionsFetchError", "FunctionsRelayError", "TypeError"].includes(errorName)) {
+  const { data, error } = await supabase.functions.invoke("project-thumbnail", {
+    body: { projectId: String(project.id), force, useAutomatic },
+  });
+  if (error) {
+    if (["FunctionsFetchError", "FunctionsRelayError"].includes(error.name)) {
       projectThumbnailFunctionUnavailable = true;
-      return fallback;
     }
     throw error;
   }
+  if (!data?.thumbnail_url) throw new Error("Thumbnail generation returned no permanent URL.");
+  return {
+    thumbnail_url: data.thumbnail_url,
+    thumbnail_source: data.thumbnail_source === "manual" ? "manual" : "automatic",
+    image: data.thumbnail_url,
+  };
 }
 
 function isValidProjectUrl(value) {
@@ -1353,6 +1334,7 @@ function AdminPanel({ data, setData, onClose }) {
           applyGeneratedThumbnail(next.projects[index].id, thumbnail);
         } catch (error) {
           console.error(`Could not generate thumbnail for ${project.name} (${project.id}).`, error);
+          window.alert(`Project saved, but automatic thumbnail generation failed: ${error.message}`);
         }
       }
     } catch (error) {
@@ -1381,6 +1363,7 @@ function AdminPanel({ data, setData, onClose }) {
       applyGeneratedThumbnail(project.id, thumbnail, true);
     } catch (error) {
       console.error(`Could not use automatic thumbnail for ${project.name} (${project.id}).`, error);
+      window.alert(`Could not generate the automatic thumbnail. The existing thumbnail was kept: ${error.message}`);
     }
   };
   const handleHeroImageUpload = async (index, file) => {
@@ -1430,7 +1413,7 @@ function AdminPanel({ data, setData, onClose }) {
 
       {tab === "trust" && <><div className="admin-section-title"><span>03</span><div><h3>Brand rail</h3><p>These names power the running “Worked with amazing brands” section.</p></div></div>{field("Eyebrow",["trust","eyebrow"])}<div className="admin-editor-block"><div className="admin-block-head"><div><small>BRANDS</small><h3>Portfolio brand names</h3></div></div>{(draft.trust.names||[]).map((name,i)=><div className="admin-feature-row" key={i}><input value={name} onChange={e=>update(["trust","names",i],e.target.value)}/><button className="delete-feature" onClick={()=>removeAt(["trust","names"],i)}>Delete</button></div>)}<button className="add-project" onClick={()=>addTo(["trust","names"],"New brand")}>+ Add brand</button></div><div className="admin-subtitle">Running marquee</div><p className="admin-help">Edit the services and topics used in the top running strip.</p>{(draft.marqueeItems||[]).map((item,i)=><div className="admin-feature-row" key={i}><input value={item} onChange={e=>update(["marqueeItems",i],e.target.value)}/><button className="delete-feature" onClick={()=>removeAt(["marqueeItems"],i)}>Delete</button></div>)}<button className="add-project" onClick={()=>addTo(["marqueeItems"],"NEW SERVICE")}>+ Add marquee item</button></>}
 
-      {tab === "work" && <><div className="admin-section-title"><span>02</span><div><h3>Portfolio manager</h3><p>Manage permanent project thumbnails. Automatic screenshots are stored in Supabase Storage; manual images always take priority.</p></div></div><div className="projects-admin-top"><button className="add-project" onClick={()=>setDraft(prev=>({...prev,projects:[...prev.projects,{id:Date.now(),name:"New Project",category:"Business",industry:"",platform:"Custom",description:"",image:"",thumbnail_url:"",thumbnail_source:"automatic",url:""}]}))}>+ Add project</button></div>{draft.projects.map((p,i)=><div className="admin-project admin-project-v2" key={p.id}><div className="admin-project-title"><b>{String(i+1).padStart(2,"0")}</b><strong>{p.name || "Untitled project"}</strong><button className="delete-project" onClick={()=>removeAt(["projects"],i)}>Delete</button></div><div className="admin-two-col"><input placeholder="Project name" value={p.name||""} onChange={e=>update(["projects",i,"name"],e.target.value)}/><input placeholder="Category" value={p.category||""} onChange={e=>update(["projects",i,"category"],e.target.value)}/><input placeholder="Industry" value={p.industry||""} onChange={e=>update(["projects",i,"industry"],e.target.value)}/><input placeholder="Platform" value={p.platform||""} onChange={e=>update(["projects",i,"platform"],e.target.value)}/></div><input placeholder="Website URL" value={p.url||""} onChange={e=>update(["projects",i,"url"],e.target.value)}/><textarea placeholder="Description" value={p.description||""} onChange={e=>update(["projects",i,"description"],e.target.value)}/><div className="project-thumbnail-admin"><div className="project-thumbnail-admin-head"><strong>Thumbnail</strong><span className={p.thumbnail_source==="manual"?"manual":"automatic"}>{p.thumbnail_source==="manual"?"Manual thumbnail":"Automatic thumbnail"}</span></div><a className="thumbnail-preview" href={getProjectThumbnailCandidates(p,i)[0]} target="_blank" rel="noreferrer"><ProjectThumbnail project={p} index={i} alt={`${p.name || "Project"} thumbnail preview`} loading="lazy"/><span>Current thumbnail preview</span></a><label className="admin-field"><span>Thumbnail URL</span><input type="url" placeholder="https://example.com/image.jpg" value={p.thumbnail_url||""} onChange={e=>setProjectThumbnail(setDraft,i,{thumbnail_url:e.target.value,thumbnail_source:"manual",image:e.target.value})}/></label><div className="thumbnail-upload"><label className="thumbnail-upload-button">{uploadingIndex===i?"Uploading…":p.thumbnail_source==="manual"?"Change thumbnail":"Upload thumbnail"}<input type="file" accept="image/*" disabled={uploadingIndex!==null||thumbnailActionIndex!==null} onChange={e=>{const file=e.target.files?.[0];if(file)handleThumbnailUpload(i,file);e.target.value=""}}/></label><button className="save" disabled={uploadingIndex!==null||thumbnailActionIndex!==null} onClick={()=>saveProjectThumbnail(i)}>Save</button><button className="export" disabled={uploadingIndex!==null||thumbnailActionIndex!==null||!isValidProjectUrl(p.url)} onClick={()=>useAutomaticThumbnail(i)}>Use Automatic Thumbnail</button><button className="export" disabled={uploadingIndex!==null||thumbnailActionIndex!==null||p.thumbnail_source==="manual"||!isValidProjectUrl(p.url)} onClick={()=>regenerateProjectThumbnail(i,true).catch(error=>{console.error(`Could not regenerate thumbnail for ${p.name} (${p.id}).`,error);})}>{thumbnailActionIndex===i?"Generating…":"Regenerate Thumbnail"}</button></div></div></div>)}</>}
+      {tab === "work" && <><div className="admin-section-title"><span>02</span><div><h3>Portfolio manager</h3><p>Manage permanent project thumbnails. Automatic screenshots are stored in Supabase Storage; manual images always take priority.</p></div></div><div className="projects-admin-top"><button className="add-project" onClick={()=>setDraft(prev=>({...prev,projects:[...prev.projects,{id:Date.now(),name:"New Project",category:"Business",industry:"",platform:"Custom",description:"",image:"",thumbnail_url:"",thumbnail_source:"automatic",url:""}]}))}>+ Add project</button></div>{draft.projects.map((p,i)=><div className="admin-project admin-project-v2" key={p.id}><div className="admin-project-title"><b>{String(i+1).padStart(2,"0")}</b><strong>{p.name || "Untitled project"}</strong><button className="delete-project" onClick={()=>removeAt(["projects"],i)}>Delete</button></div><div className="admin-two-col"><input placeholder="Project name" value={p.name||""} onChange={e=>update(["projects",i,"name"],e.target.value)}/><input placeholder="Category" value={p.category||""} onChange={e=>update(["projects",i,"category"],e.target.value)}/><input placeholder="Industry" value={p.industry||""} onChange={e=>update(["projects",i,"industry"],e.target.value)}/><input placeholder="Platform" value={p.platform||""} onChange={e=>update(["projects",i,"platform"],e.target.value)}/></div><input placeholder="Website URL" value={p.url||""} onChange={e=>update(["projects",i,"url"],e.target.value)}/><textarea placeholder="Description" value={p.description||""} onChange={e=>update(["projects",i,"description"],e.target.value)}/><div className="project-thumbnail-admin"><div className="project-thumbnail-admin-head"><strong>Thumbnail</strong><span className={p.thumbnail_source==="manual"?"manual":"automatic"}>{p.thumbnail_source==="manual"?"Manual thumbnail":"Automatic thumbnail"}</span></div><a className="thumbnail-preview" href={getProjectThumbnailCandidates(p,i)[0]} target="_blank" rel="noreferrer"><ProjectThumbnail project={p} index={i} alt={`${p.name || "Project"} thumbnail preview`} loading="lazy"/><span>Current thumbnail preview</span></a><label className="admin-field"><span>Thumbnail URL</span><input type="url" placeholder="https://example.com/image.jpg" value={p.thumbnail_url||""} onChange={e=>setProjectThumbnail(setDraft,i,{thumbnail_url:e.target.value,thumbnail_source:"manual",image:e.target.value})}/></label><div className="thumbnail-upload"><label className="thumbnail-upload-button">{uploadingIndex===i?"Uploading…":p.thumbnail_source==="manual"?"Change thumbnail":"Upload thumbnail"}<input type="file" accept="image/*" disabled={uploadingIndex!==null||thumbnailActionIndex!==null} onChange={e=>{const file=e.target.files?.[0];if(file)handleThumbnailUpload(i,file);e.target.value=""}}/></label><button className="save" disabled={uploadingIndex!==null||thumbnailActionIndex!==null} onClick={()=>saveProjectThumbnail(i)}>Save</button><button className="export" disabled={uploadingIndex!==null||thumbnailActionIndex!==null||!isValidProjectUrl(p.url)} onClick={()=>useAutomaticThumbnail(i)}>Use Automatic Thumbnail</button><button className="export" disabled={uploadingIndex!==null||thumbnailActionIndex!==null||p.thumbnail_source==="manual"||!isValidProjectUrl(p.url)} onClick={()=>regenerateProjectThumbnail(i,true).catch(error=>{console.error(`Could not regenerate thumbnail for ${p.name} (${p.id}).`,error);window.alert(`Thumbnail regeneration failed. The current thumbnail was kept: ${error.message}`)})}>{thumbnailActionIndex===i?"Generating…":"Regenerate Thumbnail"}</button></div></div></div>)}</>}
 
       {tab === "services" && <><div className="admin-section-title"><span>03</span><div><h3>Services</h3><p>Add, remove and edit the services shown across the website.</p></div></div>{pairRows(["services"],"Core services")}<div className="admin-subtitle">Portfolio filters</div>{(draft.categories||[]).map((c,i)=><div className="category-admin-row" key={`${c}-${i}`}><input value={c} onChange={e=>update(["categories",i],e.target.value)}/>{i>0&&<button className="delete-project" onClick={()=>removeAt(["categories"],i)}>Delete</button>}</div>)}<button className="add-project" onClick={()=>addTo(["categories"],"New category")}>+ Add category</button></>}
 
@@ -1822,10 +1805,8 @@ function App() {
 
   return (
     <div id="top">
-      <CodeBackground />
       <IntroSplash />
       <Header data={data}/>
-      <CustomCursor />
       {adminOpen && isAdminRoute && (unlocked
         ? <AdminPanel data={data} setData={setData} onClose={closeAdmin}/>
         : <AdminGate onUnlock={()=>setUnlocked(true)}/>
@@ -1863,19 +1844,6 @@ function App() {
           </div>
         </section>
 
-        <Pricing data={data}/>
-
-        <section id="featured" className="featured section">
-          <div className="featured-copy">
-            <h2>{data.featured.title}</h2>
-            <p>{data.featured.description}</p>
-            <a className="text-link" href="#work">View all projects</a>
-          </div>
-          <div className="featured-art">
-            <p className="fa-quote">{data.featured.quoteBefore} <span>{data.featured.quoteHighlight}</span> {data.featured.quoteAfter}</p>
-            <div className="fa-meta"><strong>{data.featured.metaTitle}</strong>{data.featured.metaText}</div>
-          </div>
-        </section>
 
         <ProofNumbers data={data} />
 
@@ -1886,14 +1854,15 @@ function App() {
 
         <ShopifyExpertise projects={projects} data={data}/>
 
+        <Pricing data={data}/>
+
         <ShopifyFaq />
 
         <WhyDigiSky data={data}/> 
 
-        <AboutSection data={data}/>
         <HowItWorks data={data}/>
+        <AboutSection data={data}/>
         <Testimonials data={data}/>
-        <Journal data={data}/>
 
         <section id="contact" className="final-cta section">
           <span className="tag-chip">Let’s build together</span>
