@@ -6,6 +6,28 @@ import { supabase } from "./lib/supabase";
 
 const ADMIN_PASSWORD = "digisky2026";
 
+const DEFAULT_COPY = {
+  work: { tag: "Featured work / selected builds", title: "Our latest projects.", text: "Stores, websites and digital experiences built to look sharp, load fast and give the next click somewhere useful to go." },
+  services: { tag: "Our services", titleA: "Everything you need", titleB: "to grow online.", text: "One studio for the parts that matter most: a stronger website, a better store and marketing that gives people a reason to click." },
+  faq: { tag: "Shopify development FAQs", title: "Planning a Shopify website?", text: "Clear answers about our Shopify store design and development services.", items: [["What does DigiSky's Shopify website development service include?","DigiSky can help with Shopify storefront design and development, responsive layouts, product and collection setup, navigation, payment and shipping setup assistance, basic SEO structure and launch testing. The exact scope is agreed for each project."],["How much does a Shopify website cost?","Shopify website cost depends on the design, number of pages and products, custom functionality and integrations required. Contact DigiSky with your requirements for a project-specific quote."],["Does DigiSky work with businesses outside India?","Yes. DigiSky works with ambitious brands in India and worldwide on Shopify, ecommerce and custom website projects."],["Can DigiSky customize an existing Shopify theme?","Yes. DigiSky can tailor a Shopify storefront to a brand's products and customer journey, including theme sections, interactions and conversion-focused user experience."]] },
+  process: { tag: "Simple process", title: "How it works.", text: "One clear workflow. No mystery handoffs. You always know what happens next." },
+  testimonials: { tag: "Client notes", titleA: "Good work.", titleB: "Good people.", text: "Short notes from brands that trusted DigiSky with their website, store or digital growth." },
+  cta: { tag: "Let\u2019s build together", title: "Ready to grow your brand online?", text: "Let\u2019s create a powerful digital presence for your business." },
+};
+const SECTION_DEFS = [["hero","Hero","hero"],["marquee","Services ticker strip","copy"],["work","Our work (projects)","work"],["proof","Numbers & brand names","stats"],["services","Services","services"],["shopify","Shopify expertise","shopify"],["pricing","Pricing","pricing"],["faq","FAQ","copy"],["why","Why DigiSky switch","why"],["process","How it works","process"],["about","About","about"],["testimonials","Client notes","reviews"],["cta","Final call-to-action","copy"]];
+function mergeCopy(c) {
+  const out = {};
+  Object.keys(DEFAULT_COPY).forEach(k => { out[k] = { ...DEFAULT_COPY[k], ...((c || {})[k] || {}) }; });
+  if (!Array.isArray(out.faq.items) || !out.faq.items.length) out.faq.items = DEFAULT_COPY.faq.items;
+  return out;
+}
+function mergeLayout(l) {
+  const ids = SECTION_DEFS.map(s => s[0]);
+  const saved = Array.isArray(l?.order) ? l.order.filter(id => ids.includes(id)) : [];
+  return { order: [...saved, ...ids.filter(id => !saved.includes(id))], hidden: { ...(l?.hidden || {}) } };
+}
+function ensureShape(d) { return { ...d, copy: mergeCopy(d.copy), layout: mergeLayout(d.layout) }; }
+
 const DEFAULT_DATA = {
   brand: { name: "DigiSky", tagline: "Step Up Digitally", email: "team.digisky@gmail.com", whatsapp: "+919753622101", instagram: "https://www.instagram.com/digisky.world/" },
   hero: { trustItems: ["Website development", "Shopify & e-commerce", "Conversion-focused marketing"], kicker: "SHOPIFY & WORDPRESS STUDIO", titleA: "Shopify Stores", titleB: "Built To", titleC: "Sell.", description: "We design, build and optimise high-converting Shopify stores for ambitious brands — from strategy and UX to launch and growth.", images: ["", "", ""] },
@@ -22,6 +44,8 @@ const DEFAULT_DATA = {
   testimonials: [{ name: "Aaysa team", company: "Aaysa", quote: "DigiSky turned a rough idea into a store that finally feels like our brand.", rating: 5 }],
   blog: [{ title: "What makes a storefront feel premium?", category: "Perspective", date: "2026-02-12", excerpt: "The details that turn a website visit into confidence, and confidence into a sale." }],
   cta: { title: "Have a project in mind?", text: "Let's build something people remember.", button: "Start a project" },
+  copy: DEFAULT_COPY,
+  layout: { order: SECTION_DEFS.map(s => s[0]), hidden: {} },
   marqueeItems: ["SHOPIFY", "WEB DEVELOPMENT", "META ADS", "GOOGLE ADS", "AI AUTOMATION", "SEO + CRO", "AD CREATIVES", "CUSTOM CODE"],
   proof: { tag: "The numbers don't lie", title: "Big builds. Bigger results.", description: "From Shopify storefronts to custom-coded experiences, the work speaks for itself — and every number is a piece of that story.", labels: ["Projects delivered", "Shopify builds", "Custom-coded", "Client satisfaction"], values: ["34+", "20+", "Custom", "100%"] },
   growthServices: [
@@ -586,7 +610,7 @@ function loadData() {
       ...normalizeProjectThumbnail(p, index + DEFAULT_DATA.projects.length),
     }));
     merged.projects = [...mappedDefaults, ...custom];
-    return merged;
+    return ensureShape(merged);
   } catch {
     return DEFAULT_DATA;
   }
@@ -901,8 +925,8 @@ function Testimonials({ data }) {
   const rest = stories.slice(1, 4);
   return <section id="testimonials" className="testimonials section testimonials-redesigned">
     <div className="client-notes-head">
-      <div><span className="tag-chip">Client notes</span><h2>Good work.<br/><em>Good people.</em></h2></div>
-      <p>Short notes from brands that trusted DigiSky with their website, store or digital growth.</p>
+      <div><span className="tag-chip">{data.copy.testimonials.tag}</span><h2>{data.copy.testimonials.titleA}<br/><em>{data.copy.testimonials.titleB}</em></h2></div>
+      <p>{data.copy.testimonials.text}</p>
     </div>
     <div className="client-notes-grid">
       <article className="client-note-main">
@@ -950,15 +974,10 @@ function ShopifyExpertise({ projects, data }) {
   </section>;
 }
 
-function ShopifyFaq() {
-  const questions = [
-    ["What does DigiSky's Shopify website development service include?", "DigiSky can help with Shopify storefront design and development, responsive layouts, product and collection setup, navigation, payment and shipping setup assistance, basic SEO structure and launch testing. The exact scope is agreed for each project."],
-    ["How much does a Shopify website cost?", "Shopify website cost depends on the design, number of pages and products, custom functionality and integrations required. Contact DigiSky with your requirements for a project-specific quote."],
-    ["Does DigiSky work with businesses outside India?", "Yes. DigiSky works with ambitious brands in India and worldwide on Shopify, ecommerce and custom website projects."],
-    ["Can DigiSky customize an existing Shopify theme?", "Yes. DigiSky can tailor a Shopify storefront to a brand's products and customer journey, including theme sections, interactions and conversion-focused user experience."],
-  ];
+function ShopifyFaq({ copy }) {
+  const questions = copy.items;
   return <section className="faq-section section" aria-labelledby="shopify-faq-title">
-    <div className="faq-heading"><span className="tag-chip">Shopify development FAQs</span><h2 id="shopify-faq-title">Planning a Shopify website?</h2><p>Clear answers about our Shopify store design and development services.</p></div>
+    <div className="faq-heading"><span className="tag-chip">{copy.tag}</span><h2 id="shopify-faq-title">{copy.title}</h2><p>{copy.text}</p></div>
     <div className="faq-list">{questions.map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div>
   </section>;
 }
@@ -1202,6 +1221,10 @@ function AdminPanel({ data, setData, onClose }) {
   const [thumbnailActionIndex, setThumbnailActionIndex] = useState(null);
   const [jsonValue, setJsonValue] = useState(() => JSON.stringify(data, null, 2));
   const [jsonError, setJsonError] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [navQuery, setNavQuery] = useState("");
+  const flash = (msg, ok = true) => { setToast({ msg, ok }); window.setTimeout(() => setToast(null), 3400); };
 
   const update = (path, value) => setDraft(prev => {
     const next = JSON.parse(JSON.stringify(prev));
@@ -1225,6 +1248,7 @@ function AdminPanel({ data, setData, onClose }) {
     return next;
   });
   const save = async () => {
+    setSaving(true);
     try {
       const next = {
         ...draft,
@@ -1234,7 +1258,7 @@ function AdminPanel({ data, setData, onClose }) {
       setDraft(next);
       setData(next);
       setJsonValue(JSON.stringify(next, null, 2));
-      window.alert("Saved. Your website content is now updated.");
+      flash("Saved — your website is updated.");
       const changedAutomaticUrls = new Set(next.projects
         .filter(project => project.thumbnail_source !== "manual" && data.projects.some(previous =>
           String(previous.id) === String(project.id) && previous.url !== project.url
@@ -1242,14 +1266,14 @@ function AdminPanel({ data, setData, onClose }) {
         .map(project => String(project.id)));
       void generateMissingThumbnails(next.projects, changedAutomaticUrls);
     } catch (error) {
-      window.alert(`Could not save to the live database: ${error.message}`);
-    }
+      flash(`Could not save: ${error.message}`, false);
+    } finally { setSaving(false); }
   };
   const applyJSON = () => {
     try {
       const parsed = JSON.parse(jsonValue);
       if (!parsed || typeof parsed !== "object") throw new Error("JSON must contain an object.");
-      setDraft(parsed);
+      setDraft(ensureShape(parsed));
       setJsonError("");
     } catch (error) { setJsonError(error.message); }
   };
@@ -1398,14 +1422,77 @@ function AdminPanel({ data, setData, onClose }) {
     const rows = path.reduce((o,k)=>o?.[k], draft) || [];
     return <div className="admin-editor-block"><div className="admin-block-head"><div><small>EDITOR</small><h3>{title}</h3></div><button className="add-project" onClick={()=>addTo(path,["New item","Add description here."])}>+ Add</button></div>{rows.map((row,i)=><div className="admin-repeat-card" key={i}><div className="admin-repeat-top"><b>{String(i+1).padStart(2,"0")}</b><button className="delete-project" onClick={()=>removeAt(path,i)}>Delete</button></div><input aria-label={firstLabel} placeholder={firstLabel} value={row?.[0] || ""} onChange={e=>update([...path,i,0],e.target.value)}/><textarea aria-label={secondLabel} placeholder={secondLabel} value={row?.[1] || ""} onChange={e=>update([...path,i,1],e.target.value)}/></div>)}</div>;
   };
-  const tabs = [
-    ["overview","Overview","◈"],["hero","Hero","✦"],["stats","Numbers","#"],["trust","Brands","∞"],["work","Projects","↗"],["services","Services","◎"],["shopify","Shopify","S"],["why","Why DigiSky","✓"],["pricing","Pricing","₹"],["featured","Featured","◆"],["about","About","A"],["process","Process","01"],["reviews","Client notes","★"],["growth","More services","+"],["footer","Footer","▣"],["advanced","Advanced","{}"]
+  const moveSection = (id, dir) => setDraft(prev => {
+    const order = [...prev.layout.order];
+    const i = order.indexOf(id); const k = i + dir;
+    if (k < 0 || k >= order.length) return prev;
+    [order[i], order[k]] = [order[k], order[i]];
+    return { ...prev, layout: { ...prev.layout, order } };
+  });
+  const toggleSection = id => setDraft(prev => ({ ...prev, layout: { ...prev.layout, hidden: { ...prev.layout.hidden, [id]: !prev.layout.hidden[id] } } }));
+  const listRows = (path, title) => {
+    const rows = path.reduce((o, k) => o?.[k], draft) || [];
+    return <div className="admin-editor-block"><div className="admin-block-head"><div><small>LIST</small><h3>{title}</h3></div><button className="add-project" onClick={()=>update(path,[...rows,"New item"])}>+ Add</button></div>{rows.map((r,i)=><div className="admin-feature-row" key={i}><input value={r} onChange={e=>update([...path,i],e.target.value)}/><button className="delete-feature" onClick={()=>update(path,rows.filter((_,x)=>x!==i))}>Remove</button></div>)}</div>;
+  };
+  const dirty = JSON.stringify(draft) !== JSON.stringify(data);
+  const saveRef = useRef(save); saveRef.current = save;
+  useEffect(() => {
+    const onKey = e => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "s") { e.preventDefault(); saveRef.current(); } };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+  const tryClose = () => { if (dirty && !window.confirm("You have unsaved changes. Leave without saving?")) return; onClose(); };
+  const NAV = [
+    ["Start", [["overview","Overview","◈"]]],
+    ["Page", [["layout","Sections & order","☰"],["hero","Hero & brand","✦"],["copy","Headings & text","T"],["stats","Numbers","#"],["trust","Brand names","∞"]]],
+    ["Content", [["work","Projects","↗"],["services","Services","◎"],["shopify","Shopify","S"],["why","Why DigiSky","✓"],["pricing","Pricing","₹"],["about","About","A"],["process","Process","01"],["reviews","Client notes","★"]]],
+    ["Site", [["footer","Footer & contact","▣"],["advanced","Advanced (JSON)","{}"]]],
   ];
-  return <aside className="admin-panel admin-v2">
-    <div className="admin-head admin-v2-head"><div><div className="admin-kicker"><span className="admin-live-dot"/> DIGISKY / CONTENT CONTROL</div><h2>Website Control Center</h2><p>Edit the content, sections, projects, services, links and visual copy of the live website from one place.</p></div><div className="admin-head-tools"><span><i/> Supabase sync</span><button onClick={onClose} aria-label="Close content studio">&times;</button></div></div>
-    <div className="admin-tabs admin-v2-tabs">{tabs.map(([id,label,icon])=><button className={tab===id?"active":""} key={id} onClick={()=>setTab(id)}><b>{icon}</b>{label}</button>)}</div>
-    <div className="admin-scroll admin-v2-scroll">
-      {tab === "overview" && <div className="admin-dashboard"><div className="admin-welcome"><span className="tag-chip">LIVE WEBSITE</span><h3>Your website, one control center.</h3><p>Everything is editable here. Make changes, save once, refresh the website.</p><button className="save admin-main-save" onClick={save}>Save all changes</button></div><div className="admin-stat-grid"><div><strong>{draft.projects?.length || 0}</strong><span>Projects</span></div><div><strong>{draft.services?.length || 0}</strong><span>Core services</span></div><div><strong>{draft.process?.length || 0}</strong><span>Process steps</span></div><div><strong>{draft.testimonials?.length || 0}</strong><span>Client notes</span></div></div><div className="admin-quick-grid">{[["hero","Hero content","Headline, description & images"],["work","Portfolio","Projects, thumbnails & links"],["why","Why DigiSky","Comparison switch & animations"],["advanced","Advanced editor","Edit the complete website JSON"]].map(([id,t,d])=><button key={id} onClick={()=>setTab(id)}><b>{t}</b><span>{d}</span><i>↗</i></button>)}</div><div className="admin-help-box"><strong>Tip</strong><p>Use <b>Advanced</b> if you want complete control over every stored value, including new fields added later.</p></div></div>}
+  const q = navQuery.trim().toLowerCase();
+  const sectionRows = draft.layout.order.map((id, i) => {
+    const def = SECTION_DEFS.find(s => s[0] === id); if (!def) return null;
+    const hidden = Boolean(draft.layout.hidden[id]);
+    return <div className={`adm-sec-row${hidden ? " is-hidden" : ""}`} key={id}>
+      <b>{String(i + 1).padStart(2, "0")}</b>
+      <strong>{def[1]}</strong>
+      <div className="adm-sec-tools">
+        <button onClick={()=>setTab(def[2])}>Edit</button>
+        <button onClick={()=>moveSection(id,-1)} disabled={i===0} aria-label="Move up">↑</button>
+        <button onClick={()=>moveSection(id,1)} disabled={i===draft.layout.order.length-1} aria-label="Move down">↓</button>
+        <button className={`adm-switch${hidden ? "" : " on"}`} onClick={()=>toggleSection(id)} aria-pressed={!hidden}>{hidden ? "Hidden" : "Visible"}</button>
+      </div>
+    </div>;
+  });
+  const copyGroup = (title, key, fields) => <div className="admin-editor-block" key={key}><div className="admin-block-head"><div><small>SECTION TEXT</small><h3>{title}</h3></div></div>{fields.map(([label, f, type]) => field(label, ["copy", key, f], type || "text"))}</div>;
+  return <div className="adm admin-v2">
+    <header className="adm-top">
+      <div className="adm-brand"><img src="/logo.png" alt=""/><div><b>DigiSky</b><small>Content Studio</small></div></div>
+      <div className={`adm-status${dirty ? " is-dirty" : ""}`}><i/>{dirty ? "Unsaved changes" : "All changes saved"}</div>
+      <div className="adm-top-actions"><a href="/" target="_blank" rel="noreferrer">View site ↗</a><button className="adm-ghost" onClick={exportData}>Export</button><button className="adm-save" onClick={save} disabled={saving || !dirty}>{saving ? "Saving…" : "Save changes"}</button><button className="adm-close" onClick={tryClose} aria-label="Close content studio">×</button></div>
+    </header>
+    <div className="adm-body">
+      <nav className="adm-nav" aria-label="Admin sections">
+        <label className="adm-search"><input placeholder="Search sections…" value={navQuery} onChange={e=>setNavQuery(e.target.value)}/></label>
+        {NAV.map(([group, items]) => { const shown = items.filter(([id,label]) => !q || label.toLowerCase().includes(q) || id.includes(q)); return shown.length ? <div className="adm-group" key={group}><small>{group}</small>{shown.map(([id,label,icon])=><button className={tab===id?"active":""} key={id} onClick={()=>setTab(id)}><b>{icon}</b>{label}</button>)}</div> : null; })}
+        <button className="adm-danger" onClick={reset}>Reset to default content</button>
+      </nav>
+      <div className="adm-scroll"><div className="adm-page">
+      {tab === "overview" && <div className="admin-dashboard"><div className="admin-welcome"><span className="tag-chip">LIVE WEBSITE</span><h3>Control every part of your website.</h3><p>Reorder or hide sections, edit every heading and paragraph, manage projects and pricing. Press Ctrl/⌘ + S to save at any time.</p><div className="adm-welcome-actions"><button className="adm-save adm-save-lg" onClick={save} disabled={saving || !dirty}>{saving ? "Saving…" : "Save changes"}</button><a className="adm-ghost-dark" href="/" target="_blank" rel="noreferrer">Open live site ↗</a></div></div><div className="admin-stat-grid"><div><strong>{draft.projects?.length || 0}</strong><span>Projects</span></div><div><strong>{draft.layout.order.filter(id=>!draft.layout.hidden[id]).length}/{draft.layout.order.length}</strong><span>Sections visible</span></div><div><strong>{draft.services?.length || 0}</strong><span>Core services</span></div><div><strong>{draft.testimonials?.length || 0}</strong><span>Client notes</span></div></div><div className="admin-quick-grid">{[["layout","Sections & order","Show, hide and reorder page sections"],["copy","Headings & text","Every section heading, FAQ and CTA"],["work","Projects","Portfolio cards, links & thumbnails"],["hero","Hero & brand","Headline, images and brand details"],["pricing","Pricing","Package, price and features"],["advanced","Advanced (JSON)","Edit any stored value directly"]].map(([id,t,d])=><button key={id} onClick={()=>setTab(id)}><b>{t}</b><span>{d}</span><i>↗</i></button>)}</div></div>}
+
+      {tab === "layout" && <><div className="admin-section-title"><span>☰</span><div><h3>Sections & order</h3><p>Turn sections on or off and move them up or down. The live site follows this order exactly.</p></div></div><div className="adm-sec-list">{sectionRows}</div></>}
+
+      {tab === "copy" && <><div className="admin-section-title"><span>T</span><div><h3>Headings & text</h3><p>Edit the tag, heading and description of every section, plus the FAQ, ticker strip and final call-to-action.</p></div></div>
+        {copyGroup("Our work","work",[["Tag","tag"],["Heading","title"],["Description","text","textarea"]])}
+        {copyGroup("Services","services",[["Tag","tag"],["Heading — line 1","titleA"],["Heading — line 2","titleB"],["Description","text","textarea"]])}
+        {copyGroup("FAQ","faq",[["Tag","tag"],["Heading","title"],["Description","text","textarea"]])}
+        {pairRows(["copy","faq","items"],"FAQ questions & answers","Question","Answer")}
+        {copyGroup("How it works","process",[["Tag","tag"],["Heading","title"],["Description","text","textarea"]])}
+        {copyGroup("Client notes","testimonials",[["Tag","tag"],["Heading — line 1","titleA"],["Heading — line 2","titleB"],["Description","text","textarea"]])}
+        {copyGroup("Final call-to-action","cta",[["Tag","tag"],["Heading","title"],["Description","text","textarea"]])}
+        {field("CTA button text",["cta","button"])}
+        {listRows(["marqueeItems"],"Services ticker strip")}
+        {listRows(["hero","trustItems"],"Hero checklist")}
+      </>}
 
       {tab === "hero" && <><div className="admin-section-title"><span>01</span><div><h3>Hero & brand</h3><p>Control the first impression and the header brand information.</p></div></div>{field("Brand name",["brand","name"])}{field("Tagline",["brand","tagline"])}{field("Hero kicker",["hero","kicker"])}{field("Hero title — line 1",["hero","titleA"])}{field("Hero title — line 2",["hero","titleB"])}{field("Hero title — line 3",["hero","titleC"])}{field("Hero description",["hero","description"],"textarea")}<div className="admin-subtitle">Hero images</div><div className="hero-image-admin-grid">{(draft.hero.images || []).map((image,index)=><div className="hero-image-admin" key={index}><strong>Image {index+1}</strong><div className="thumbnail-upload"><label className="thumbnail-upload-button">{image?"Change image":"Upload image"}<input type="file" accept="image/*" onChange={e=>{const file=e.target.files?.[0];if(file)handleHeroImageUpload(index,file);e.target.value=""}}/></label>{image&&<button className="delete-feature" onClick={()=>update(["hero","images",index],"")}>Remove</button>}</div>{image&&<a className="thumbnail-preview" href={image} target="_blank" rel="noreferrer"><img src={image} alt="Hero"/><span>View image</span></a>}</div>)}</div></>}
 
@@ -1436,9 +1523,10 @@ function AdminPanel({ data, setData, onClose }) {
       {tab === "footer" && <><div className="admin-section-title"><span>11</span><div><h3>Footer & contact</h3><p>Control footer messaging and all social/contact details.</p></div></div>{field("Email",["brand","email"])}{field("WhatsApp number",["brand","whatsapp"])}{field("Instagram URL",["brand","instagram"])}{field("LinkedIn URL",["brand","linkedin"])}{field("GitHub URL",["brand","github"])}{field("Footer eyebrow",["footer","eyebrow"])}{field("Footer heading line 1",["footer","titleA"])}{field("Footer heading line 2",["footer","titleB"])}{field("Footer description",["footer","text"],"textarea")}{field("CTA button",["cta","button"])}{field("CTA title",["cta","title"])}{field("CTA supporting text",["cta","text"],"textarea")}</>}
 
       {tab === "advanced" && <div className="admin-json-editor"><div className="admin-section-title"><span>∞</span><div><h3>Advanced content editor</h3><p>This is the master editor. Every value stored for the website can be edited here.</p></div></div><textarea className="admin-json-textarea" value={jsonValue} onChange={e=>{setJsonValue(e.target.value);setJsonError("")}} spellCheck={false}/>{jsonError&&<div className="admin-json-error">{jsonError}</div>}<div className="admin-json-actions"><button className="export" onClick={applyJSON}>Apply JSON to editor</button><button className="export" onClick={()=>setJsonValue(JSON.stringify(draft,null,2))}>Refresh JSON</button></div></div>}
+      </div></div>
     </div>
-    <div className="admin-actions admin-v2-actions"><button className="save" onClick={save}>Save all changes</button><button className="export" onClick={exportData}>Export JSON</button><button className="reset" onClick={reset}>Reset</button></div>
-  </aside>;
+    {toast && <div className={`adm-toast ${toast.ok ? "ok" : "err"}`} role="status">{toast.msg}</div>}
+  </div>;
 }
 
 function MarqueeStrip({ reverse = false, items = [] }) {
@@ -1502,7 +1590,7 @@ function ProofNumbers({ data }) {
 
 function HowItWorks({ data }) {
   return <section id="how-it-works" className="how-section section how-redesigned">
-    <div className="how-head"><div><span className="tag-chip">Simple process</span><h2>How it works.</h2></div><p>One clear workflow. No mystery handoffs. You always know what happens next.</p></div>
+    <div className="how-head"><div><span className="tag-chip">{data.copy.process.tag}</span><h2>{data.copy.process.title}</h2></div><p>{data.copy.process.text}</p></div>
     <div className="how-timeline">
       <div className="how-progress-line"><span/></div>
       {data.process.map((step,index)=><article className="how-step-card" key={step[0]}>
@@ -1604,8 +1692,8 @@ function CustomCursor() {
 function WhyDigiSky({ data }) {
   // "selected" is the toggle position and changes instantly on click.
   // "shown" is the content on screen; it swaps after the exit animation finishes.
-  const [selected, setSelected] = useState("digisky");
-  const [shown, setShown] = useState("digisky");
+  const [selected, setSelected] = useState("other");
+  const [shown, setShown] = useState("other");
   const [leaving, setLeaving] = useState(false);
   const [wave, setWave] = useState(null);
   const [revealed, setRevealed] = useState(false);
@@ -1700,7 +1788,7 @@ function App() {
             const remoteProjects = Array.isArray(remote.projects)
               ? remote.projects.map(normalizeProjectThumbnail)
               : undefined;
-            setData(prev => ({
+            setData(prev => ensureShape({
               ...prev,
               ...remote,
               ...(remoteProjects ? { projects: remoteProjects } : {}),
@@ -1803,16 +1891,11 @@ function App() {
     else { setAdminOpen(false); }
   };
 
-  return (
-    <div id="top">
-      <IntroSplash />
-      <Header data={data}/>
-      {adminOpen && isAdminRoute && (unlocked
-        ? <AdminPanel data={data} setData={setData} onClose={closeAdmin}/>
-        : <AdminGate onUnlock={()=>setUnlocked(true)}/>
-      )}
-      <main id="top">
-        <section className="hero section">
+  const copy = data.copy;
+  const layout = data.layout;
+  const sectionNodes = {
+    hero: (
+      <section className="hero section">
           <div className="hero-copy">
             <span className="hero-kicker">✦ {data.hero.kicker}</span>
             <h1>{data.hero.titleA}<br/>{data.hero.titleB}<br/>{data.hero.titleC}</h1>
@@ -1825,14 +1908,16 @@ function App() {
           </div>
           <div className="hero-visual"><HeroShowcase projects={projects} heroImages={data.hero.images || [data.hero.image || "", "", ""]} /></div>
         </section>
-
-        <MarqueeStrip items={data.marqueeItems} />
-
-        <section id="work" className="wk" aria-labelledby="work-title">
+    ),
+    marquee: (
+      <MarqueeStrip items={data.marqueeItems} />
+    ),
+    work: (
+      <section id="work" className="wk" aria-labelledby="work-title">
           <div className="wk-inner">
             <div className="wk-head">
-              <div><span className="tag-chip">Featured work / selected builds</span><h2 id="work-title">Our latest projects.</h2></div>
-              <p>Stores, websites and digital experiences built to look sharp, load fast and give the next click somewhere useful to go.</p>
+              <div><span className="tag-chip">{copy.work.tag}</span><h2 id="work-title">{copy.work.title}</h2></div>
+              <p>{copy.work.text}</p>
             </div>
             <div className="wk-filters" role="group" aria-label="Filter projects by category">
               {filterOptions.map(option => <button key={option.name} type="button" className="wk-filter" aria-pressed={effectiveFilter === option.name} onClick={()=>{ setActiveFilter(option.name); setShowAll(false); }}>{option.name}<span>{option.count}</span></button>)}
@@ -1843,33 +1928,56 @@ function App() {
             {filteredProjects.length > WORK_PREVIEW_COUNT && <div className="wk-more"><button type="button" onClick={()=>setShowAll(v=>!v)}>{showAll ? "Show fewer projects" : `Show all ${filteredProjects.length} projects`}</button></div>}
           </div>
         </section>
-
-
-        <ProofNumbers data={data} />
-
-        <section id="services" className="services-section section services-redesigned">
-          <div className="services-intro"><div><span className="tag-chip">Our services</span><h2 className="services-heading">Everything you need<br/><em>to grow online.</em></h2></div><p>One studio for the parts that matter most: a stronger website, a better store and marketing that gives people a reason to click.</p></div>
+    ),
+    proof: (
+      <ProofNumbers data={data} />
+    ),
+    services: (
+      <section id="services" className="services-section section services-redesigned">
+          <div className="services-intro"><div><span className="tag-chip">{copy.services.tag}</span><h2 className="services-heading">{copy.services.titleA}<br/><em>{copy.services.titleB}</em></h2></div><p>{copy.services.text}</p></div>
           <div className="services-list services-card-grid">{data.services.map((s,i)=><article className={`service-card ${i === 0 ? "service-featured" : ""}`} key={i}><div className="service-card-top"><span>{String(i + 1).padStart(2,"0")}</span><b>↗</b></div><div><small>{i === 0 ? "ECOMMERCE" : i === 1 ? "WEBSITE" : i === 2 ? "DEVELOPMENT" : "CONVERSION"}</small><h3>{s[0]}</h3><p>{s[1]}</p></div><div className="service-card-bottom"><span>Explore service</span><i/></div></article>)}</div>
         </section>
-
-        <ShopifyExpertise projects={projects} data={data}/>
-
-        <Pricing data={data}/>
-
-        <ShopifyFaq />
-
-        <WhyDigiSky data={data}/> 
-
-        <HowItWorks data={data}/>
-        <AboutSection data={data}/>
-        <Testimonials data={data}/>
-
-        <section id="contact" className="final-cta section">
-          <span className="tag-chip">Let’s build together</span>
-          <h2>Ready to grow your brand online?</h2>
-          <p>Let’s create a powerful digital presence for your business.</p>
+    ),
+    shopify: (
+      <ShopifyExpertise projects={projects} data={data}/>
+    ),
+    pricing: (
+      <Pricing data={data}/>
+    ),
+    faq: (
+      <ShopifyFaq copy={copy.faq}/>
+    ),
+    why: (
+      <WhyDigiSky data={data}/>
+    ),
+    process: (
+      <HowItWorks data={data}/>
+    ),
+    about: (
+      <AboutSection data={data}/>
+    ),
+    testimonials: (
+      <Testimonials data={data}/>
+    ),
+    cta: (
+      <section id="contact" className="final-cta section">
+          <span className="tag-chip">{copy.cta.tag}</span>
+          <h2>{copy.cta.title}</h2>
+          <p>{copy.cta.text}</p>
           <a className="pill-button light" href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">{data.cta.button}</a>
         </section>
+    ),
+  };
+  return (
+    <div id="top">
+      <IntroSplash />
+      <Header data={data}/>
+      {adminOpen && isAdminRoute && (unlocked
+        ? <AdminPanel data={data} setData={setData} onClose={closeAdmin}/>
+        : <AdminGate onUnlock={()=>setUnlocked(true)}/>
+      )}
+      <main id="top">
+        {layout.order.filter(id => sectionNodes[id] && !layout.hidden[id]).map(id => <React.Fragment key={id}>{sectionNodes[id]}</React.Fragment>)}
       </main>
 
       <footer className="footer-shell">
