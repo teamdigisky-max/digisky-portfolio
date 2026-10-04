@@ -606,6 +606,7 @@ async function saveData(data) {
   if (error) throw error;
 }
 
+const WORK_PREVIEW_COUNT = 9;
 const THUMBNAIL_BUCKET = "project-thumbnails";
 let projectThumbnailFunctionUnavailable = false;
 
@@ -1077,43 +1078,27 @@ function ProjectThumbnail({ project, index, alt, loading = "lazy", onRegenerate 
   }} />;
 }
 
-function ProjectCard({ project, index, featured = false, onThumbnailUpdate }) {
-  const hasUrl = typeof project.url === "string" && /^https?:\/\//i.test(project.url.trim());
-  const projectCategoryName = projectCategory(project);
-  const domain = hasUrl ? project.url.trim().replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/$/, "") : "preview unavailable";
-  const image = <ProjectThumbnail
-    project={project}
-    index={index}
-    alt={`${project.name} project thumbnail`}
-    onRegenerate={onThumbnailUpdate}
-  />;
-  const frame = <div className="project-browser-frame">
-    <div className="browser-bar">
-      <div className="browser-dots"><i/><i/><i/></div>
-      <div className="browser-url"><LockIcon/><span>{domain}</span></div>
+function ProjectCard({ project, index, onThumbnailUpdate }) {
+  const url = typeof project.url === "string" ? project.url.trim() : "";
+  const hasUrl = /^https?:\/\//i.test(url);
+  const domain = hasUrl ? url.replace(/^https?:\/\//i, "").replace(/^www\./i, "").replace(/\/$/, "") : "Link not added";
+  const tags = [...new Set([project.industry, project.platform].filter(Boolean))];
+  const body = <>
+    <div className="wk-shot">
+      <ProjectThumbnail project={project} index={index} alt={`${project.name} homepage`} onRegenerate={onThumbnailUpdate} />
     </div>
-    <div className="browser-viewport">{image}</div>
-  </div>;
-  const card = <article className={`project-card${featured ? " project-card-featured" : ""}`}>
-    <span className="project-index">{String(index + 1).padStart(2, "0")}</span>
-    <div className="project-media">
-      {hasUrl ? <a className="project-media-link" href={project.url.trim()} target="_blank" rel="noopener noreferrer" aria-label={`View live preview of ${project.name}`}>{frame}<span className="project-overlay"><span>View live preview</span><CtaArrow/></span></a> : <>{frame}<div className="project-overlay"><span>Website link not added</span></div></>}
-    </div>
-    <div className="project-meta">
-      <div className="project-copy">
-        <div className="project-labels">
-          <span className="project-label-category"><i/>{projectCategoryName}</span>
-          <span>{project.platform || "Website"}</span>
-        </div>
+    <div className="wk-meta">
+      <div className="wk-text">
         <h3>{project.name}</h3>
-        <p>{project.description || project.industry || "Digital experience designed for growth."}</p>
+        <span className="wk-domain">{domain}</span>
       </div>
-      <a className="project-cta" href={hasUrl ? project.url.trim() : undefined} target={hasUrl ? "_blank" : undefined} rel={hasUrl ? "noopener noreferrer" : undefined} aria-label={`View live preview of ${project.name}`}>
-        <span>{hasUrl ? "View live preview" : "Preview unavailable"}</span> <CtaArrow/>
-      </a>
+      {hasUrl && <span className="wk-go" aria-hidden="true"><CtaArrow/></span>}
     </div>
-  </article>;
-  return card;
+    {tags.length > 0 && <ul className="wk-tags">{tags.map(tag => <li key={tag}>{tag}</li>)}</ul>}
+  </>;
+  return hasUrl
+    ? <a className="wk-card" href={url} target="_blank" rel="noopener noreferrer" aria-label={`${project.name}, visit ${domain} (opens in a new tab)`}>{body}</a>
+    : <div className="wk-card">{body}</div>;
 }
 
 function Pricing({ data }) {
@@ -1634,6 +1619,7 @@ function App() {
   const [unlocked, setUnlocked] = useState(() => sessionStorage.getItem("digisky_admin_ok") === "1");
   const [adminOpen, setAdminOpen] = useState(isAdminRoute);
   const [activeFilter, setActiveFilter] = useState("All");
+  const [showAll, setShowAll] = useState(false);
   useEffect(() => {
     let active = true;
     let idleCallbackId;
@@ -1726,6 +1712,10 @@ function App() {
   const projects = useMemo(()=>data.projects, [data.projects]);
   const effectiveFilter = data.categories.includes(activeFilter) ? activeFilter : "All";
   const filteredProjects = useMemo(() => effectiveFilter === "All" ? projects : projects.filter(project => projectCategory(project) === effectiveFilter), [effectiveFilter, projects]);
+  const visibleProjects = showAll ? filteredProjects : filteredProjects.slice(0, WORK_PREVIEW_COUNT);
+  const filterOptions = useMemo(() => data.categories
+    .map(name => ({ name, count: name === "All" ? projects.length : projects.filter(project => projectCategory(project) === name).length }))
+    .filter(option => option.name === "All" || option.count > 0), [data.categories, projects]);
   const regenerateUnavailableThumbnail = project => {
     generateProjectThumbnail(project, true)
       .then(thumbnail => setData(prev => ({
@@ -1771,14 +1761,19 @@ function App() {
 
         <MarqueeStrip items={data.marqueeItems} />
 
-        <section id="work" className="section work-section work-showcase-section">
-          <div className="work-showcase-head">
-            <div><span className="tag-chip">Featured work / selected builds</span><h2>Our latest projects<span>.</span></h2><p>Stores, websites and digital experiences built to look sharp, load fast and give the next click somewhere useful to go.</p></div>
-            <div className="work-head-side"><span>ALL SELECTED BUILDS</span><a className="pill-button work-head-button" href="#work">Explore all work <CtaArrow/></a></div>
-          </div>
-          <div className="project-filters" role="group" aria-label="Filter projects by category">{data.categories.map(filter=><button key={filter} className={effectiveFilter === filter ? "active" : ""} onClick={()=>setActiveFilter(filter)}>{filter}</button>)}</div>
-          <div className="projects-featured-layout projects-all-layout">
-            {filteredProjects.map((p,i)=><ProjectCard project={p} index={i} featured={i === 0} onThumbnailUpdate={regenerateUnavailableThumbnail} key={`${p.id || "project"}-${p.name}-${i}`}/>)}
+        <section id="work" className="wk" aria-labelledby="work-title">
+          <div className="wk-inner">
+            <div className="wk-head">
+              <div><span className="tag-chip">Featured work / selected builds</span><h2 id="work-title">Our latest projects.</h2></div>
+              <p>Stores, websites and digital experiences built to look sharp, load fast and give the next click somewhere useful to go.</p>
+            </div>
+            <div className="wk-filters" role="group" aria-label="Filter projects by category">
+              {filterOptions.map(option => <button key={option.name} type="button" className="wk-filter" aria-pressed={effectiveFilter === option.name} onClick={()=>{ setActiveFilter(option.name); setShowAll(false); }}>{option.name}<span>{option.count}</span></button>)}
+            </div>
+            <div className="wk-grid">
+              {visibleProjects.map((p,i)=><ProjectCard project={p} index={i} onThumbnailUpdate={regenerateUnavailableThumbnail} key={`${p.id || "project"}-${p.name}-${i}`}/>)}
+            </div>
+            {filteredProjects.length > WORK_PREVIEW_COUNT && <div className="wk-more"><button type="button" onClick={()=>setShowAll(v=>!v)}>{showAll ? "Show fewer projects" : `Show all ${filteredProjects.length} projects`}</button></div>}
           </div>
         </section>
 
