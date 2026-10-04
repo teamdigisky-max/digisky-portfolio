@@ -1602,14 +1602,83 @@ function CustomCursor() {
 }
 
 function WhyDigiSky({ data }) {
-  const [mode, setMode] = useState("digisky");
+  // "selected" is the toggle position and changes instantly on click.
+  // "shown" is the content on screen; it swaps after the exit animation finishes.
+  const [selected, setSelected] = useState("digisky");
+  const [shown, setShown] = useState("digisky");
+  const [leaving, setLeaving] = useState(false);
+  const [wave, setWave] = useState(null);
+  const [revealed, setRevealed] = useState(false);
+  const [hinted, setHinted] = useState(false);
+  const sectionRef = useRef(null);
+  const toggleRef = useRef(null);
+  const contentRef = useRef(null);
+  const timerRef = useRef(0);
   const config = data.why || {};
-  const isDigi = mode === "digisky";
+  const isDigi = shown === "digisky";
+  const switched = Boolean(wave);
   const items = isDigi ? (config.digi || []) : (config.other || []);
-  return <section className="why-switch-section section" id="why-digisky">
-    <div className="why-switch-head"><span className="why-switch-tag">{config.tag || "WHY DIGISKY?"}</span><h2>{isDigi ? (config.digiTitle || "Your brand on DigiSky.") : (config.otherTitle || "Your brand without the usual friction.")}</h2><p>{config.subtitle || "Flip the switch. See the difference."}</p></div>
-    <div className="why-switch-toggle" role="tablist" aria-label="Why DigiSky comparison"><button className={!isDigi ? "active" : ""} onClick={()=>setMode("other")} role="tab" aria-selected={!isDigi}>Typical agency</button><button className={isDigi ? "active" : ""} onClick={()=>setMode("digisky")} role="tab" aria-selected={isDigi}>DigiSky</button></div>
-    <div className={`why-switch-content ${isDigi ? "is-digisky" : "is-other"}`}><div className="why-switch-visual"><div className="why-device-card"><div className="why-orbit orbit-one"/><div className="why-orbit orbit-two"/><div className="why-core" aria-hidden="true">{isDigi ? (config.digiEmoji || "🤩") : (config.otherEmoji || "🤯")}</div><div className="why-spark spark-one">✦</div><div className="why-spark spark-two">✦</div><div className="why-spark spark-three">✦</div><div className="why-progress"><span/></div><strong>{isDigi ? (config.digiStatus || "Built to move.") : (config.otherStatus || "Still figuring it out…")}</strong><small>{isDigi ? "strategy · design · build · growth" : "brief · handoff · revisions · launch"}</small></div></div><div className="why-switch-list" aria-live="polite">{items.map(([title,desc],index)=><article className="why-switch-item" key={`${mode}-${index}`} style={{"--delay":`${index*70}ms`}}><span className="why-switch-icon">{isDigi ? "✓" : "×"}</span><div><h3>{title}</h3><p>{desc}</p></div></article>)}</div></div>
+
+  useEffect(() => () => window.clearTimeout(timerRef.current), []);
+
+  // Play the entrance when the section scrolls into view, and nudge the switch once so people notice it.
+  useEffect(() => {
+    if (!("IntersectionObserver" in window)) { setRevealed(true); setHinted(true); return undefined; }
+    const watch = (node, onSee, threshold) => {
+      if (!node) return () => {};
+      const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { onSee(); observer.disconnect(); } }, { threshold });
+      observer.observe(node);
+      return () => observer.disconnect();
+    };
+    const stopContent = watch(contentRef.current, () => setRevealed(true), 0.2);
+    const stopToggle = watch(toggleRef.current, () => setHinted(true), 0.9);
+    return () => { stopContent(); stopToggle(); };
+  }, []);
+
+  const choose = next => {
+    if (next === selected) return;
+    window.clearTimeout(timerRef.current);
+    setSelected(next);
+    setLeaving(true);
+    const section = sectionRef.current;
+    const toggle = toggleRef.current;
+    if (section && toggle) {
+      const s = section.getBoundingClientRect();
+      const t = toggle.getBoundingClientRect();
+      setWave(prev => ({ id: (prev?.id || 0) + 1, x: t.left - s.left + t.width / 2, y: t.top - s.top + t.height / 2, mode: next }));
+    } else {
+      setWave(prev => ({ id: (prev?.id || 0) + 1, x: 0, y: 0, mode: next }));
+    }
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    timerRef.current = window.setTimeout(() => { setShown(next); setLeaving(false); }, reduceMotion ? 0 : 340);
+  };
+  const onToggleKey = event => {
+    if (event.key === "ArrowLeft") { event.preventDefault(); choose("other"); }
+    if (event.key === "ArrowRight") { event.preventDefault(); choose("digisky"); }
+  };
+
+  return <section ref={sectionRef} className={`why-switch-section section${switched ? " is-switched" : ""}${leaving ? " is-leaving" : ""}`} id="why-digisky" data-mode={selected}>
+    {wave && <span key={wave.id} className={`why-wave why-wave-${wave.mode}`} style={{ left: wave.x, top: wave.y }} aria-hidden="true"/>}
+    <div className="why-switch-head"><span className="why-switch-tag">{config.tag || "WHY DIGISKY?"}</span><div className="why-title-stack"><h2 className={isDigi ? "is-active" : ""} aria-hidden={!isDigi}>{config.digiTitle || "Your brand on DigiSky."}</h2><h2 className={!isDigi ? "is-active" : ""} aria-hidden={isDigi}>{config.otherTitle || "Your brand without the usual friction."}</h2></div><p>{config.subtitle || "Flip the switch. See the difference."}</p></div>
+    <div ref={toggleRef} className={`why-switch-toggle${hinted ? " is-hinted" : ""}`} role="tablist" aria-label="Why DigiSky comparison" data-selected={selected} onKeyDown={onToggleKey}>
+      <span className="why-toggle-thumb" aria-hidden="true"/>
+      <button type="button" role="tab" aria-selected={selected === "other"} onClick={()=>choose("other")}>Typical agency</button>
+      <button type="button" role="tab" aria-selected={selected === "digisky"} onClick={()=>choose("digisky")}>DigiSky</button>
+    </div>
+    <div ref={contentRef} className={`why-switch-content ${isDigi ? "is-digisky" : "is-other"}${revealed ? " is-revealed" : ""}`}>
+      <div className="why-switch-visual">
+        <div className="why-device-card" key={shown}>
+          <div className="why-orbit orbit-one"/><div className="why-orbit orbit-two"/>
+          <div className="why-core" aria-hidden="true"><span className="why-emoji">{isDigi ? (config.digiEmoji || "🤩") : (config.otherEmoji || "🤯")}</span></div>
+          <div className="why-spark spark-one">✦</div><div className="why-spark spark-two">✦</div><div className="why-spark spark-three">✦</div>
+          {switched && <div className="why-burst" aria-hidden="true">{[0,1,2,3,4,5,6,7].map(i => <i key={i} style={{ "--a": `${i * 45}deg` }}/>)}</div>}
+          <div className="why-progress"><span/></div>
+          <strong>{isDigi ? (config.digiStatus || "Built to move.") : (config.otherStatus || "Still figuring it out…")}</strong>
+          <small>{isDigi ? "strategy · design · build · growth" : "brief · handoff · revisions · launch"}</small>
+        </div>
+      </div>
+      <div className="why-switch-list" aria-live="polite">{items.map(([title,desc],index)=><article className="why-switch-item" key={`${shown}-${index}`} style={{"--delay":`${index*80}ms`,"--i":index}}><span className="why-switch-icon">{isDigi ? "✓" : "×"}</span><div><h3>{title}</h3><p>{desc}</p></div></article>)}</div>
+    </div>
   </section>;
 }
 

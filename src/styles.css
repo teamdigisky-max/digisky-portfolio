@@ -2639,3 +2639,77 @@ a.wk-card:hover .wk-go svg{transform:translate(2px,-2px)}
   .wk-shot img,.wk-go,.wk-go svg{transition:none}
   a.wk-card:hover .wk-shot img,a.wk-card:hover .wk-go svg{transform:none}
 }
+
+/* =====================================================================
+   WHY DIGISKY — animated switch
+   ===================================================================== */
+.why-switch-section{transition:background .7s ease}
+.why-switch-section[data-mode="other"]{background:#f8efeb!important}
+.why-switch-head,.why-switch-content{position:relative;z-index:1}
+
+/* Sliding thumb on the toggle */
+.why-switch-toggle{z-index:1;--thumb:#baff35}
+.why-switch-toggle[data-selected="other"]{--thumb:#ffb3a7}
+.why-toggle-thumb{position:absolute;z-index:1;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);border-radius:999px;background:var(--thumb);box-shadow:0 2px 12px rgba(0,0,0,.14);transform:translateX(100%);transition:transform .6s cubic-bezier(.34,1.56,.64,1),background .4s ease}
+.why-switch-toggle[data-selected="other"] .why-toggle-thumb{transform:translateX(0)}
+.why-switch-toggle.is-hinted .why-toggle-thumb{animation:whyThumbHint 1.1s .3s ease}
+.why-switch-toggle button:focus-visible{outline:2px solid #1E8F4C;outline-offset:2px}
+@keyframes whyThumbHint{0%,100%{transform:translateX(100%)}35%{transform:translateX(70%)}65%{transform:translateX(100%)}82%{transform:translateX(92%)}}
+
+/* Colour ripple that spreads from the toggle */
+.why-wave{position:absolute;z-index:0;width:240px;height:240px;margin:-120px 0 0 -120px;border-radius:50%;pointer-events:none;animation:whyWave 1.1s cubic-bezier(.22,1,.36,1) both}
+.why-wave-digisky{background:radial-gradient(circle,rgba(186,255,53,.6),rgba(186,255,53,.2) 55%,transparent 70%)}
+.why-wave-other{background:radial-gradient(circle,rgba(255,120,100,.4),rgba(255,120,100,.12) 55%,transparent 70%)}
+@keyframes whyWave{from{transform:scale(.15);opacity:1}to{transform:scale(11);opacity:0}}
+
+/* Heading: both titles share one grid cell, so the section never changes height when you switch */
+.why-title-stack{display:grid}
+.why-title-stack h2{grid-area:1/1;opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .45s ease,transform .6s cubic-bezier(.22,1,.36,1),visibility 0s .45s}
+.why-title-stack h2.is-active{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.why-switch-section.is-leaving .why-title-stack h2.is-active{opacity:0;transform:translateY(-12px);transition:opacity .25s ease,transform .25s ease}
+
+/* Card flips like a physical switch */
+.why-switch-visual{perspective:900px}
+.why-switch-section.is-leaving .why-device-card{animation:whyCardOut .34s cubic-bezier(.5,0,.75,0) forwards}
+.why-switch-section.is-switched:not(.is-leaving) .why-device-card{animation:whyCardIn .65s cubic-bezier(.22,1,.36,1) both}
+@keyframes whyCardOut{to{transform:rotateY(88deg) scale(.92);opacity:.4}}
+@keyframes whyCardIn{from{transform:rotateY(-88deg) scale(.92);opacity:.4}60%{transform:rotateY(8deg) scale(1.02)}to{transform:none;opacity:1}}
+
+.why-switch-section.is-switched .why-emoji{display:inline-block;animation:whyEmojiPop .75s .15s cubic-bezier(.34,1.56,.64,1) both}
+.why-switch-section.is-switched .is-other .why-emoji{animation-name:whyEmojiPopBack}
+@keyframes whyEmojiPop{from{transform:scale(0) rotate(-200deg)}to{transform:none}}
+@keyframes whyEmojiPopBack{from{transform:scale(0) rotate(200deg)}to{transform:none}}
+
+.why-burst{position:absolute;top:99px;left:50%;width:0;height:0}
+.why-burst i{position:absolute;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:var(--why-accent,#9bcf2e);animation:whyBurst .85s .2s ease-out both}
+@keyframes whyBurst{0%{transform:rotate(var(--a)) translateY(-30px) scale(1);opacity:1}100%{transform:rotate(var(--a)) translateY(-92px) scale(.2);opacity:0}}
+
+/* "Typical agency" mode feels shaky: wobbly core, ticking orbits, stalling bar */
+.is-other .why-core{animation:whyWobble 2s ease-in-out infinite}
+.is-other .why-orbit{animation-timing-function:steps(24,end)}
+.is-other .why-progress span{animation:whyProgressStall 2.2s ease both}
+@keyframes whyWobble{0%,100%{transform:translateX(0) rotate(0)}20%{transform:translateX(-5px) rotate(-6deg)}40%{transform:translateX(5px) rotate(5deg)}60%{transform:translateX(-3px) rotate(-3deg)}80%{transform:translateX(3px) rotate(2deg)}}
+@keyframes whyProgressStall{0%{width:0}35%{width:28%}50%{width:21%}65%{width:30%}100%{width:28%}}
+
+/* List: old items leave sideways, new ones slide in from the side the switch moved to */
+.why-switch-content .why-switch-item{opacity:1;transform:none;animation:whyInFromRight .7s cubic-bezier(.22,1,.36,1) backwards;animation-delay:var(--delay);animation-play-state:paused}
+.why-switch-content.is-revealed .why-switch-item{animation-play-state:running}
+.why-switch-content.is-other .why-switch-item{animation-name:whyInFromLeft}
+.why-switch-content .why-switch-icon{animation:whyIconPop .55s cubic-bezier(.34,1.56,.64,1) backwards;animation-delay:calc(var(--delay) + 240ms);animation-play-state:paused}
+.why-switch-content.is-revealed .why-switch-icon{animation-play-state:running}
+.why-switch-section.is-leaving .is-digisky .why-switch-item{animation:whyOutRight .3s ease-in forwards;animation-delay:calc(var(--i) * 35ms);animation-play-state:running}
+.why-switch-section.is-leaving .is-other .why-switch-item{animation:whyOutLeft .3s ease-in forwards;animation-delay:calc(var(--i) * 35ms);animation-play-state:running}
+@keyframes whyInFromRight{from{opacity:0;transform:translateX(56px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes whyInFromLeft{from{opacity:0;transform:translateX(-56px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes whyOutRight{to{opacity:0;transform:translateX(44px) scale(.97)}}
+@keyframes whyOutLeft{to{opacity:0;transform:translateX(-44px) scale(.97)}}
+@keyframes whyIconPop{from{transform:scale(0) rotate(-120deg)}to{transform:none}}
+
+@media (max-width:600px){
+  .why-wave{width:160px;height:160px;margin:-80px 0 0 -80px}
+}
+@media (prefers-reduced-motion:reduce){
+  .why-wave{display:none}
+  .why-switch-section.is-leaving .why-device-card,
+  .why-switch-section.is-leaving .why-switch-item{animation:none}
+}
