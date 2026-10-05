@@ -2185,6 +2185,7 @@ function App() {
           <div className="footer-bottom"><span>&copy; 2026 DigiSky. All rights reserved.</span><span>Built by DigiSky</span></div>
         </div>
       </footer>
+      <DigiSkyAssistant data={data} />
       <BackToTop />
     </div>
   );
