@@ -541,6 +541,129 @@ function LandingPage({ pageKey }) {
   );
 }
 
+
+/* ---------- DigiSky Assistant ---------- */
+function DigiSkyAssistant({ data }) {
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    { from: "bot", text: "Hi! 👋 I'm DigiSky Assistant. How can I help you today?" }
+  ]);
+  const [typing, setTyping] = useState(false);
+
+  const actions = [
+    ["Start a Project", "I want to start a project."],
+    ["Our Services", "What services does DigiSky offer?"],
+    ["Shopify Website", "I want to know about Shopify websites."],
+    ["Pricing", "What is your starting price?"],
+    ["Our Work", "Show me DigiSky's previous work."],
+    ["Contact DigiSky", "I want to contact DigiSky."]
+  ];
+
+  const answer = (text) => {
+    const t = text.toLowerCase();
+    if (t.includes("price") || t.includes("pricing") || t.includes("cost")) {
+      return "Our Shopify website service starts at ₹7,500. Final pricing depends on the scope, features and integrations required.";
+    }
+    if (t.includes("shopify")) {
+      return "DigiSky builds custom Shopify stores, theme customizations, responsive storefronts, product/collection setup and conversion-focused ecommerce experiences.";
+    }
+    if (t.includes("service")) {
+      return "We offer Shopify stores, WordPress websites, custom development, website redesigns, Meta Ads, Google Ads, AI automation, SEO + CRO and social media.";
+    }
+    if (t.includes("work") || t.includes("portfolio") || t.includes("project")) {
+      return "You can explore DigiSky's latest projects in the Our Work section. We have delivered 31+ projects.";
+    }
+    if (t.includes("contact") || t.includes("whatsapp")) {
+      return "Sure! You can contact DigiSky directly on WhatsApp or email us at team.digisky@gmail.com.";
+    }
+    return "Absolutely! Tell me what you need — Shopify, website development, ecommerce, SEO, ads or a new project — and I'll point you in the right direction.";
+  };
+
+  const send = (text) => {
+    if (!text?.trim()) return;
+    setMessages(m => [...m, { from: "user", text }]);
+    setTyping(true);
+    window.setTimeout(() => {
+      setTyping(false);
+      setMessages(m => [...m, { from: "bot", text: answer(text) }]);
+    }, 500);
+  };
+
+  const whatsapp = data?.brand?.whatsapp || "+919753622101";
+  const waHref = `https://wa.me/${String(whatsapp).replace(/\D/g, "")}?text=${encodeURIComponent("Hi DigiSky, I want to discuss a project.")}`;
+
+  return (
+    <div className={`dsk-assistant ${open ? "is-open" : ""}`}>
+      {open && (
+        <div className="dsk-chat" role="dialog" aria-label="DigiSky Assistant">
+          <div className="dsk-chat-head">
+            <div className="dsk-bot-avatar">DS</div>
+            <div className="dsk-chat-title">
+              <strong>DigiSky Assistant</strong>
+              <span><i/> Online</span>
+            </div>
+            <button type="button" className="dsk-close" onClick={() => setOpen(false)} aria-label="Close assistant">×</button>
+          </div>
+
+          <div className="dsk-chat-body">
+            {messages.map((m, i) => (
+              <div className={`dsk-msg ${m.from}`} key={i}>{m.text}</div>
+            ))}
+            {typing && <div className="dsk-msg bot dsk-typing"><i/><i/><i/></div>}
+          </div>
+
+          <div className="dsk-actions">
+            {actions.map(([label, value]) => (
+              <button type="button" key={label} onClick={() => send(value)}>{label}</button>
+            ))}
+          </div>
+
+          <div className="dsk-chat-bottom">
+            <a href={waHref} target="_blank" rel="noreferrer" className="dsk-whatsapp">WhatsApp DigiSky</a>
+            <div className="dsk-input-row">
+              <input
+                aria-label="Message DigiSky Assistant"
+                placeholder="Ask something..."
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    send(e.currentTarget.value);
+                    e.currentTarget.value = "";
+                  }
+                }}
+              />
+              <button
+                type="button"
+                aria-label="Send message"
+                onClick={(e) => {
+                  const input = e.currentTarget.previousElementSibling;
+                  send(input.value);
+                  input.value = "";
+                }}
+              >↑</button>
+            </div>
+          </div>
+          <div className="dsk-powered">DigiSky · Step Up Digitally</div>
+        </div>
+      )}
+
+      <button
+        type="button"
+        className="dsk-launcher"
+        onClick={() => setOpen(v => !v)}
+        aria-label={open ? "Close DigiSky Assistant" : "Open DigiSky Assistant"}
+      >
+        <span className="dsk-launcher-glow"/>
+        {open ? <span className="dsk-launcher-x">×</span> : (
+          <>
+            <span className="dsk-launcher-ds">DS</span>
+            <span className="dsk-launcher-dot"/>
+          </>
+        )}
+      </button>
+    </div>
+  );
+}
+
 function AppRoutes() {
   return (
     <>
