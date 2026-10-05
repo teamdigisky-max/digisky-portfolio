@@ -720,25 +720,40 @@ function DigiSkyAssistant({ data }) {
   };
 
   const waHref = `https://wa.me/${String(whatsapp).replace(/\D/g, "")}?text=${encodeURIComponent("Hi DigiSky, I want to discuss a project.")}`;
+  const resetChat = () => {
+    setTyping(false);
+    setMessages([{ from: "bot", text: "Hi! 👋 I’m DigiSky Assistant. Tell me what you’re planning — your business, platform, budget or goal — and I’ll guide you from there." }]);
+  };
 
   return (
     <div className={`dsk-assistant ${open ? "is-open" : ""}`}>
       {open && (
         <div className="dsk-chat" role="dialog" aria-label="DigiSky Assistant">
           <div className="dsk-chat-head">
-            <DigiSkyBotAvatar />
+            <div className="dsk-head-avatar"><DigiSkyBotAvatar /></div>
             <div className="dsk-chat-title">
               <strong>DigiSky Assistant</strong>
-              <span><i/> Online</span>
+              <span><i/> Online · replies instantly</span>
             </div>
-            <button type="button" className="dsk-close" onClick={() => setOpen(false)} aria-label="Close assistant">×</button>
+            <div className="dsk-head-controls">
+              <button type="button" className="dsk-head-btn" onClick={resetChat} aria-label="Start a new chat" title="New chat">↻</button>
+              <button type="button" className="dsk-head-btn" onClick={() => setOpen(false)} aria-label="Minimize assistant" title="Minimize">⌄</button>
+            </div>
           </div>
 
           <div className="dsk-chat-body">
             {messages.map((m, i) => (
-              <div className={`dsk-msg ${m.from}`} key={i}>{m.text}</div>
+              <div className={`dsk-msg-row ${m.from}`} key={i}>
+                {m.from === "bot" && <DigiSkyBotAvatar small />}
+                <div className={`dsk-msg ${m.from}`}>{m.text}</div>
+              </div>
             ))}
-            {typing && <div className="dsk-msg bot dsk-typing"><i/><i/><i/></div>}
+            {typing && (
+              <div className="dsk-msg-row bot">
+                <DigiSkyBotAvatar small />
+                <div className="dsk-msg bot dsk-typing"><i/><i/><i/></div>
+              </div>
+            )}
           </div>
 
           <div className="dsk-actions">
@@ -748,11 +763,10 @@ function DigiSkyAssistant({ data }) {
           </div>
 
           <div className="dsk-chat-bottom">
-            <a href={waHref} target="_blank" rel="noreferrer" className="dsk-whatsapp">WhatsApp DigiSky</a>
             <div className="dsk-input-row">
               <input
                 aria-label="Message DigiSky Assistant"
-                placeholder="Ask about your project..."
+                placeholder="Type your question..."
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     send(e.currentTarget.value);
@@ -764,10 +778,12 @@ function DigiSkyAssistant({ data }) {
                 const input = e.currentTarget.previousElementSibling;
                 send(input.value);
                 input.value = "";
-              }}>↑</button>
+              }}>➤</button>
             </div>
           </div>
-          <div className="dsk-powered">DigiSky · Step Up Digitally</div>
+          <div className="dsk-powered">
+            Automated assistant · <a href={waHref} target="_blank" rel="noreferrer">Talk to a person</a>
+          </div>
         </div>
       )}
 
