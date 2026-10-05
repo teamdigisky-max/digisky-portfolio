@@ -546,50 +546,101 @@ function LandingPage({ pageKey }) {
 function DigiSkyAssistant({ data }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { from: "bot", text: "Hi! 👋 I'm DigiSky Assistant. How can I help you today?" }
+    { from: "bot", text: "Hi! 👋 I’m DigiSky Assistant. Ask me about Shopify, website development, pricing, services, our work or how to contact the team." }
   ]);
   const [typing, setTyping] = useState(false);
 
+  const projects = Array.isArray(data?.projects) ? data.projects : [];
+  const services = Array.isArray(data?.services) ? data.services : [];
+  const stats = Array.isArray(data?.stats) ? data.stats : [];
+  const price = data?.pricing?.price || "Contact us for a quote";
+  const email = data?.brand?.email || "team.digisky@gmail.com";
+  const whatsapp = data?.brand?.whatsapp || "+919753622101";
+  const projectCount = stats.find(s => String(s?.[1] || "").toLowerCase().includes("project"))?.[0] || `${projects.length}+`;
+
   const actions = [
-    ["Start a Project", "I want to start a project."],
-    ["Our Services", "What services does DigiSky offer?"],
-    ["Shopify Website", "I want to know about Shopify websites."],
-    ["Pricing", "What is your starting price?"],
-    ["Our Work", "Show me DigiSky's previous work."],
-    ["Contact DigiSky", "I want to contact DigiSky."]
+    ["Shopify", "What does DigiSky offer for Shopify websites?"],
+    ["Pricing", "How much does a Shopify website cost?"],
+    ["Services", "What services does DigiSky offer?"],
+    ["Our Work", "Show me some DigiSky projects."],
+    ["Process", "How does DigiSky work on a project?"],
+    ["Contact", "How can I contact DigiSky?"]
   ];
 
+  const clean = (value) => String(value || "").toLowerCase().replace(/[^a-z0-9₹]+/g, " ").trim();
+  const hasAny = (t, words) => words.some(word => t.includes(word));
+
   const answer = (text) => {
-    const t = text.toLowerCase();
-    if (t.includes("price") || t.includes("pricing") || t.includes("cost")) {
-      return "Our Shopify website service starts at ₹7,500. Final pricing depends on the scope, features and integrations required.";
+    const t = clean(text);
+
+    if (hasAny(t, ["hi", "hello", "hey", "namaste", "good morning", "good evening"])) {
+      return "Hi! 👋 I’m here to help with DigiSky’s Shopify, website development, ecommerce, SEO and digital marketing services. What are you looking to build?";
     }
-    if (t.includes("shopify")) {
-      return "DigiSky builds custom Shopify stores, theme customizations, responsive storefronts, product/collection setup and conversion-focused ecommerce experiences.";
+
+    if (hasAny(t, ["price", "pricing", "cost", "charge", "budget", "rate", "starting", "how much"])) {
+      return `Our current Shopify website package starts at ${price}. The exact quote depends on the pages, products, design, custom features and integrations you need. Tell me what you want to build and I can point you to the right option.`;
     }
-    if (t.includes("service")) {
-      return "We offer Shopify stores, WordPress websites, custom development, website redesigns, Meta Ads, Google Ads, AI automation, SEO + CRO and social media.";
+
+    if (hasAny(t, ["shopify", "shopify store", "shopify website", "shopify development"])) {
+      return "DigiSky builds Shopify stores with custom storefront design, responsive layouts, product and collection setup, navigation, payment/shipping setup assistance, basic SEO structure and launch testing. We can also customise an existing Shopify theme or build a more tailored storefront.";
     }
-    if (t.includes("work") || t.includes("portfolio") || t.includes("project")) {
-      return "You can explore DigiSky's latest projects in the Our Work section. We have delivered 31+ projects.";
+
+    if (hasAny(t, ["wordpress", "woocommerce"])) {
+      return "Yes. DigiSky also works with WordPress and WooCommerce for business websites and ecommerce stores. We can handle design, responsive development, store structure, product setup and launch support.";
     }
-    if (t.includes("contact") || t.includes("whatsapp")) {
-      return "Sure! You can contact DigiSky directly on WhatsApp or email us at team.digisky@gmail.com.";
+
+    if (hasAny(t, ["service", "services", "what do you do", "offer", "agency"])) {
+      const names = services.slice(0, 6).map(s => s?.[0]).filter(Boolean);
+      return `DigiSky helps brands with ${names.length ? names.join(", ") : "Shopify, ecommerce, websites and digital growth"}. We also offer SEO + CRO, Meta Ads, Google Ads, AI automation and ad creatives. Tell me which service you need and I’ll explain it.`;
     }
-    return "Absolutely! Tell me what you need — Shopify, website development, ecommerce, SEO, ads or a new project — and I'll point you in the right direction.";
+
+    if (hasAny(t, ["portfolio", "our work", "projects", "clients", "website examples", "previous work", "show me"])) {
+      const names = projects.slice(0, 6).map(p => p?.name).filter(Boolean).join(", ");
+      return `DigiSky has delivered ${projectCount} projects. Some projects in the portfolio include ${names || "Shopify and ecommerce brands"}. You can also open the Our Work section on this website to explore the projects.`;
+    }
+
+    if (hasAny(t, ["timeline", "how long", "delivery", "days", "deadline", "time"])) {
+      return "Project timelines depend on the scope, number of pages/products and custom functionality. Once the requirements are clear, DigiSky can confirm the expected delivery timeline before work starts.";
+    }
+
+    if (hasAny(t, ["process", "how it works", "steps", "workflow", "start project"])) {
+      return "The usual process is: Discover → Shape the direction → Design → Build → Test and polish → Launch. The exact workflow is adjusted to the project and platform.";
+    }
+
+    if (hasAny(t, ["seo", "search engine", "google ranking", "rank"])) {
+      return "DigiSky can help with SEO foundations, technical structure, metadata, internal linking and conversion-focused improvements. SEO results and rankings depend on the website, competition and ongoing work, so we don’t promise a guaranteed top position.";
+    }
+
+    if (hasAny(t, ["meta ads", "facebook ads", "instagram ads", "ads", "advertising", "google ads"])) {
+      return "DigiSky also provides digital advertising support, including Meta Ads and Google Ads, with audience/offer strategy, creative alignment, campaign setup and optimisation guidance.";
+    }
+
+    if (hasAny(t, ["contact", "whatsapp", "email", "call", "talk", "reach"])) {
+      return `You can contact DigiSky on WhatsApp at ${whatsapp} or email ${email}. If you want, use the WhatsApp button below to start a conversation directly.`;
+    }
+
+    if (hasAny(t, ["domain", "hosting", "payment gateway", "shipping", "razorpay", "cod"])) {
+      return "DigiSky can assist with the technical setup around domains, hosting, payment gateways and shipping integrations. The exact integrations depend on your platform and project requirements.";
+    }
+
+    if (hasAny(t, ["who are you", "about digisky", "what is digisky"])) {
+      return "DigiSky is a digital studio focused on Shopify, ecommerce, custom websites and digital growth. The goal is to build premium digital experiences that are clear, fast and conversion-focused.";
+    }
+
+    return "I can help with Shopify, WordPress/WooCommerce, website development, ecommerce, pricing, SEO, Meta Ads, Google Ads, our portfolio and contact details. Try asking something like ‘How much is a Shopify website?’ or ‘Show me your work’.";
   };
 
   const send = (text) => {
-    if (!text?.trim()) return;
-    setMessages(m => [...m, { from: "user", text }]);
+    const value = String(text || "").trim();
+    if (!value || typing) return;
+    setMessages(m => [...m, { from: "user", text: value }]);
     setTyping(true);
     window.setTimeout(() => {
       setTyping(false);
-      setMessages(m => [...m, { from: "bot", text: answer(text) }]);
-    }, 500);
+      setMessages(m => [...m, { from: "bot", text: answer(value) }]);
+    }, 350);
   };
 
-  const whatsapp = data?.brand?.whatsapp || "+919753622101";
   const waHref = `https://wa.me/${String(whatsapp).replace(/\D/g, "")}?text=${encodeURIComponent("Hi DigiSky, I want to discuss a project.")}`;
 
   return (
@@ -597,7 +648,7 @@ function DigiSkyAssistant({ data }) {
       {open && (
         <div className="dsk-chat" role="dialog" aria-label="DigiSky Assistant">
           <div className="dsk-chat-head">
-            <div className="dsk-bot-avatar">DS</div>
+            <div className="dsk-bot-avatar"><img src="/logo.png" alt="DigiSky" /></div>
             <div className="dsk-chat-title">
               <strong>DigiSky Assistant</strong>
               <span><i/> Online</span>
@@ -623,7 +674,7 @@ function DigiSkyAssistant({ data }) {
             <div className="dsk-input-row">
               <input
                 aria-label="Message DigiSky Assistant"
-                placeholder="Ask something..."
+                placeholder="Ask about DigiSky..."
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     send(e.currentTarget.value);
@@ -655,7 +706,7 @@ function DigiSkyAssistant({ data }) {
         <span className="dsk-launcher-glow"/>
         {open ? <span className="dsk-launcher-x">×</span> : (
           <>
-            <span className="dsk-launcher-ds">DS</span>
+            <span className="dsk-launcher-logo"><img src="/logo.png" alt="Open DigiSky Assistant" /></span>
             <span className="dsk-launcher-dot"/>
           </>
         )}

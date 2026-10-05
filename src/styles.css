@@ -2964,12 +2964,13 @@ nav.adm-nav .adm-group{display:block}
 .dsk-launcher{position:relative;width:62px;height:62px;border:0;border-radius:50%;background:linear-gradient(145deg,var(--green),var(--green-deep));color:#fff;display:grid;place-items:center;box-shadow:0 16px 36px rgba(13,106,54,.28),0 0 0 1px rgba(255,255,255,.55) inset;transition:transform .25s ease,box-shadow .25s ease}
 .dsk-launcher:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 20px 42px rgba(13,106,54,.36),0 0 0 1px rgba(255,255,255,.65) inset}
 .dsk-launcher-glow{position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(30,143,76,.28);animation:dsk-pulse 2.6s ease-in-out infinite;pointer-events:none}
-.dsk-launcher-ds{font:800 16px/1 "Inter",sans-serif;letter-spacing:-.06em}
+.dsk-launcher-logo{width:32px;height:32px;border-radius:10px;display:block;overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.55) inset}
+.dsk-launcher-logo img{height:32px;width:auto;max-width:none;display:block;object-fit:contain;object-position:left center}
 .dsk-launcher-dot{position:absolute;right:5px;top:5px;width:11px;height:11px;background:#B8F28B;border:2px solid #fff;border-radius:50%}
 .dsk-launcher-x{font-size:28px;font-weight:300;line-height:1}
 .dsk-chat{position:absolute;right:0;bottom:76px;width:370px;max-width:calc(100vw - 32px);height:min(600px,calc(100vh - 120px));display:flex;flex-direction:column;overflow:hidden;background:rgba(255,255,255,.97);border:1px solid rgba(30,143,76,.18);border-radius:22px;box-shadow:0 28px 80px rgba(11,31,22,.2),0 0 0 1px rgba(255,255,255,.7) inset;backdrop-filter:blur(18px);animation:dsk-chat-in .25s cubic-bezier(.2,.8,.2,1)}
 .dsk-chat-head{display:flex;align-items:center;gap:11px;padding:16px 16px 14px;background:linear-gradient(135deg,var(--deep),var(--green-deep));color:#fff}
-.dsk-bot-avatar{width:40px;height:40px;display:grid;place-items:center;border-radius:13px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);font:800 12px "Inter";letter-spacing:-.06em}
+.dsk-bot-avatar{width:40px;height:40px;display:grid;place-items:center;border-radius:13px;background:#fff;border:1px solid rgba(255,255,255,.3);overflow:hidden;flex:0 0 40px}.dsk-bot-avatar img{width:100%;height:100%;object-fit:contain;padding:5px}
 .dsk-chat-title{display:flex;flex-direction:column;gap:3px;min-width:0}
 .dsk-chat-title strong{font-size:14px;line-height:1.1}
 .dsk-chat-title span{font-size:11px;opacity:.78;display:flex;align-items:center;gap:5px}
