@@ -560,23 +560,6 @@ function DigiSkyBotAvatar({ small = false }) {
   );
 }
 
-function DigiSkyBotAvatar({ small = false }) {
-  return (
-    <span className={`dsk-robot-avatar ${small ? "small" : ""}`} aria-hidden="true">
-      <svg viewBox="0 0 64 64">
-        <path d="M32 8v7" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
-        <circle cx="32" cy="6" r="3" fill="currentColor"/>
-        <rect x="10" y="16" width="44" height="37" rx="13" fill="currentColor"/>
-        <rect x="15" y="21" width="34" height="25" rx="9" fill="white"/>
-        <circle cx="25" cy="33" r="4" fill="currentColor"/>
-        <circle cx="39" cy="33" r="4" fill="currentColor"/>
-        <path d="M25 40c4 3 10 3 14 0" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-        <path d="M10 29H6M58 29h-4" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
-      </svg>
-    </span>
-  );
-}
-
 function DigiSkyAssistant({ data }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
