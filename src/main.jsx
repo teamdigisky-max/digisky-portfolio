@@ -543,91 +543,186 @@ function LandingPage({ pageKey }) {
 
 
 /* ---------- DigiSky Assistant ---------- */
+function DigiSkyBotAvatar({ small = false }) {
+  return (
+    <span className={`dsk-robot-avatar ${small ? "small" : ""}`} aria-hidden="true">
+      <svg viewBox="0 0 64 64" role="img">
+        <path d="M32 8v7" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+        <circle cx="32" cy="6" r="3" fill="currentColor"/>
+        <rect x="10" y="16" width="44" height="37" rx="13" fill="currentColor"/>
+        <rect x="15" y="21" width="34" height="25" rx="9" fill="white"/>
+        <circle cx="25" cy="33" r="4" fill="currentColor"/>
+        <circle cx="39" cy="33" r="4" fill="currentColor"/>
+        <path d="M25 40c4 3 10 3 14 0" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+        <path d="M10 29H6M58 29h-4" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+      </svg>
+    </span>
+  );
+}
+
+function DigiSkyBotAvatar({ small = false }) {
+  return (
+    <span className={`dsk-robot-avatar ${small ? "small" : ""}`} aria-hidden="true">
+      <svg viewBox="0 0 64 64">
+        <path d="M32 8v7" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+        <circle cx="32" cy="6" r="3" fill="currentColor"/>
+        <rect x="10" y="16" width="44" height="37" rx="13" fill="currentColor"/>
+        <rect x="15" y="21" width="34" height="25" rx="9" fill="white"/>
+        <circle cx="25" cy="33" r="4" fill="currentColor"/>
+        <circle cx="39" cy="33" r="4" fill="currentColor"/>
+        <path d="M25 40c4 3 10 3 14 0" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+        <path d="M10 29H6M58 29h-4" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+      </svg>
+    </span>
+  );
+}
+
 function DigiSkyAssistant({ data }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { from: "bot", text: "Hi! 👋 I’m DigiSky Assistant. Ask me about Shopify, website development, pricing, services, our work or how to contact the team." }
+    { from: "bot", text: "Hi! 👋 I’m DigiSky Assistant. Tell me what you’re planning — your business, platform, budget or goal — and I’ll guide you from there." }
   ]);
   const [typing, setTyping] = useState(false);
 
   const projects = Array.isArray(data?.projects) ? data.projects : [];
   const services = Array.isArray(data?.services) ? data.services : [];
   const stats = Array.isArray(data?.stats) ? data.stats : [];
-  const price = data?.pricing?.price || "Contact us for a quote";
+  const pricing = data?.pricing || {};
   const email = data?.brand?.email || "team.digisky@gmail.com";
   const whatsapp = data?.brand?.whatsapp || "+919753622101";
-  const projectCount = stats.find(s => String(s?.[1] || "").toLowerCase().includes("project"))?.[0] || `${projects.length}+`;
+  const projectCount = stats.find(s => /project|store|launch/i.test(String(s?.[1] || "")))?.[0] || (projects.length ? `${projects.length}+` : "30+");
+  const serviceNames = services.map(s => s?.[0]).filter(Boolean);
 
   const actions = [
-    ["Shopify", "What does DigiSky offer for Shopify websites?"],
-    ["Pricing", "How much does a Shopify website cost?"],
-    ["Services", "What services does DigiSky offer?"],
-    ["Our Work", "Show me some DigiSky projects."],
-    ["Process", "How does DigiSky work on a project?"],
-    ["Contact", "How can I contact DigiSky?"]
+    ["🤖 Start a project", "I want to start a project. Ask me what you need to know."],
+    ["Shopify", "I need a Shopify website for my business."],
+    ["Pricing", "What would a website like mine roughly cost?"],
+    ["Services", "Which services would you recommend for a new ecommerce brand?"],
+    ["Portfolio", "Can you show me relevant DigiSky work?"],
+    ["Contact", "I want to talk to the DigiSky team."]
   ];
 
-  const clean = (value) => String(value || "").toLowerCase().replace(/[^a-z0-9₹]+/g, " ").trim();
-  const hasAny = (t, words) => words.some(word => t.includes(word));
+  const normalize = (value) => String(value || "").toLowerCase().replace(/[^a-z0-9₹@._+\s-]/gi, " ").replace(/\s+/g, " ").trim();
+  const has = (t, words) => words.some(word => t.includes(word));
+  const hasWhole = (t, word) => new RegExp(`\\b${word.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}\\b`, "i").test(t);
+  const money = (value) => {
+    const n = Number(String(value || "").replace(/[^0-9.]/g, ""));
+    return Number.isFinite(n) && n > 0 ? `₹${n.toLocaleString("en-IN")}` : String(value || "");
+  };
+
+  const relevantProjects = (t) => {
+    const words = t.split(" ").filter(w => w.length > 3);
+    const scored = projects.map(p => {
+      const hay = normalize(`${p?.name || ""} ${p?.category || ""} ${p?.description || ""} ${p?.tags || ""}`);
+      const score = words.reduce((n, w) => n + (hay.includes(w) ? 1 : 0), 0);
+      return { p, score };
+    }).filter(x => x.score > 0).sort((a,b) => b.score-a.score).slice(0,4).map(x => x.p?.name).filter(Boolean);
+    return scored.length ? scored : projects.slice(0,4).map(p => p?.name).filter(Boolean);
+  };
 
   const answer = (text) => {
-    const t = clean(text);
+    const raw = String(text || "").trim();
+    const t = normalize(raw);
+    if (!t) return "Tell me a little about what you need and I’ll help you choose the right DigiSky service.";
 
-    if (hasAny(t, ["hi", "hello", "hey", "namaste", "good morning", "good evening"])) {
-      return "Hi! 👋 I’m here to help with DigiSky’s Shopify, website development, ecommerce, SEO and digital marketing services. What are you looking to build?";
+    if (/^(hi|hello|hey|namaste|hii+|helo+|good morning|good afternoon|good evening)[!. ]*$/.test(t)) {
+      return "Hey! 👋 Good to meet you. What are you building — a Shopify store, a normal business website, or something else? If you tell me your business type, I can suggest the best starting point.";
+    }
+    if (has(t, ["how are you", "how r u", "how are u"])) {
+      return "I’m doing great and ready to help 😄 More importantly, how can I help you today? Tell me what you sell, your platform and what you want to achieve.";
+    }
+    if (has(t, ["thank", "thanks", "thx"])) {
+      return "You’re welcome! 😊 If you tell me your business and what you want to build, I can also help you figure out the right DigiSky service and next step.";
     }
 
-    if (hasAny(t, ["price", "pricing", "cost", "charge", "budget", "rate", "starting", "how much"])) {
-      return `Our current Shopify website package starts at ${price}. The exact quote depends on the pages, products, design, custom features and integrations you need. Tell me what you want to build and I can point you to the right option.`;
+    const ecommerce = has(t, ["ecommerce", "e commerce", "online store", "online shop", "sell online", "products"]);
+    const shopify = has(t, ["shopify"]);
+    const wordpress = has(t, ["wordpress", "woocommerce"]);
+    const ads = has(t, ["meta ads", "facebook ads", "instagram ads", "google ads", "advertising", "run ads", "ads"]);
+    const seo = has(t, ["seo", "google ranking", "rank on google", "search ranking"]);
+    const pricingQ = has(t, ["price", "pricing", "cost", "charge", "budget", "rate", "how much", "starting at"]);
+    const portfolioQ = has(t, ["portfolio", "our work", "projects", "examples", "previous work", "website you made", "show me"]);
+
+    if (has(t, ["start a project", "want to start", "need a website", "need a store", "build a website", "build a store"])) {
+      return "Absolutely. Let’s make it specific to your business. Tell me these 4 things: 1) what you sell, 2) Shopify/WordPress/custom or no platform decided, 3) approximate number of products/pages, and 4) your target budget. I’ll suggest the most suitable DigiSky route.";
     }
 
-    if (hasAny(t, ["shopify", "shopify store", "shopify website", "shopify development"])) {
-      return "DigiSky builds Shopify stores with custom storefront design, responsive layouts, product and collection setup, navigation, payment/shipping setup assistance, basic SEO structure and launch testing. We can also customise an existing Shopify theme or build a more tailored storefront.";
+    if (pricingQ && shopify) {
+      const shopifyPrice = pricing?.shopify || pricing?.Shopify || pricing?.price;
+      return shopifyPrice
+        ? `For Shopify, the current site data lists ${money(shopifyPrice)} as the starting reference. Your final quote can change with pages, products, custom design, apps, integrations and other requirements. If you tell me your product count and what features you need, I can help narrow it down.`
+        : "Shopify pricing depends on the scope rather than one fixed number. Tell me your product count, pages, design level and integrations, and I’ll help you estimate the right package.";
+    }
+    if (pricingQ && wordpress) {
+      return "For WordPress/WooCommerce, the quote depends on the store structure, products, design, payment/shipping setup and custom features. Tell me roughly how many products you have and what you need, and I’ll help you scope it.";
+    }
+    if (pricingQ && ecommerce) {
+      return "For an ecommerce project, the main cost drivers are platform, number of products/pages, design level, payment/shipping integrations and custom features. Tell me your product count, platform preference and budget and I’ll guide you to the right setup.";
+    }
+    if (pricingQ) {
+      return "I can give you a much more useful estimate if you tell me what you want to build. For example: ‘I sell clothes, need a Shopify store, around 50 products, budget ₹15k.’ Then I can guide you based on the scope instead of giving you a generic price.";
     }
 
-    if (hasAny(t, ["wordpress", "woocommerce"])) {
-      return "Yes. DigiSky also works with WordPress and WooCommerce for business websites and ecommerce stores. We can handle design, responsive development, store structure, product setup and launch support.";
+    if (shopify && has(t, ["what", "include", "features", "do you build", "can you build", "need"])) {
+      return "For Shopify, DigiSky can handle storefront design/development, responsive layouts, product and collection structure, navigation, payment and shipping setup assistance, theme customization, basic SEO structure and launch testing. If you tell me your brand category, I can suggest what your store should include.";
+    }
+    if (shopify) {
+      return "Yes — DigiSky works with Shopify. If you’re launching a new store, tell me your product category and approximate product count. I can suggest the right store structure, key pages and the type of setup you’ll need.";
     }
 
-    if (hasAny(t, ["service", "services", "what do you do", "offer", "agency"])) {
-      const names = services.slice(0, 6).map(s => s?.[0]).filter(Boolean);
-      return `DigiSky helps brands with ${names.length ? names.join(", ") : "Shopify, ecommerce, websites and digital growth"}. We also offer SEO + CRO, Meta Ads, Google Ads, AI automation and ad creatives. Tell me which service you need and I’ll explain it.`;
+    if (wordpress) {
+      return "Yes, DigiSky also works with WordPress and WooCommerce. We can help with the design, responsive development, ecommerce structure, products, payment/shipping setup and launch support. Is yours a business website or an online store?";
     }
 
-    if (hasAny(t, ["portfolio", "our work", "projects", "clients", "website examples", "previous work", "show me"])) {
-      const names = projects.slice(0, 6).map(p => p?.name).filter(Boolean).join(", ");
-      return `DigiSky has delivered ${projectCount} projects. Some projects in the portfolio include ${names || "Shopify and ecommerce brands"}. You can also open the Our Work section on this website to explore the projects.`;
+    if (ecommerce) {
+      return "For ecommerce, I’d first choose the platform and then plan the customer journey. Shopify is a strong option for a managed store; WooCommerce can be useful when you need more WordPress flexibility. Tell me what you sell and how many products you have, and I’ll suggest a practical setup.";
     }
 
-    if (hasAny(t, ["timeline", "how long", "delivery", "days", "deadline", "time"])) {
-      return "Project timelines depend on the scope, number of pages/products and custom functionality. Once the requirements are clear, DigiSky can confirm the expected delivery timeline before work starts.";
+    if (ads) {
+      const platform = has(t, ["google ads"]) && !has(t, ["meta ads", "facebook", "instagram"]) ? "Google Ads" : has(t, ["meta ads", "facebook", "instagram"]) ? "Meta Ads" : "Meta Ads or Google Ads";
+      return `${platform} can work, but the right campaign depends on your product, audience, offer and landing page. DigiSky can help with campaign strategy, audience/offer alignment, creative direction and optimisation. Tell me what you sell and your daily/monthly ad budget, and I can suggest a starting approach.`;
     }
 
-    if (hasAny(t, ["process", "how it works", "steps", "workflow", "start project"])) {
-      return "The usual process is: Discover → Shape the direction → Design → Build → Test and polish → Launch. The exact workflow is adjusted to the project and platform.";
+    if (seo) {
+      return "DigiSky can help with technical SEO foundations, metadata, site structure, internal linking and conversion-focused improvements. No agency can honestly guarantee a #1 Google ranking because results depend on competition and ongoing work. If you tell me your website/platform and target keyword or city, I can suggest the first SEO priorities.";
     }
 
-    if (hasAny(t, ["seo", "search engine", "google ranking", "rank"])) {
-      return "DigiSky can help with SEO foundations, technical structure, metadata, internal linking and conversion-focused improvements. SEO results and rankings depend on the website, competition and ongoing work, so we don’t promise a guaranteed top position.";
+    if (portfolioQ) {
+      const names = relevantProjects(t);
+      return `Sure. DigiSky currently has ${projectCount} projects/launches represented on the site. ${names.length ? `A few relevant examples are ${names.join(", ")}.` : "The portfolio includes Shopify, ecommerce and custom website work."} If you tell me your industry — fashion, beauty, jewellery, food, etc. — I can point you toward the most relevant examples.`;
     }
 
-    if (hasAny(t, ["meta ads", "facebook ads", "instagram ads", "ads", "advertising", "google ads"])) {
-      return "DigiSky also provides digital advertising support, including Meta Ads and Google Ads, with audience/offer strategy, creative alignment, campaign setup and optimisation guidance.";
+    if (has(t, ["service", "services", "what do you do", "offer", "agency"])) {
+      const names = serviceNames.slice(0, 7);
+      return `DigiSky works across ${names.length ? names.join(", ") : "Shopify, ecommerce, websites, SEO and digital marketing"}. The best service depends on your goal. Are you trying to launch a website, improve an existing store, get more leads/sales, or grow on Google/Meta?`;
     }
 
-    if (hasAny(t, ["contact", "whatsapp", "email", "call", "talk", "reach"])) {
-      return `You can contact DigiSky on WhatsApp at ${whatsapp} or email ${email}. If you want, use the WhatsApp button below to start a conversation directly.`;
+    if (has(t, ["timeline", "how long", "delivery", "days", "deadline", "when can", "time will"])) {
+      return "Timeline depends on the scope, pages, products and custom functionality. If you tell me the platform and approximate size of the project, I can help you understand what will affect the delivery time.";
     }
 
-    if (hasAny(t, ["domain", "hosting", "payment gateway", "shipping", "razorpay", "cod"])) {
-      return "DigiSky can assist with the technical setup around domains, hosting, payment gateways and shipping integrations. The exact integrations depend on your platform and project requirements.";
+    if (has(t, ["contact", "whatsapp", "email", "call", "talk to", "reach you", "human", "team"])) {
+      return `Sure. You can reach the DigiSky team on WhatsApp at ${whatsapp}${email ? ` or email ${email}` : ""}. If you share what you need here first, I can also help you prepare the requirements before you contact the team.`;
     }
 
-    if (hasAny(t, ["who are you", "about digisky", "what is digisky"])) {
-      return "DigiSky is a digital studio focused on Shopify, ecommerce, custom websites and digital growth. The goal is to build premium digital experiences that are clear, fast and conversion-focused.";
+    if (has(t, ["domain", "hosting", "payment gateway", "shipping", "razorpay", "cod"])) {
+      return "Those can be part of the setup. The exact solution depends on your platform and business. Tell me whether you’re using Shopify, WooCommerce or a custom site, plus which payment/shipping provider you want, and I’ll explain the setup.";
     }
 
-    return "I can help with Shopify, WordPress/WooCommerce, website development, ecommerce, pricing, SEO, Meta Ads, Google Ads, our portfolio and contact details. Try asking something like ‘How much is a Shopify website?’ or ‘Show me your work’.";
+    if (has(t, ["who are you", "about digisky", "what is digisky"])) {
+      return "DigiSky is a digital studio focused on Shopify, ecommerce, custom websites and digital growth. The site is built around creating premium, clear and conversion-focused digital experiences for brands.";
+    }
+
+    // Instead of repeating one generic paragraph, ask a targeted qualification question.
+    if (has(t, ["clothing", "fashion", "apparel", "jewellery", "jewelry", "beauty", "cosmetic", "food", "dry fruit", "restaurant"])) {
+      return `That sounds like a good fit for an ecommerce setup. For a ${raw.toLowerCase()} brand, I’d normally look at product presentation, mobile UX, collections/categories, checkout flow and conversion elements first. Are you starting from zero or do you already have a website?`;
+    }
+
+    if (has(t, ["help", "suggest", "recommend", "what should i do", "which is better"])) {
+      return "Yes — I can help you decide. Tell me your business, what you’re selling, whether you already have a website, and your approximate budget. I’ll break down the practical next step instead of giving you a generic list.";
+    }
+
+    return `I understand you’re asking about “${raw}”. I can help, but I need one detail to make the answer specific: are you looking for a Shopify store, WordPress/WooCommerce site, custom website, SEO, or ads? Tell me your business type too, and I’ll guide you from there.`;
   };
 
   const send = (text) => {
@@ -638,7 +733,7 @@ function DigiSkyAssistant({ data }) {
     window.setTimeout(() => {
       setTyping(false);
       setMessages(m => [...m, { from: "bot", text: answer(value) }]);
-    }, 350);
+    }, 450);
   };
 
   const waHref = `https://wa.me/${String(whatsapp).replace(/\D/g, "")}?text=${encodeURIComponent("Hi DigiSky, I want to discuss a project.")}`;
@@ -648,7 +743,7 @@ function DigiSkyAssistant({ data }) {
       {open && (
         <div className="dsk-chat" role="dialog" aria-label="DigiSky Assistant">
           <div className="dsk-chat-head">
-            <div className="dsk-bot-avatar"><img src="/logo.png" alt="DigiSky" /></div>
+            <DigiSkyBotAvatar />
             <div className="dsk-chat-title">
               <strong>DigiSky Assistant</strong>
               <span><i/> Online</span>
@@ -674,7 +769,7 @@ function DigiSkyAssistant({ data }) {
             <div className="dsk-input-row">
               <input
                 aria-label="Message DigiSky Assistant"
-                placeholder="Ask about DigiSky..."
+                placeholder="Ask about your project..."
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     send(e.currentTarget.value);
@@ -682,34 +777,20 @@ function DigiSkyAssistant({ data }) {
                   }
                 }}
               />
-              <button
-                type="button"
-                aria-label="Send message"
-                onClick={(e) => {
-                  const input = e.currentTarget.previousElementSibling;
-                  send(input.value);
-                  input.value = "";
-                }}
-              >↑</button>
+              <button type="button" aria-label="Send message" onClick={(e) => {
+                const input = e.currentTarget.previousElementSibling;
+                send(input.value);
+                input.value = "";
+              }}>↑</button>
             </div>
           </div>
           <div className="dsk-powered">DigiSky · Step Up Digitally</div>
         </div>
       )}
 
-      <button
-        type="button"
-        className="dsk-launcher"
-        onClick={() => setOpen(v => !v)}
-        aria-label={open ? "Close DigiSky Assistant" : "Open DigiSky Assistant"}
-      >
+      <button type="button" className="dsk-launcher" onClick={() => setOpen(v => !v)} aria-label={open ? "Close DigiSky Assistant" : "Open DigiSky Assistant"}>
         <span className="dsk-launcher-glow"/>
-        {open ? <span className="dsk-launcher-x">×</span> : (
-          <>
-            <span className="dsk-launcher-logo"><img src="/logo.png" alt="Open DigiSky Assistant" /></span>
-            <span className="dsk-launcher-dot"/>
-          </>
-        )}
+        {open ? <span className="dsk-launcher-x">×</span> : <><DigiSkyBotAvatar small/><span className="dsk-launcher-dot"/></>}
       </button>
     </div>
   );
