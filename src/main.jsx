@@ -466,12 +466,7 @@ function StructuredData({ pageKey }) {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "DigiSky",
-    url: "https://www.digisky.info/",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: "https://www.digisky.info/?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
+    url: "https://www.digisky.info/"
   };
   const faqPage = Array.isArray(page.faqs) && page.faqs.length
     ? {
