@@ -75,11 +75,11 @@ const DEFAULT_DATA = {
 
 const PAGE_METADATA = {
   home: {
-    title: "DigiSky | Shopify & Ecommerce Development Agency in India",
-    description: "DigiSky is a digital agency specializing in Shopify development, ecommerce website development, custom web development, SEO and digital marketing for growing brands in India.",
+    title: "DigiSky | Shopify, E-commerce & Digital Marketing Agency",
+    description: "DigiSky is a digital marketing and web development agency helping brands grow with Shopify websites, e-commerce development, SEO, Meta Ads and conversion-focused digital solutions.",
     canonical: "https://www.digisky.info/",
-    ogTitle: "DigiSky | Shopify & Ecommerce Development Agency",
-    ogDescription: "Shopify stores, ecommerce websites and digital growth solutions for ambitious brands in India.",
+    ogTitle: "DigiSky | Shopify, E-commerce & Digital Marketing Agency",
+    ogDescription: "DigiSky is a digital marketing and web development agency helping brands grow with Shopify websites, e-commerce development, SEO, Meta Ads and conversion-focused digital solutions.",
     ogImage: "https://www.digisky.info/portfolio-reference.png"
   },
   services: {
@@ -378,6 +378,22 @@ const PAGE_METADATA = {
   }
 };
 
+Object.assign(PAGE_METADATA, {
+  "shopify-development": { ...PAGE_METADATA["services/shopify-development"], canonical: "https://www.digisky.info/shopify-development" },
+  "shopify-store-design": { ...PAGE_METADATA["services/shopify-store-design"], canonical: "https://www.digisky.info/shopify-store-design" },
+  "shopify-theme-customization": { ...PAGE_METADATA["services/shopify-theme-customization"], canonical: "https://www.digisky.info/shopify-theme-customization" },
+  "shopify-website-redesign": { ...PAGE_METADATA["services/shopify-website-redesign"], canonical: "https://www.digisky.info/shopify-website-redesign" },
+  "shopify-seo": { ...PAGE_METADATA["services/shopify-seo"], canonical: "https://www.digisky.info/shopify-seo" },
+  "ecommerce-development": { ...PAGE_METADATA["services/ecommerce-development"], canonical: "https://www.digisky.info/ecommerce-development" },
+  "web-development": { ...PAGE_METADATA["services/custom-web-development"], canonical: "https://www.digisky.info/web-development" },
+  "seo-services": { ...PAGE_METADATA["services/seo-services"], canonical: "https://www.digisky.info/seo-services" },
+  "digital-marketing": { ...PAGE_METADATA["services/digital-marketing"], canonical: "https://www.digisky.info/digital-marketing" },
+  "social-media-marketing": { ...PAGE_METADATA["services/social-media-marketing"], canonical: "https://www.digisky.info/social-media-marketing" },
+  "google-ads": { ...PAGE_METADATA["services/google-ads"], canonical: "https://www.digisky.info/google-ads" },
+  "meta-ads": { ...PAGE_METADATA["services/meta-ads"], canonical: "https://www.digisky.info/meta-ads" },
+  portfolio: { ...PAGE_METADATA.work, canonical: "https://www.digisky.info/portfolio" }
+});
+
 function normalizePath(pathname) {
   const normalized = pathname || "/";
   if (normalized === "/") return "/";
@@ -430,6 +446,55 @@ function applySeo(metadata) {
   twitterImage.setAttribute("name", "twitter:image");
   twitterImage.setAttribute("content", page.ogImage || fallback.ogImage);
   if (!document.head.contains(twitterImage)) document.head.appendChild(twitterImage);
+}
+
+function StructuredData({ pageKey }) {
+  const page = PAGE_METADATA[pageKey] || PAGE_METADATA.home;
+  const organization = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "DigiSky",
+    url: "https://www.digisky.info/",
+    description: "Digital marketing, Shopify website development and e-commerce agency.",
+    founder: { "@type": "Person", name: "Devendra" },
+    email: "mailto:team.digisky@gmail.com",
+    logo: "https://www.digisky.info/logo.png",
+    sameAs: ["https://www.instagram.com/digisky.world/"],
+    areaServed: ["IN", "Worldwide"]
+  };
+  const website = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "DigiSky",
+    url: "https://www.digisky.info/",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://www.digisky.info/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+  const faqPage = Array.isArray(page.faqs) && page.faqs.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: page.faqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.q,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: faq.a
+          }
+        }))
+      }
+    : null;
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(website) }} />
+      {faqPage && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPage) }} />}
+    </>
+  );
 }
 
 function SeoMeta() {
@@ -796,13 +861,29 @@ function DigiSkyAssistant({ data }) {
 }
 
 function AppRoutes() {
+  const location = useLocation();
+  const routeKey = normalizePath(location.pathname) === "/" ? "home" : normalizePath(location.pathname).replace(/^\//, "");
+
   return (
     <>
       <SeoMeta />
+      <StructuredData pageKey={routeKey} />
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/admin" element={<App />} />
         <Route path="/services" element={<LandingPage pageKey="services" />} />
+        <Route path="/shopify-development" element={<ServicePage pageKey="shopify-development" />} />
+        <Route path="/shopify-store-design" element={<ServicePage pageKey="shopify-store-design" />} />
+        <Route path="/shopify-theme-customization" element={<ServicePage pageKey="shopify-theme-customization" />} />
+        <Route path="/shopify-website-redesign" element={<ServicePage pageKey="shopify-website-redesign" />} />
+        <Route path="/shopify-seo" element={<ServicePage pageKey="shopify-seo" />} />
+        <Route path="/ecommerce-development" element={<ServicePage pageKey="ecommerce-development" />} />
+        <Route path="/web-development" element={<ServicePage pageKey="web-development" />} />
+        <Route path="/seo-services" element={<ServicePage pageKey="seo-services" />} />
+        <Route path="/digital-marketing" element={<ServicePage pageKey="digital-marketing" />} />
+        <Route path="/social-media-marketing" element={<ServicePage pageKey="social-media-marketing" />} />
+        <Route path="/google-ads" element={<ServicePage pageKey="google-ads" />} />
+        <Route path="/meta-ads" element={<ServicePage pageKey="meta-ads" />} />
         <Route path="/services/shopify-development" element={<ServicePage pageKey="services/shopify-development" />} />
         <Route path="/services/shopify-store-design" element={<ServicePage pageKey="services/shopify-store-design" />} />
         <Route path="/services/shopify-theme-customization" element={<ServicePage pageKey="services/shopify-theme-customization" />} />
@@ -818,6 +899,7 @@ function AppRoutes() {
         <Route path="/about" element={<LandingPage pageKey="about" />} />
         <Route path="/contact" element={<LandingPage pageKey="contact" />} />
         <Route path="/work" element={<LandingPage pageKey="work" />} />
+        <Route path="/portfolio" element={<LandingPage pageKey="portfolio" />} />
         <Route path="/blog" element={<LandingPage pageKey="blog" />} />
       </Routes>
     </>
