@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Link, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "./styles.css";
 import { supabase } from "./lib/supabase";
 
@@ -30,7 +30,7 @@ function ensureShape(d) { return { ...d, copy: mergeCopy(d.copy), layout: mergeL
 
 const DEFAULT_DATA = {
   brand: { name: "DigiSky", tagline: "Step Up Digitally", email: "team.digisky@gmail.com", whatsapp: "+919753622101", instagram: "https://www.instagram.com/digisky.world/" },
-  hero: { trustItems: ["Website development", "Shopify & e-commerce", "Conversion-focused marketing"], kicker: "SHOPIFY & WORDPRESS STUDIO", titleA: "Shopify Stores", titleB: "Built To", titleC: "Sell.", description: "We design, build and optimise high-converting Shopify stores for ambitious brands — from strategy and UX to launch and growth.", images: ["", "", ""] },
+  hero: { trustItems: ["Website development", "Shopify & e-commerce", "Conversion-focused marketing"], kicker: "SHOPIFY & WORDPRESS STUDIO", titleA: "Shopify Stores", titleB: "Built To", titleC: "Sell.", description: "DigiSky is a digital marketing and web development agency building Shopify and e-commerce experiences for ambitious brands — from strategy and UX to launch and growth.", images: ["", "", ""] },
   stats: [["31+", "Projects Delivered"], ["20+", "Happy Clients"], ["4.9/5", "Client Satisfaction"], ["2x", "Average Growth"]],
   pricing: { title: "Shopify Website", price: "\u20B97,500", description: "A polished Shopify storefront designed, configured and made ready to launch — without needing a premium theme.", features: ["Custom homepage design", "Mobile responsive layout", "Product & collection setup", "Navigation, pages & basic policies", "Payment / shipping setup assistance", "Basic SEO structure", "Launch-ready testing"] },
   projects: [{"id": 1, "name": "Aaysa", "industry": "E-commerce", "platform": "Shopify", "description": "E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://aaysa.store", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://aaysa.store"}, {"id": 2, "name": "Bonglooms", "industry": "Textiles & Fashion", "platform": "Shopify", "description": "Textiles & Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://bonglooms.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://bonglooms.com"}, {"id": 3, "name": "Tattva Elixir", "industry": "Beauty & Wellness", "platform": "Shopify", "description": "Beauty & Wellness website designed for a polished, conversion-focused digital experience.", "url": "https://www.tattvaelixir.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.tattvaelixir.com"}, {"id": 4, "name": "Miraza", "industry": "Fashion E-commerce", "platform": "Shopify", "description": "Fashion E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://miraza.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://miraza.in"}, {"id": 5, "name": "Popout Fashion", "industry": "Fashion Brand", "platform": "Shopify", "description": "Fashion Brand website designed for a polished, conversion-focused digital experience.", "url": "https://popoutfashion.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://popoutfashion.com"}, {"id": 6, "name": "Presquo", "industry": "Premium Brand", "platform": "Shopify", "description": "Premium Brand website designed for a polished, conversion-focused digital experience.", "url": "https://presquo.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://presquo.com"}, {"id": 7, "name": "Dr Aroras", "industry": "Healthcare", "platform": "Website Development", "description": "Healthcare website designed for a polished, conversion-focused digital experience.", "url": "https://www.draroras.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.draroras.com"}, {"id": 8, "name": "Tota Cart", "industry": "E-commerce", "platform": "E-commerce", "description": "E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://totacart.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://totacart.in"}, {"id": 9, "name": "Nitarya", "industry": "Fashion", "platform": "Shopify", "description": "Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://nitarya.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://nitarya.com"}, {"id": 10, "name": "Take A Chef", "industry": "Hospitality", "platform": "Website", "description": "Hospitality website designed for a polished, conversion-focused digital experience.", "url": "https://www.takeachef.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.takeachef.com"}, {"id": 11, "name": "Paivi", "industry": "Fashion", "platform": "Shopify", "description": "Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://www.paivi.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.paivi.in"}, {"id": 12, "name": "Maestra Jewellery", "industry": "Luxury Jewellery", "platform": "E-commerce", "description": "Luxury Jewellery website designed for a polished, conversion-focused digital experience.", "url": "https://maestrajewellery.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://maestrajewellery.com"}, {"id": 13, "name": "Equitia", "industry": "Lifestyle", "platform": "Shopify", "description": "Lifestyle website designed for a polished, conversion-focused digital experience.", "url": "https://www.equitia.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.equitia.in"}, {"id": 14, "name": "The House of Eraya", "industry": "Fashion", "platform": "Shopify", "description": "Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://www.thehouseoferaya.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.thehouseoferaya.in"}, {"id": 15, "name": "The Green Ritual", "industry": "Wellness", "platform": "Shopify", "description": "Wellness website designed for a polished, conversion-focused digital experience.", "url": "https://thegreenritual.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://thegreenritual.com"}, {"id": 16, "name": "Krinks", "industry": "Fashion", "platform": "Shopify", "description": "Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://krinks.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://krinks.in"}, {"id": 17, "name": "Acharima Delights", "industry": "Food & Delights", "platform": "E-commerce", "description": "Food & Delights website designed for a polished, conversion-focused digital experience.", "url": "https://acharimaadelights.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://acharimaadelights.com"}, {"id": 18, "name": "RP Paris", "industry": "Luxury Fashion", "platform": "Shopify", "description": "Luxury Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://www.rpparis.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.rpparis.com"}, {"id": 19, "name": "Munchlet", "industry": "Food & Beverage", "platform": "E-commerce", "description": "Food & Beverage website designed for a polished, conversion-focused digital experience.", "url": "https://www.munchlet.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.munchlet.com"}, {"id": 20, "name": "Inkwalkers", "industry": "Art & Creative", "platform": "Website", "description": "Art & Creative website designed for a polished, conversion-focused digital experience.", "url": "https://inkwalkers.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://inkwalkers.com"}, {"id": 21, "name": "Tiara Skin", "industry": "Skincare", "platform": "Shopify", "description": "Skincare website designed for a polished, conversion-focused digital experience.", "url": "https://tiara.skin", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://tiara.skin"}, {"id": 22, "name": "The Premium Basket", "industry": "Premium E-commerce", "platform": "Shopify", "description": "Premium E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://thepremiumbasket.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://thepremiumbasket.com"}, {"id": 23, "name": "Haus of Jawhar", "industry": "Luxury Fashion", "platform": "Shopify", "description": "Luxury Fashion website designed for a polished, conversion-focused digital experience.", "url": "https://hausofjawhar.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://hausofjawhar.com"}, {"id": 24, "name": "Pancha Bhootani", "industry": "Wellness", "platform": "Shopify", "description": "Wellness website designed for a polished, conversion-focused digital experience.", "url": "https://panchabhootani.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://panchabhootani.com"}, {"id": 25, "name": "Bevy Good", "industry": "Lifestyle", "platform": "Shopify", "description": "Lifestyle website designed for a polished, conversion-focused digital experience.", "url": "https://www.bevygood.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.bevygood.com"}, {"id": 26, "name": "Innocent Fresh", "industry": "Food & Beverage", "platform": "E-commerce", "description": "Food & Beverage website designed for a polished, conversion-focused digital experience.", "url": "https://www.innocentfresh.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.innocentfresh.com"}, {"id": 27, "name": "Rare Blanc", "industry": "Premium Brand", "platform": "Shopify", "description": "Premium Brand website designed for a polished, conversion-focused digital experience.", "url": "https://www.rareblanc.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.rareblanc.com"}, {"id": 28, "name": "Uzvieco Store", "industry": "Lifestyle", "platform": "Shopify", "description": "Lifestyle website designed for a polished, conversion-focused digital experience.", "url": "https://uzviecostore.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://uzviecostore.com"}, {"id": 29, "name": "Alpino Super One", "industry": "Sports & Wellness", "platform": "Shopify", "description": "Sports & Wellness website designed for a polished, conversion-focused digital experience.", "url": "https://alpinosuperone.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://alpinosuperone.com"}, {"id": 30, "name": "The Skin Depth", "industry": "Skincare", "platform": "Shopify", "description": "Skincare website designed for a polished, conversion-focused digital experience.", "url": "https://www.theskindepth.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.theskindepth.com"}, {"id": 31, "name": "Guapha", "industry": "E-commerce", "platform": "E-commerce", "description": "E-commerce website designed for a polished, conversion-focused digital experience.", "url": "https://www.guapha.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.guapha.com"}, {"id": 32, "name": "Swasth Setu", "industry": "Healthcare", "platform": "Website", "description": "Healthcare website designed for a polished, conversion-focused digital experience.", "url": "https://swasthsetu.co.in", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://swasthsetu.co.in"}, {"id": 33, "name": "Drinkyasu", "industry": "Beverage", "platform": "Shopify", "description": "Beverage website designed for a polished, conversion-focused digital experience.", "url": "https://drinkyasu.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://drinkyasu.com"}, {"id": 34, "name": "Planto Store", "industry": "Plant Store", "platform": "Shopify", "description": "Plant Store website designed for a polished, conversion-focused digital experience.", "url": "https://www.plantostore.com", "image": "https://image.thum.io/get/width/1200/crop/760/noanimate/https://www.plantostore.com"}],
@@ -91,39 +91,46 @@ const PAGE_METADATA = {
     ogImage: "https://www.digisky.info/portfolio-reference.png"
   },
   "services/shopify-development": {
-    title: "Shopify Development Company in India | DigiSky",
-    description: "DigiSky builds custom Shopify websites and ecommerce stores in India with theme customization, product setup, integrations, SEO and conversion-focused design.",
+    title: "Shopify Development & Store Builds | DigiSky",
+    description: "DigiSky provides Shopify website development for brands that need a custom Shopify store, thoughtful integrations and a clear path from product discovery to checkout.",
     canonical: "https://www.digisky.info/services/shopify-development",
     ogTitle: "Shopify Development Company | DigiSky",
     ogDescription: "Custom Shopify development, theme customization, store setup and optimization for growth-focused ecommerce brands.",
     ogImage: "https://www.digisky.info/portfolio-reference.png",
+    ogImageAlt: "DigiSky portfolio of Shopify stores and e-commerce websites",
+    sectionHeadings: ["Shopify development services", "Shopify store development deliverables", "Shopify development FAQs"],
     heading: "Shopify development company built for growth.",
-    intro: "DigiSky helps brands launch and improve Shopify stores that are fast, conversion-ready and aligned with the business. We build storefronts that look premium, support product discovery and make it easier for shoppers to buy.",
+    intro: "DigiSky is a Shopify development partner for brands that need a store built around their products and customers. Our Shopify developers shape storefronts, integrations and shopping journeys to make product discovery and checkout clear.",
     highlights: ["Custom Shopify storefronts", "Theme customization & section builds", "Responsive ecommerce UX", "Product, collection and navigation setup", "SEO & speed improvements"],
     deliverables: ["Store architecture & homepage structure", "Shopify theme customization and section builds", "Product and collection setup", "Payment, shipping and app integrations", "Analytics-ready launch and post-launch support"],
     faqs: [{ q: "What does a Shopify development project include?", a: "Scope usually includes storefront design, theme customization, product configuration, collection structure, navigation, mobile UX, app integrations and launch support tailored to the brand." }, { q: "Do you work with businesses in India?", a: "Yes. DigiSky works with ecommerce brands and startups across India and beyond on Shopify builds and optimization projects." }, { q: "Can you customize an existing Shopify theme?", a: "Yes. We can update an existing theme, build custom sections and improve layout, speed and conversion flow without starting from scratch when it is the better fit." }],
     related: [
       { to: "/services/shopify-store-design", label: "Shopify store design" },
       { to: "/services/shopify-theme-customization", label: "Shopify theme customization" },
-      { to: "/services/shopify-seo", label: "Shopify SEO services" }
+      { to: "/services", label: "All DigiSky services" },
+      { to: "/contact", label: "Contact DigiSky" }
     ]
   },
   "services/shopify-store-design": {
-    title: "Shopify Store Design Services | DigiSky",
+    title: "Shopify Store Design & UX | DigiSky",
     description: "DigiSky creates Shopify store design systems that improve buyer trust, showcase collections clearly and support stronger conversion-focused ecommerce experiences.",
     canonical: "https://www.digisky.info/services/shopify-store-design",
     ogTitle: "Shopify Store Design | DigiSky",
     ogDescription: "Premium Shopify store design and ecommerce UX for brands that want a better customer journey and higher conversion potential.",
     ogImage: "https://www.digisky.info/portfolio-reference.png",
+    ogImageAlt: "DigiSky e-commerce portfolio featuring Shopify storefront design",
+    sectionHeadings: ["Shopify store design approach", "Shopify website design deliverables", "Shopify store design FAQs"],
     heading: "Shopify store design for stronger first impressions.",
-    intro: "A polished storefront helps customers understand the offer quickly and builds trust before the first purchase. DigiSky designs Shopify stores with clear product storytelling, intuitive navigation and conversion-focused layouts.",
+    intro: "DigiSky designs Shopify stores around the brand, products and customer journey. Our Shopify website design focuses on clear product storytelling, intuitive navigation and responsive layouts that help shoppers decide what to explore next.",
     highlights: ["Brand-led ecommerce design", "Conversion-focused homepage flow", "Mobile-first experience design", "Collection and product page thinking", "Design systems for growth"],
     deliverables: ["Homepage and landing page design", "Collection page structure", "Product page UX recommendations", "Navigation and buyer journey mapping", "Responsive design refinements"],
     faqs: [{ q: "Is Shopify store design only for new brands?", a: "Not at all. We also redesign or refresh established stores that need a cleaner experience, faster mobile UX or better conversion flow." }, { q: "How does good store design improve sales?", a: "Clear messaging, stronger product storytelling and easier navigation reduce friction and help shoppers understand the offer with less confusion." }],
     related: [
-      { to: "/services/shopify-development", label: "Shopify development" },
+      { to: "/services/shopify-theme-customization", label: "Shopify theme customization" },
       { to: "/services/shopify-website-redesign", label: "Shopify website redesign" },
-      { to: "/services/ecommerce-development", label: "Ecommerce development" }
+      { to: "/services/shopify-development", label: "Shopify store development" },
+      { to: "/services", label: "All DigiSky services" },
+      { to: "/contact", label: "Contact DigiSky" }
     ]
   },
   "services/shopify-theme-customization": {
@@ -133,15 +140,19 @@ const PAGE_METADATA = {
     ogTitle: "Shopify Theme Customization | DigiSky",
     ogDescription: "Shopify theme customization, custom sections and storefront updates for brands that need a better customer experience.",
     ogImage: "https://www.digisky.info/portfolio-reference.png",
+    ogImageAlt: "DigiSky e-commerce portfolio with customized Shopify storefronts",
+    sectionHeadings: ["Shopify theme customization options", "Theme customization deliverables", "Shopify theme customization FAQs"],
     heading: "Shopify theme customization that fits your brand.",
     intro: "A Shopify theme can be a good starting point, but most growing brands eventually need more than a template. We customize the layout, sections and interactions to match the products, customer journey and conversion goals.",
     highlights: ["Custom sections and page blocks", "Improved shopping flow", "Theme-level UX refinement", "Responsive styling and performance", "Brand consistency"],
     deliverables: ["Theme section edits and custom blocks", "Homepage, collection and product improvements", "Mobile handling and spacing adjustments", "Custom styling and interaction refinements", "Launch QA and optimization support"],
     faqs: [{ q: "Can you customize a theme without rebuilding the whole store?", a: "Yes. In many cases we improve the current theme with targeted customizations that reduce cost while improving brand presentation and conversion flow." }, { q: "Does Shopify theme customization help SEO?", a: "It can help by improving layout clarity, mobile usability, page speed and overall user experience, which supports stronger engagement and better performance." }],
     related: [
+      { to: "/services/shopify-website-redesign", label: "Shopify website redesign" },
+      { to: "/services/shopify-seo", label: "Shopify SEO services" },
       { to: "/services/shopify-development", label: "Shopify development" },
-      { to: "/services/shopify-website-redesign", label: "Shopify redesign" },
-      { to: "/services/shopify-seo", label: "Shopify SEO" }
+      { to: "/services", label: "All DigiSky services" },
+      { to: "/contact", label: "Contact DigiSky" }
     ]
   },
   "services/shopify-website-redesign": {
@@ -151,15 +162,19 @@ const PAGE_METADATA = {
     ogTitle: "Shopify Website Redesign | DigiSky",
     ogDescription: "Improve your Shopify storefront with stronger user experience, clearer messaging and a more conversion-focused design.",
     ogImage: "https://www.digisky.info/portfolio-reference.png",
+    ogImageAlt: "DigiSky e-commerce portfolio featuring Shopify website redesigns",
+    sectionHeadings: ["When to redesign a Shopify website", "Shopify redesign deliverables", "Shopify website redesign FAQs"],
     heading: "Shopify website redesign for a stronger customer journey.",
     intro: "If a store feels outdated, hard to navigate or inconsistent with the brand, it can quietly reduce trust and sales. DigiSky redesigns Shopify stores to create a more premium and easier-to-buy experience.",
     highlights: ["UX and messaging improvements", "Modern storefront styling", "Faster and cleaner browsing flow", "Better product discovery", "Mobile-first improvements"],
     deliverables: ["Homepage and category page redesign", "Navigation cleanup and structure review", "Conversion-focused UX updates", "Product page refinement", "Visual refresh aligned to the brand"],
     faqs: [{ q: "When should a business consider a Shopify redesign?", a: "A redesign is a good option when the site no longer reflects the brand, has inconsistent product presentation, weak mobile UX or lower conversion performance than expected." }, { q: "Can redesigns include SEO improvements?", a: "Yes. We can improve structure, page hierarchy, content clarity and technical foundations to support better crawlability and user experience." }],
     related: [
+      { to: "/services/shopify-seo", label: "Shopify SEO services" },
+      { to: "/services/shopify-theme-customization", label: "Shopify theme customization" },
       { to: "/services/shopify-store-design", label: "Shopify store design" },
-      { to: "/services/shopify-development", label: "Shopify development" },
-      { to: "/services/shopify-seo", label: "Shopify SEO" }
+      { to: "/services", label: "All DigiSky services" },
+      { to: "/contact", label: "Contact DigiSky" }
     ]
   },
   "services/shopify-seo": {
@@ -169,15 +184,20 @@ const PAGE_METADATA = {
     ogTitle: "Shopify SEO Services | DigiSky",
     ogDescription: "Shopify SEO, technical optimization and content improvements to help stores become easier to find and easier to buy from.",
     ogImage: "https://www.digisky.info/portfolio-reference.png",
+    ogImageAlt: "DigiSky e-commerce portfolio for Shopify SEO and storefront optimization",
+    sectionHeadings: ["Shopify SEO strategy", "Shopify SEO service deliverables", "Shopify SEO FAQs"],
     heading: "Shopify SEO services that help stores get found.",
     intro: "Search visibility matters for ecommerce brands that rely on product discovery and organic traffic. DigiSky supports Shopify SEO with technical, on-page and content-driven improvements designed around the store's real commercial goals.",
     highlights: ["Technical SEO fixes", "Collection and product page optimization", "Keyword-aligned content structure", "Internal linking and crawlability support", "Improved page experience"],
     deliverables: ["Technical SEO review", "Collection page and product page optimization", "Metadata and content structure improvements", "Internal linking guidance", "Shopify performance and crawlability support"],
     faqs: [{ q: "Does Shopify SEO include technical fixes?", a: "Yes. Technical structure, crawlability, internal linking, metadata and faster page experiences are all relevant parts of ecommerce SEO strategy." }, { q: "Can SEO improvements work alongside design and development?", a: "Absolutely. Good Shopify SEO is strongest when it is built alongside how the store is structured, how products are organized and how shoppers browse." }],
     related: [
+      { to: "/services/shopify-development", label: "Shopify development" },
+      { to: "/services/shopify-website-redesign", label: "Shopify website redesign" },
       { to: "/services/ecommerce-development", label: "Ecommerce development" },
       { to: "/services/seo-services", label: "SEO services" },
-      { to: "/services/shopify-development", label: "Shopify development" }
+      { to: "/services", label: "All DigiSky services" },
+      { to: "/contact", label: "Contact DigiSky" }
     ]
   },
   "services/ecommerce-development": {
@@ -379,11 +399,6 @@ const PAGE_METADATA = {
 };
 
 Object.assign(PAGE_METADATA, {
-  "shopify-development": { ...PAGE_METADATA["services/shopify-development"], canonical: "https://www.digisky.info/shopify-development" },
-  "shopify-store-design": { ...PAGE_METADATA["services/shopify-store-design"], canonical: "https://www.digisky.info/shopify-store-design" },
-  "shopify-theme-customization": { ...PAGE_METADATA["services/shopify-theme-customization"], canonical: "https://www.digisky.info/shopify-theme-customization" },
-  "shopify-website-redesign": { ...PAGE_METADATA["services/shopify-website-redesign"], canonical: "https://www.digisky.info/shopify-website-redesign" },
-  "shopify-seo": { ...PAGE_METADATA["services/shopify-seo"], canonical: "https://www.digisky.info/shopify-seo" },
   "ecommerce-development": { ...PAGE_METADATA["services/ecommerce-development"], canonical: "https://www.digisky.info/ecommerce-development" },
   "web-development": { ...PAGE_METADATA["services/custom-web-development"], canonical: "https://www.digisky.info/web-development" },
   "seo-services": { ...PAGE_METADATA["services/seo-services"], canonical: "https://www.digisky.info/seo-services" },
@@ -418,10 +433,12 @@ function applySeo(metadata) {
   const page = metadata || fallback;
   document.title = page.title || fallback.title;
   setMetaTag('meta[name="description"]', "name", page.description || fallback.description, "description");
+  setMetaTag('meta[property="og:image:alt"]', "property", page.ogImageAlt || fallback.ogImageAlt || "DigiSky portfolio and digital agency work", "og:image:alt");
   const canonical = document.head.querySelector('link[rel="canonical"]') || document.createElement("link");
   canonical.setAttribute("rel", "canonical");
   canonical.setAttribute("href", page.canonical || fallback.canonical);
   if (!document.head.contains(canonical)) document.head.appendChild(canonical);
+  setMetaTag('meta[property="og:url"]', "property", page.canonical || fallback.canonical, "og:url");
   const ogTitle = document.head.querySelector('meta[property="og:title"]') || document.createElement("meta");
   ogTitle.setAttribute("property", "og:title");
   ogTitle.setAttribute("content", page.ogTitle || page.title || fallback.ogTitle);
@@ -519,15 +536,15 @@ function GenericPage({ pageKey, heroTitle, introduction, points, deliverables, f
       </div>
       <div className="seo-page-content">
         <section className="seo-details">
-          <h2>What this service includes</h2>
+          <h2>{pageKey && PAGE_METADATA[pageKey]?.sectionHeadings?.[0] || "What this service includes"}</h2>
           <ul>{points.map((point) => <li key={point}>{point}</li>)}</ul>
         </section>
         <section className="seo-details">
-          <h2>Deliverables</h2>
+          <h2>{pageKey && PAGE_METADATA[pageKey]?.sectionHeadings?.[1] || "Deliverables"}</h2>
           <ul>{deliverables.map((item) => <li key={item}>{item}</li>)}</ul>
         </section>
         <section className="seo-details">
-          <h2>FAQs</h2>
+          <h2>{pageKey && PAGE_METADATA[pageKey]?.sectionHeadings?.[2] || "FAQs"}</h2>
           <div className="faq-list">
             {faqs.map((faq) => (
               <article key={faq.q}>
@@ -867,11 +884,11 @@ function AppRoutes() {
         <Route path="/" element={<App />} />
         <Route path="/admin" element={<App />} />
         <Route path="/services" element={<LandingPage pageKey="services" />} />
-        <Route path="/shopify-development" element={<ServicePage pageKey="shopify-development" />} />
-        <Route path="/shopify-store-design" element={<ServicePage pageKey="shopify-store-design" />} />
-        <Route path="/shopify-theme-customization" element={<ServicePage pageKey="shopify-theme-customization" />} />
-        <Route path="/shopify-website-redesign" element={<ServicePage pageKey="shopify-website-redesign" />} />
-        <Route path="/shopify-seo" element={<ServicePage pageKey="shopify-seo" />} />
+        <Route path="/shopify-development" element={<Navigate replace to="/services/shopify-development" />} />
+        <Route path="/shopify-store-design" element={<Navigate replace to="/services/shopify-store-design" />} />
+        <Route path="/shopify-theme-customization" element={<Navigate replace to="/services/shopify-theme-customization" />} />
+        <Route path="/shopify-website-redesign" element={<Navigate replace to="/services/shopify-website-redesign" />} />
+        <Route path="/shopify-seo" element={<Navigate replace to="/services/shopify-seo" />} />
         <Route path="/ecommerce-development" element={<ServicePage pageKey="ecommerce-development" />} />
         <Route path="/web-development" element={<ServicePage pageKey="web-development" />} />
         <Route path="/seo-services" element={<ServicePage pageKey="seo-services" />} />
@@ -2294,6 +2311,7 @@ function App() {
             <div className="hero-actions">
               <a className="pill-button" href={waLink(data.brand.whatsapp, "Hi DigiSky, I want to start a project.")} target="_blank" rel="noreferrer">Start a project</a>
               <button className="text-link" onClick={()=>document.getElementById("work")?.scrollIntoView({behavior:"smooth"})}>View our work</button>
+              <Link className="text-link" to="/services/shopify-development">Shopify website development</Link>
             </div>
             <div className="hero-trust">{(data.hero.trustItems || ["Website development","Shopify & e-commerce","Conversion-focused marketing"]).map(item=><span key={item}><CheckIcon/>{item}</span>)}</div>
           </div>

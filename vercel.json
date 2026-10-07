@@ -1,11 +1,11 @@
 {
   "redirects": [
     { "source": "/work", "destination": "/portfolio", "permanent": true },
-    { "source": "/services/shopify-development", "destination": "/shopify-development", "permanent": true },
-    { "source": "/services/shopify-store-design", "destination": "/shopify-store-design", "permanent": true },
-    { "source": "/services/shopify-theme-customization", "destination": "/shopify-theme-customization", "permanent": true },
-    { "source": "/services/shopify-website-redesign", "destination": "/shopify-website-redesign", "permanent": true },
-    { "source": "/services/shopify-seo", "destination": "/shopify-seo", "permanent": true },
+    { "source": "/shopify-development", "destination": "/services/shopify-development", "permanent": true },
+    { "source": "/shopify-store-design", "destination": "/services/shopify-store-design", "permanent": true },
+    { "source": "/shopify-theme-customization", "destination": "/services/shopify-theme-customization", "permanent": true },
+    { "source": "/shopify-website-redesign", "destination": "/services/shopify-website-redesign", "permanent": true },
+    { "source": "/shopify-seo", "destination": "/services/shopify-seo", "permanent": true },
     { "source": "/services/ecommerce-development", "destination": "/ecommerce-development", "permanent": true },
     { "source": "/services/custom-web-development", "destination": "/web-development", "permanent": true },
     { "source": "/services/seo-services", "destination": "/seo-services", "permanent": true },
