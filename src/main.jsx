@@ -1308,7 +1308,7 @@ function AboutSection({ data }) {
       <div className="about-content-card">
         <div className="about-copy"><span className="mini-label">What we believe</span><h3>Clarity first. Design second. Results always.</h3><p>We start by understanding what needs to happen after someone lands on your website. Then we build the design, content and technology around that goal.</p></div>
         <div className="about-points-grid">{data.about.points.map((point,i)=><div key={point}><span>0{i+1}</span><strong>{point}</strong></div>)}</div>
-        <div className="about-metrics"><div><strong><CountUpNumber value="34+"/></strong><span>projects shipped</span></div><div><strong><CountUpNumber value="20+"/></strong><span>brands worked with</span></div><div><strong>24/7</strong><span>digital mindset</span></div></div>
+        <div className="about-metrics"><div><strong><CountUpNumber value="42+"/></strong><span>projects shipped</span></div><div><strong><CountUpNumber value="37+"/></strong><span>brands worked with</span></div><div><strong>24/7</strong><span>digital mindset</span></div></div>
       </div>
     </div>
   </section>;
