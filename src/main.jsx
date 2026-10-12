@@ -1088,8 +1088,12 @@ function waLink(number, message) {
   return clean ? `https://wa.me/${clean}?text=${encodeURIComponent(message)}` : `https://wa.me/?text=${encodeURIComponent(message)}`;
 }
 
+function categoryKey(category) {
+  return String(category || "").trim().toLowerCase();
+}
+
 function projectCategory(project) {
-  if (project.category && project.category !== "E-commerce") return project.category;
+  if (project.category && categoryKey(project.category) !== "e-commerce") return String(project.category).trim();
   const text = `${project.industry || ""} ${project.name || ""}`.toLowerCase();
   if (/fashion|textile|jewellery|jewelry|apparel/.test(text)) return "Fashion";
   if (/beauty|wellness|skin|elixir|lifestyle|cosmetic|personal care/.test(text)) return "Lifestyle";
@@ -1614,6 +1618,9 @@ function AdminPanel({ data, setData, onClose }) {
     lastDataRef.current = data;
   }, [data]);
   const [tab, setTab] = useState("overview");
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [renamingCategory, setRenamingCategory] = useState(null);
+  const [renameCategoryValue, setRenameCategoryValue] = useState("");
   const [uploadingIndex, setUploadingIndex] = useState(null);
   const [thumbnailActionIndex, setThumbnailActionIndex] = useState(null);
   const [jsonValue, setJsonValue] = useState(() => JSON.stringify(data, null, 2));
@@ -1644,6 +1651,72 @@ function AdminPanel({ data, setData, onClose }) {
     arr.push(value);
     return next;
   });
+  const categoryNameMap = new Map();
+  [
+    ...(draft.categories || []),
+    ...(draft.projects || []).map(projectCategory),
+  ].forEach(category => {
+    const name = String(category || "").trim();
+    const key = categoryKey(name);
+    if (name && key !== "all" && !categoryNameMap.has(key)) categoryNameMap.set(key, name);
+  });
+  const categoryNames = [...categoryNameMap.values()];
+  const managedCategoryNames = categoryNames.filter(category => categoryKey(category) !== "e-commerce");
+  const addCategory = () => {
+    const category = newCategoryName.trim();
+    if (!category) return;
+    if (category.toLowerCase() === "all" || category.toLowerCase() === "e-commerce") {
+      window.alert("That name is reserved. Choose a different category name.");
+      return;
+    }
+    if (managedCategoryNames.some(name => categoryKey(name) === categoryKey(category))) {
+      window.alert("That category already exists.");
+      return;
+    }
+    setDraft(prev => ({ ...prev, categories: [...new Set(["All", ...(prev.categories || []).filter(name => name !== "All"), category])] }));
+    setNewCategoryName("");
+  };
+  const renameCategory = (category, value) => {
+    const renamed = value.trim();
+    if (!renamed || categoryKey(renamed) === categoryKey(category)) return;
+    if (categoryKey(renamed) === "all" || categoryKey(renamed) === "e-commerce") {
+      window.alert("That name is reserved. Choose a different category name.");
+      return;
+    }
+    if (managedCategoryNames.some(name => categoryKey(name) === categoryKey(renamed))) {
+      window.alert("That category already exists.");
+      return;
+    }
+    const oldKey = categoryKey(category);
+    setDraft(prev => ({
+      ...prev,
+      categories: [...new Set([
+        ...(prev.categories || []).map(name => categoryKey(name) === oldKey ? renamed : name),
+        ...((prev.categories || []).some(name => categoryKey(name) === oldKey) ? [] : [renamed]),
+      ])],
+      projects: prev.projects.map(project => categoryKey(projectCategory(project)) === oldKey ? { ...project, category: renamed } : project),
+    }));
+    setRenamingCategory(null);
+    setRenameCategoryValue("");
+  };
+  const deleteCategory = (category) => {
+    const key = categoryKey(category);
+    const assignedCount = draft.projects.filter(project => categoryKey(projectCategory(project)) === key).length;
+    const fallback = key === "other" ? "Business" : "Other";
+    const confirmation = assignedCount
+      ? `Remove "${category}"? ${assignedCount} website${assignedCount === 1 ? "" : "s"} will be moved to "${fallback}".`
+      : `Remove the "${category}" category?`;
+    if (!window.confirm(confirmation)) return;
+    setDraft(prev => {
+      const categories = (prev.categories || []).filter(name => categoryKey(name) !== key);
+      if (assignedCount && !categories.includes(fallback)) categories.push(fallback);
+      return {
+        ...prev,
+        categories,
+        projects: prev.projects.map(project => categoryKey(projectCategory(project)) === key ? { ...project, category: fallback } : project),
+      };
+    });
+  };
   const save = async () => {
     setSaving(true);
     try {
@@ -1853,7 +1926,7 @@ function AdminPanel({ data, setData, onClose }) {
   const NAV = [
     ["Start", [["overview","Overview","◈"]]],
     ["Page", [["layout","Sections & order","☰"],["hero","Hero & brand","✦"],["copy","Headings & text","T"],["stats","Numbers","#"],["trust","Brand names","∞"]]],
-    ["Content", [["work","Projects","↗"],["services","Services","◎"],["shopify","Shopify","S"],["why","Why DigiSky","✓"],["pricing","Pricing","₹"],["about","About","A"],["process","Process","01"],["reviews","Client notes","★"]]],
+    ["Content", [["work","Projects","↗"],["categories","Portfolio categories","◉"],["services","Services","◎"],["shopify","Shopify","S"],["why","Why DigiSky","✓"],["pricing","Pricing","₹"],["about","About","A"],["process","Process","01"],["reviews","Client notes","★"]]],
     ["Site", [["footer","Footer & contact","▣"],["advanced","Advanced (JSON)","{}"]]],
   ];
   const q = navQuery.trim().toLowerCase();
@@ -1908,9 +1981,42 @@ function AdminPanel({ data, setData, onClose }) {
 
       {tab === "trust" && <><div className="admin-section-title"><span>03</span><div><h3>Brand rail</h3><p>These names power the running “Worked with amazing brands” section.</p></div></div>{field("Eyebrow",["trust","eyebrow"])}<div className="admin-editor-block"><div className="admin-block-head"><div><small>BRANDS</small><h3>Portfolio brand names</h3></div></div>{(draft.trust.names||[]).map((name,i)=><div className="admin-feature-row" key={i}><input value={name} onChange={e=>update(["trust","names",i],e.target.value)}/><button className="delete-feature" onClick={()=>removeAt(["trust","names"],i)}>Delete</button></div>)}<button className="add-project" onClick={()=>addTo(["trust","names"],"New brand")}>+ Add brand</button></div><div className="admin-subtitle">Running marquee</div><p className="admin-help">Edit the services and topics used in the top running strip.</p>{(draft.marqueeItems||[]).map((item,i)=><div className="admin-feature-row" key={i}><input value={item} onChange={e=>update(["marqueeItems",i],e.target.value)}/><button className="delete-feature" onClick={()=>removeAt(["marqueeItems"],i)}>Delete</button></div>)}<button className="add-project" onClick={()=>addTo(["marqueeItems"],"NEW SERVICE")}>+ Add marquee item</button></>}
 
-      {tab === "work" && <><div className="admin-section-title"><span>02</span><div><h3>Portfolio manager</h3><p>Manage permanent project thumbnails. Automatic screenshots are stored in Supabase Storage; manual images always take priority.</p></div></div><div className="projects-admin-top"><button className="add-project" onClick={()=>setDraft(prev=>({...prev,projects:[...prev.projects,{id:Date.now(),name:"New Project",category:"Business",industry:"",platform:"Custom",description:"",image:"",thumbnail_url:"",thumbnail_source:"automatic",url:""}]}))}>+ Add project</button></div>{draft.projects.map((p,i)=><div className="admin-project admin-project-v2" key={p.id}><div className="admin-project-title"><b>{String(i+1).padStart(2,"0")}</b><strong>{p.name || "Untitled project"}</strong><button className="delete-project" onClick={()=>removeAt(["projects"],i)}>Delete</button></div><div className="admin-two-col"><input placeholder="Project name" value={p.name||""} onChange={e=>update(["projects",i,"name"],e.target.value)}/><input placeholder="Category" value={p.category||""} onChange={e=>update(["projects",i,"category"],e.target.value)}/><input placeholder="Industry" value={p.industry||""} onChange={e=>update(["projects",i,"industry"],e.target.value)}/><input placeholder="Platform" value={p.platform||""} onChange={e=>update(["projects",i,"platform"],e.target.value)}/></div><input placeholder="Website URL" value={p.url||""} onChange={e=>update(["projects",i,"url"],e.target.value)}/><textarea placeholder="Description" value={p.description||""} onChange={e=>update(["projects",i,"description"],e.target.value)}/><div className="project-thumbnail-admin"><div className="project-thumbnail-admin-head"><strong>Thumbnail</strong><span className={p.thumbnail_source==="manual"?"manual":"automatic"}>{p.thumbnail_source==="manual"?"Manual thumbnail":"Automatic thumbnail"}</span></div><a className="thumbnail-preview" href={getProjectThumbnailCandidates(p,i)[0]} target="_blank" rel="noreferrer"><ProjectThumbnail project={p} index={i} alt={`${p.name || "Project"} thumbnail preview`} loading="lazy"/><span>Current thumbnail preview</span></a><label className="admin-field"><span>Thumbnail URL</span><input type="url" placeholder="https://example.com/image.jpg" value={p.thumbnail_url||""} onChange={e=>setProjectThumbnail(setDraft,i,{thumbnail_url:e.target.value,thumbnail_source:"manual",image:e.target.value})}/></label><div className="thumbnail-upload"><label className="thumbnail-upload-button">{uploadingIndex===i?"Uploading…":p.thumbnail_source==="manual"?"Change thumbnail":"Upload thumbnail"}<input type="file" accept="image/*" disabled={uploadingIndex!==null||thumbnailActionIndex!==null} onChange={e=>{const file=e.target.files?.[0];if(file)handleThumbnailUpload(i,file);e.target.value=""}}/></label><button className="save" disabled={uploadingIndex!==null||thumbnailActionIndex!==null} onClick={()=>saveProjectThumbnail(i)}>Save</button><button className="export" disabled={uploadingIndex!==null||thumbnailActionIndex!==null||!isValidProjectUrl(p.url)} onClick={()=>useAutomaticThumbnail(i)}>Use Automatic Thumbnail</button><button className="export" disabled={uploadingIndex!==null||thumbnailActionIndex!==null||p.thumbnail_source==="manual"||!isValidProjectUrl(p.url)} onClick={()=>regenerateProjectThumbnail(i,true).catch(error=>{console.error(`Could not regenerate thumbnail for ${p.name} (${p.id}).`,error);})}>{thumbnailActionIndex===i?"Generating…":"Regenerate Thumbnail"}</button></div></div></div>)}</>}
+      {tab === "work" && <>
+        <div className="admin-section-title"><span>02</span><div><h3>Portfolio manager</h3><p>Manage website details and categories. Automatic screenshots are stored in Supabase Storage; manual images always take priority.</p></div></div>
+        <div className="projects-admin-top"><button className="add-project" onClick={()=>setDraft(prev=>({...prev,projects:[...prev.projects,{id:Date.now(),name:"New Project",category:managedCategoryNames.includes("Business")?"Business":managedCategoryNames[0]||"Other",industry:"",platform:"Custom",description:"",image:"",thumbnail_url:"",thumbnail_source:"automatic",url:""}]}))}>+ Add project</button><button className="export" onClick={()=>setTab("categories")}>Manage categories</button></div>
+        {draft.projects.map((p,i)=><div className="admin-project admin-project-v2" key={p.id}>
+          <div className="admin-project-title"><b>{String(i+1).padStart(2,"0")}</b><strong>{p.name || "Untitled project"}</strong><button className="delete-project" onClick={()=>removeAt(["projects"],i)}>Delete</button></div>
+          <div className="admin-two-col">
+            <input placeholder="Project name" value={p.name||""} onChange={e=>update(["projects",i,"name"],e.target.value)}/>
+            <select aria-label={`Category for ${p.name || "project"}`} value={projectCategory(p)} onChange={e=>update(["projects",i,"category"],e.target.value)}>
+              {!categoryNames.includes(projectCategory(p)) && <option value={projectCategory(p)}>{projectCategory(p)}</option>}
+              {categoryNames.map(category=><option key={category} value={category}>{category}</option>)}
+            </select>
+            <input placeholder="Industry" value={p.industry||""} onChange={e=>update(["projects",i,"industry"],e.target.value)}/>
+            <input placeholder="Platform" value={p.platform||""} onChange={e=>update(["projects",i,"platform"],e.target.value)}/>
+          </div>
+          <input placeholder="Website URL" value={p.url||""} onChange={e=>update(["projects",i,"url"],e.target.value)}/>
+          <textarea placeholder="Description" value={p.description||""} onChange={e=>update(["projects",i,"description"],e.target.value)}/>
+          <div className="project-thumbnail-admin"><div className="project-thumbnail-admin-head"><strong>Thumbnail</strong><span className={p.thumbnail_source==="manual"?"manual":"automatic"}>{p.thumbnail_source==="manual"?"Manual thumbnail":"Automatic thumbnail"}</span></div><a className="thumbnail-preview" href={getProjectThumbnailCandidates(p,i)[0]} target="_blank" rel="noreferrer"><ProjectThumbnail project={p} index={i} alt={`${p.name || "Project"} thumbnail preview`} loading="lazy"/><span>Current thumbnail preview</span></a><label className="admin-field"><span>Thumbnail URL</span><input type="url" placeholder="https://example.com/image.jpg" value={p.thumbnail_url||""} onChange={e=>setProjectThumbnail(setDraft,i,{thumbnail_url:e.target.value,thumbnail_source:"manual",image:e.target.value})}/></label><div className="thumbnail-upload"><label className="thumbnail-upload-button">{uploadingIndex===i?"Uploading…":p.thumbnail_source==="manual"?"Change thumbnail":"Upload thumbnail"}<input type="file" accept="image/*" disabled={uploadingIndex!==null||thumbnailActionIndex!==null} onChange={e=>{const file=e.target.files?.[0];if(file)handleThumbnailUpload(i,file);e.target.value=""}}/></label><button className="save" disabled={uploadingIndex!==null||thumbnailActionIndex!==null} onClick={()=>saveProjectThumbnail(i)}>Save</button><button className="export" disabled={uploadingIndex!==null||thumbnailActionIndex!==null||!isValidProjectUrl(p.url)} onClick={()=>useAutomaticThumbnail(i)}>Use Automatic Thumbnail</button><button className="export" disabled={uploadingIndex!==null||thumbnailActionIndex!==null||p.thumbnail_source==="manual"||!isValidProjectUrl(p.url)} onClick={()=>regenerateProjectThumbnail(i,true).catch(error=>{console.error(`Could not regenerate thumbnail for ${p.name} (${p.id}).`,error);})}>{thumbnailActionIndex===i?"Generating…":"Regenerate Thumbnail"}</button></div></div>
+        </div>)}
+      </>}
 
-      {tab === "services" && <><div className="admin-section-title"><span>03</span><div><h3>Services</h3><p>Add, remove and edit the services shown across the website.</p></div></div>{pairRows(["services"],"Core services")}<div className="admin-subtitle">Portfolio filters</div><p className="admin-help">Categories assigned to projects appear in the filters automatically. Add extra categories here if needed.</p>{(draft.categories||[]).map((c,i)=><div className="category-admin-row" key={`${c}-${i}`}><input value={c} onChange={e=>update(["categories",i],e.target.value)}/>{i>0&&<button className="delete-project" onClick={()=>removeAt(["categories"],i)}>Delete</button>}</div>)}<button className="add-project" onClick={()=>addTo(["categories"],"New category")}>+ Add category</button></>}
+      {tab === "categories" && <>
+        <div className="admin-section-title"><span>◉</span><div><h3>Portfolio categories</h3><p>Add, rename or remove categories, then assign each website to a category in Projects.</p></div></div>
+        <div className="admin-subtitle">Filter categories</div>
+        <p className="admin-help">“All” is fixed. Removing a category moves its websites to a fallback category so it will not reappear in the filters.</p>
+        {managedCategoryNames.map(category=>{
+          const count=draft.projects.filter(project=>categoryKey(projectCategory(project))===categoryKey(category)).length;
+          return <div className="category-admin-row" key={category}>
+            {renamingCategory===category
+              ? <><input aria-label={`Rename ${category}`} value={renameCategoryValue} onChange={e=>setRenameCategoryValue(e.target.value)}/><button className="save" onClick={()=>renameCategory(category,renameCategoryValue)}>Save name</button><button className="export" onClick={()=>setRenamingCategory(null)}>Cancel</button></>
+              : <><div className="category-admin-info"><strong>{category}</strong><small>{count} {count===1?"website":"websites"}</small></div><button className="export" onClick={()=>{setRenamingCategory(category);setRenameCategoryValue(category);}}>Rename</button><button className="delete-project" onClick={()=>deleteCategory(category)}>Delete</button></>}
+          </div>;
+        })}
+        <div className="category-add-row"><input aria-label="New category name" placeholder="New category name" value={newCategoryName} onChange={e=>setNewCategoryName(e.target.value)}/><button className="add-project" onClick={addCategory} disabled={!newCategoryName.trim()}>+ Add category</button></div>
+      </>}
+
+      {tab === "services" && <><div className="admin-section-title"><span>03</span><div><h3>Services</h3><p>Add, remove and edit the services shown across the website.</p></div></div>{pairRows(["services"],"Core services")}<div className="admin-subtitle">Portfolio filters</div><p className="admin-help">Manage website categories and assignments in Portfolio categories and Projects.</p><button className="export" onClick={()=>setTab("categories")}>Manage portfolio categories</button></>}
 
       {tab === "shopify" && <><div className="admin-section-title"><span>04</span><div><h3>Shopify expertise</h3><p>Edit the heading, supporting copy and every clickable option in the Shopify section.</p></div></div>{field("Heading line 1",["shopify","titleA"])}{field("Heading line 2",["shopify","titleB"])}{field("Description",["shopify","description"],"textarea")}{pairRows(["shopify","points"],"Clickable expertise options")}</>}
 
@@ -2275,21 +2381,29 @@ function App() {
   },[]);
 
   const projects = useMemo(()=>data.projects, [data.projects]);
-  const effectiveFilter = data.categories.includes(activeFilter) ? activeFilter : "All";
-  const filteredProjects = useMemo(() => effectiveFilter === "All" ? projects : projects.filter(project => projectCategory(project) === effectiveFilter), [effectiveFilter, projects]);
-  const visibleProjects = showAll ? filteredProjects : filteredProjects.slice(0, WORK_PREVIEW_COUNT);
   const filterOptions = useMemo(() => {
-    const categoryNames = [...new Set([
+    const categoryNameMap = new Map();
+    [
       ...data.categories,
       ...projects.map(projectCategory),
-    ])].filter(name => name && name !== "All" && name !== "E-commerce");
+    ].forEach(category => {
+      const name = String(category || "").trim();
+      const key = categoryKey(name);
+      if (name && key !== "all" && key !== "e-commerce" && !categoryNameMap.has(key)) categoryNameMap.set(key, name);
+    });
     return [
       { name: "All", count: projects.length },
-      ...categoryNames
-        .map(name => ({ name, count: projects.filter(project => projectCategory(project) === name).length }))
-        .filter(option => option.count > 0),
+      ...[...categoryNameMap.values()].map(name => ({
+        name,
+        count: projects.filter(project => categoryKey(projectCategory(project)) === categoryKey(name)).length,
+      })),
     ];
   }, [data.categories, projects]);
+  const effectiveFilter = filterOptions.find(option => categoryKey(option.name) === categoryKey(activeFilter))?.name || "All";
+  const filteredProjects = useMemo(() => effectiveFilter === "All"
+    ? projects
+    : projects.filter(project => categoryKey(projectCategory(project)) === categoryKey(effectiveFilter)), [effectiveFilter, projects]);
+  const visibleProjects = showAll ? filteredProjects : filteredProjects.slice(0, WORK_PREVIEW_COUNT);
   const regenerateUnavailableThumbnail = project => {
     generateProjectThumbnail(project, true)
       .then(thumbnail => setData(prev => ({

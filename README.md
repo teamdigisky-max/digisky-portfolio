@@ -12,6 +12,7 @@ A fresh, clean redesign of the DigiSky agency portfolio. All 34 projects and the
 Open `yourdomain.com/admin`.
 - **Password:** `digisky2026` — change this any time by asking your developer to update the `ADMIN_PASSWORD` value in `src/main.jsx`.
 - Changes made in `/admin` are saved to the shared Supabase `site_content` row and are loaded by the public website on refresh.
+- Use **Portfolio categories** to add, rename or remove filters, and **Projects** to assign each website to a category. Removing a category moves its projects to a fallback category.
 
 ### One-time Supabase setup
 1. Open the Supabase project connected in `.env`.
